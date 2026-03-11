@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Indoor Plants — BM Nursery</title>
+  <meta name="description" content="Beautiful indoor plants handpicked by BM Nursery. Available on Amazon & Flipkart.">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="assets/logo.jpg">
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">
+    <img src="assets/logo.jpg" alt="BM Nursery Logo">
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="indoor.html">Indoor</a></li>
+    <li><a href="outdoor.html">Outdoor</a></li>
+    <li><a href="seeds.html">Seeds</a></li>
+  </ul>
+  <div class="nav-toggle"><span></span><span></span><span></span></div>
+</nav>
+
+<div class="page-header">
+  <h1>🪴 Indoor Plants</h1>
+  <p>Bring the beauty of nature inside your home</p>
+</div>
+
+<section class="plants-section">
+  <p class="plants-count" id="count-text"></p>
+  <div class="plants-grid stagger" id="plants-grid">
+    <div class="loading-state" style="grid-column:1/-1">
+      <div class="spinner"></div>
+      <p>Loading plants...</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <img src="assets/logo.jpg" alt="BM Nursery">
+  <p>BM Nursery &copy; 2025 — by Dedipyaman &amp; Trishanjit<br>
+  <a href="indoor.html">Indoor</a> &nbsp;·&nbsp; <a href="outdoor.html">Outdoor</a> &nbsp;·&nbsp; <a href="seeds.html">Seeds</a></p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="common.js"></script>
+<script>
+  async function loadPlants() {
+    const grid = document.getElementById('plants-grid');
+    const countText = document.getElementById('count-text');
+
+    const { data, error } = await db
+      .from('plants')
+      .select('*')
+      .eq('category', 'indoor')
+      .order('created_at', { ascending: false });
+
+    if (error || !data) {
+      grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">😕</div><h3>Couldn't load plants</h3><p>Please try again later.</p></div>`;
+      return;
+    }
+
+    if (data.length === 0) {
+      grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">🪴</div><h3>No indoor plants yet</h3><p>Check back soon — we're adding new plants!</p></div>`;
+      return;
+    }
+
+    countText.innerHTML = `<span>${data.length}</span> indoor plants available`;
+    grid.innerHTML = data.map(buildPlantCard).join('');
+
+    // Init carousels
+    grid.querySelectorAll('.carousel').forEach(initCarousel);
+  }
+
+  loadPlants();
+</script>
+</body>
+</html>

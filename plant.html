@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plant Detail — BM Nursery</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="assets/logo.jpg">
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">
+    <img src="assets/logo.jpg" alt="BM Nursery Logo">
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="indoor.html">Indoor</a></li>
+    <li><a href="outdoor.html">Outdoor</a></li>
+    <li><a href="seeds.html">Seeds</a></li>
+  </ul>
+  <div class="nav-toggle"><span></span><span></span><span></span></div>
+</nav>
+
+<div id="content">
+  <div class="loading-state" style="padding:100px 20px">
+    <div class="spinner"></div>
+    <p>Loading plant details...</p>
+  </div>
+</div>
+
+<footer>
+  <img src="assets/logo.jpg" alt="BM Nursery">
+  <p>BM Nursery &copy; 2025 — by Dedipyaman &amp; Trishanjit<br>
+  <a href="indoor.html">Indoor</a> &nbsp;·&nbsp; <a href="outdoor.html">Outdoor</a> &nbsp;·&nbsp; <a href="seeds.html">Seeds</a></p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="common.js"></script>
+<script>
+  const categoryMap = {
+    indoor: { label: 'Indoor Plant', back: 'indoor.html', emoji: '🪴' },
+    outdoor: { label: 'Outdoor Plant', back: 'outdoor.html', emoji: '🌳' },
+    seed: { label: 'Seed', back: 'seeds.html', emoji: '🌱' }
+  };
+
+  async function loadPlant() {
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id');
+    const content = document.getElementById('content');
+
+    if (!id) {
+      content.innerHTML = `<div class="empty-state"><div class="empty-icon">❓</div><h3>Plant not found</h3><p><a href="index.html">Go back home</a></p></div>`;
+      return;
+    }
+
+    const { data, error } = await db.from('plants').select('*').eq('id', id).single();
+
+    if (error || !data) {
+      content.innerHTML = `<div class="empty-state"><div class="empty-icon">❓</div><h3>Plant not found</h3><p><a href="index.html">Go back home</a></p></div>`;
+      return;
+    }
+
+    const cat = categoryMap[data.category] || { label: data.category, back: 'index.html', emoji: '🌿' };
+    const images = data.images || [];
+
+    // Update page title
+    document.title = `${data.name} — BM Nursery`;
+
+    const slidesHTML = images.length > 0
+      ? images.map(url => `<div class="carousel-slide"><img src="${url}" alt="${data.name}"></div>`).join('')
+      : `<div class="carousel-slide" style="display:flex;align-items:center;justify-content:center;background:var(--sage-light);height:100%"><span style="font-size:6rem">${cat.emoji}</span></div>`;
+
+    const thumbsHTML = images.length > 1
+      ? images.map((url, i) => `<div class="thumb ${i === 0 ? 'active' : ''}" data-index="${i}"><img src="${url}" alt="Photo ${i+1}"></div>`).join('')
+      : '';
+
+    content.innerHTML = `
+      <div class="plant-detail fade-in">
+        <a href="${cat.back}" class="back-btn">← Back to ${cat.label}s</a>
+        <div class="plant-detail-grid">
+          <div>
+            <div class="plant-detail-carousel">
+              <div class="carousel" id="main-carousel">
+                <div class="carousel-track">${slidesHTML}</div>
+                ${images.length > 1 ? `<button class="carousel-btn prev">&#8249;</button><button class="carousel-btn next">&#8250;</button>` : ''}
+                ${images.length > 1 ? `<div class="carousel-dots">${images.map(() => '<div class="dot"></div>').join('')}</div>` : ''}
+              </div>
+            </div>
+            ${thumbsHTML ? `<div class="plant-detail-thumbs">${thumbsHTML}</div>` : ''}
+          </div>
+          <div class="plant-detail-info">
+            <span class="plant-category-badge">${cat.emoji} ${cat.label}</span>
+            <h1>${data.name}</h1>
+            <p class="plant-detail-desc">${data.description || 'No description available.'}</p>
+            ${(data.amazon_link || data.flipkart_link) ? `
+            <div class="buy-section">
+              <h4>Buy Now</h4>
+              <div class="buy-buttons">
+                ${data.amazon_link ? `<a href="${data.amazon_link}" target="_blank" rel="noopener" class="btn-amazon">🛒 Buy on Amazon</a>` : ''}
+                ${data.flipkart_link ? `<a href="${data.flipkart_link}" target="_blank" rel="noopener" class="btn-flipkart">🛍 Buy on Flipkart</a>` : ''}
+              </div>
+            </div>` : ''}
+          </div>
+        </div>
+      </div>`;
+
+    // Init main carousel
+    const carouselEl = document.getElementById('main-carousel');
+    const { goTo } = initCarousel(carouselEl);
+
+    // Thumbnail click
+    document.querySelectorAll('.thumb').forEach(thumb => {
+      thumb.addEventListener('click', () => {
+        const idx = parseInt(thumb.dataset.index);
+        goTo(idx);
+        document.querySelectorAll('.thumb').forEach(t => t.classList.toggle('active', t === thumb));
+      });
+    });
+
+    // Sync dots → thumbs
+    const observer = new MutationObserver(() => {
+      const activeDot = carouselEl.querySelector('.dot.active');
+      if (activeDot) {
+        const idx = [...carouselEl.querySelectorAll('.dot')].indexOf(activeDot);
+        document.querySelectorAll('.thumb').forEach((t, i) => t.classList.toggle('active', i === idx));
+      }
+    });
+    carouselEl.querySelectorAll('.dot').forEach(d => observer.observe(d, { attributes: true }));
+  }
+
+  loadPlant();
+</script>
+</body>
+</html>
