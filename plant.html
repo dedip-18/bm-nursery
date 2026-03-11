@@ -62,7 +62,11 @@
     }
 
     const cat = categoryMap[data.category] || { label: data.category, back: 'index.html', emoji: '🌿' };
-    const images = data.images || [];
+    let images = data.images || [];
+    if (typeof images === 'string') {
+      try { images = JSON.parse(images); } catch { images = [images]; }
+    }
+    if (!Array.isArray(images)) images = [];
 
     // Update page title
     document.title = `${data.name} — BM Nursery`;
