@@ -37,7 +37,11 @@ function initCarousel(carouselEl) {
 
 // ---- Build plant card HTML ----
 function buildPlantCard(plant) {
-  const images = plant.images || [];
+  let images = plant.images || [];
+  if (typeof images === 'string') {
+    try { images = JSON.parse(images); } catch { images = [images]; }
+  }
+  if (!Array.isArray(images)) images = [];
   const slidesHTML = images.length > 0
     ? images.map(url => `<div class="carousel-slide"><img src="${url}" alt="${plant.name}" loading="lazy"></div>`).join('')
     : `<div class="carousel-slide" style="display:flex;align-items:center;justify-content:center;background:var(--sage-light);height:100%"><span style="font-size:3rem">🌿</span></div>`;
