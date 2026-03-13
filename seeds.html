@@ -4,15 +4,71 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Seeds — BM Nursery</title>
-  <meta name="description" content="Premium quality seeds to grow your own beautiful garden. Shop on Amazon & Flipkart.">
   <link rel="stylesheet" href="styles.css">
-  
+  <style>
+    .search-bar-wrap {
+      max-width: 500px;
+      margin: 0 auto 40px;
+      position: relative;
+    }
+    .search-bar-wrap input {
+      width: 100%;
+      padding: 14px 48px 14px 20px;
+      border: 2px solid var(--sage-light);
+      border-radius: 32px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 1rem;
+      background: var(--white);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      color: var(--text-dark);
+    }
+    .search-bar-wrap input:focus {
+      border-color: var(--forest-light);
+      box-shadow: 0 0 0 3px rgba(74,138,46,0.12);
+    }
+    .search-bar-wrap .search-icon {
+      position: absolute;
+      right: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.1rem;
+      pointer-events: none;
+    }
+    .subcategory-section { margin-bottom: 56px; }
+    .subcategory-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      color: var(--forest);
+      margin-bottom: 6px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--sage-light);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .subcategory-count {
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.85rem;
+      background: var(--sage-light);
+      color: var(--forest);
+      padding: 3px 12px;
+      border-radius: 24px;
+      font-weight: 700;
+    }
+    .no-results {
+      text-align: center;
+      padding: 40px;
+      color: var(--text-light);
+      font-size: 0.95rem;
+    }
+  </style>
 </head>
 <body>
 
 <nav>
   <a href="index.html" class="nav-logo">
-    <span style="font-family:Playfair Display,serif;font-size:1.3rem;font-weight:700;color:var(--forest)">🌿 BM Nursery</span>
+    <span style="font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:var(--forest)">🌿 BM Nursery</span>
   </a>
   <ul class="nav-links">
     <li><a href="index.html">Home</a></li>
@@ -29,28 +85,40 @@
 </div>
 
 <section class="plants-section">
-  <p class="plants-count" id="count-text"></p>
-  <div class="plants-grid stagger" id="plants-grid">
-    <div class="loading-state" style="grid-column:1/-1">
+
+  <div class="search-bar-wrap">
+    <input type="text" id="search-input" placeholder="Search seeds..." oninput="filterPlants()">
+    <span class="search-icon">🔍</span>
+  </div>
+
+  <div id="main-content">
+    <div class="loading-state">
       <div class="spinner"></div>
       <p>Loading seeds...</p>
     </div>
   </div>
+
 </section>
 
 <footer>
-  <span style="font-family:Playfair Display,serif;font-size:1.1rem;font-weight:700;color:white">🌿 BM Nursery</span>
-  <p>BM Nursery &copy; 2025 — by Dedipyaman &amp; Trishanjit<br>
+  <span style="font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:white">🌿 BM Nursery</span>
+  <p style="margin-top:10px">BM Nursery &copy; 2025 — by Dedipyaman &amp; Trishanjit<br>
   <a href="indoor.html">Indoor</a> &nbsp;·&nbsp; <a href="outdoor.html">Outdoor</a> &nbsp;·&nbsp; <a href="seeds.html">Seeds</a></p>
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="common.js"></script>
 <script>
-  async function loadPlants() {
-    const grid = document.getElementById('plants-grid');
-    const countText = document.getElementById('count-text');
+  const sections = [
+    { key: 'vegetable-seeds', label: '🥦 Vegetable Seeds', plants: [] },
+    { key: 'flower-seeds',    label: '🌸 Flower Seeds',    plants: [] },
+    { key: 'herb-seeds',      label: '🌿 Herb Seeds',      plants: [] },
+    { key: null,              label: '🌱 Other Seeds',      plants: [] }
+  ];
 
+  let allPlants = [];
+
+  async function loadPlants() {
     const { data, error } = await db
       .from('plants')
       .select('*')
@@ -58,18 +126,70 @@
       .order('created_at', { ascending: false });
 
     if (error || !data) {
-      grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">😕</div><h3>Couldn't load seeds</h3><p>Please try again later.</p></div>`;
+      document.getElementById('main-content').innerHTML =
+        `<div class="empty-state"><div class="empty-icon">😕</div><h3>Couldn't load seeds</h3><p>Please try again later.</p></div>`;
       return;
     }
+
+    allPlants = data;
 
     if (data.length === 0) {
-      grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">🌱</div><h3>No seeds yet</h3><p>Check back soon — we're adding new seeds!</p></div>`;
+      document.getElementById('main-content').innerHTML =
+        `<div class="empty-state"><div class="empty-icon">🌱</div><h3>No seeds yet</h3><p>Check back soon!</p></div>`;
       return;
     }
 
-    countText.innerHTML = `<span>${data.length}</span> seed varieties available`;
-    grid.innerHTML = data.map(buildPlantCard).join('');
-    grid.querySelectorAll('.carousel').forEach(initCarousel);
+    data.forEach(plant => {
+      const section = sections.find(s => s.key === plant.subcategory) || sections[sections.length - 1];
+      section.plants.push(plant);
+    });
+
+    renderSections(sections);
+  }
+
+  function renderSections(secs) {
+    const content = document.getElementById('main-content');
+    const activeSecs = secs.filter(s => s.plants.length > 0);
+
+    if (activeSecs.length === 0) {
+      content.innerHTML = `<div class="no-results">No seeds found matching your search.</div>`;
+      return;
+    }
+
+    content.innerHTML = activeSecs.map(sec => `
+      <div class="subcategory-section">
+        <h2 class="subcategory-title">
+          ${sec.label}
+          <span class="subcategory-count">${sec.plants.length}</span>
+        </h2>
+        <div class="plants-grid stagger" id="grid-${sec.key || 'other'}">
+          ${sec.plants.map(buildPlantCard).join('')}
+        </div>
+      </div>
+    `).join('');
+
+    content.querySelectorAll('.carousel').forEach(initCarousel);
+  }
+
+  function filterPlants() {
+    const query = document.getElementById('search-input').value.toLowerCase().trim();
+
+    if (!query) {
+      sections.forEach(s => s.plants = []);
+      allPlants.forEach(plant => {
+        const section = sections.find(s => s.key === plant.subcategory) || sections[sections.length - 1];
+        section.plants.push(plant);
+      });
+      renderSections(sections);
+      return;
+    }
+
+    const filtered = allPlants.filter(p =>
+      p.name.toLowerCase().includes(query) ||
+      (p.description && p.description.toLowerCase().includes(query))
+    );
+
+    renderSections([{ key: 'results', label: '🔍 Search Results', plants: filtered }]);
   }
 
   loadPlants();
