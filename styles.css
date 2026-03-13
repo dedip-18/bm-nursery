@@ -264,6 +264,18 @@ nav {
   gap: 28px;
 }
 
+@media (max-width: 640px) {
+  .plants-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  .plant-card-body { padding: 12px 14px 14px; }
+  .plant-card-body h3 { font-size: 0.95rem; }
+  .plant-desc { font-size: 0.78rem; -webkit-line-clamp: 2; }
+  .btn-amazon, .btn-flipkart { font-size: 0.72rem; padding: 7px 6px; }
+  .plant-card-links { gap: 5px; }
+}
+
 /* ===== PLANT CARD ===== */
 .plant-card {
   background: var(--white);
@@ -300,7 +312,8 @@ nav {
 
 .carousel-slide img {
   width: 100%; height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  background: var(--cream-dark);
   display: block;
 }
 
