@@ -5,16 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin — BM Nursery</title>
   <link rel="stylesheet" href="styles.css">
-  
 </head>
 <body>
 
 <!-- LOGIN SCREEN -->
 <div class="admin-wrapper" id="login-screen">
   <div class="login-card fade-in">
-    <span style="font-family:Playfair Display,serif;font-size:1.1rem;font-weight:700;color:white">🌿 BM Nursery</span>
-    <h2>Admin Panel</h2>
-    <p>Enter your password to manage plants</p>
+    <h2 style="font-family:'Playfair Display',serif;color:var(--forest);font-size:1.8rem;margin-bottom:6px">🌿 BM Nursery</h2>
+    <h3 style="font-family:'Playfair Display',serif;color:var(--forest);font-size:1.3rem;margin-bottom:6px">Admin Panel</h3>
+    <p style="color:var(--text-light);font-size:0.9rem;margin-bottom:28px">Enter your password to manage plants</p>
     <div class="form-group" style="text-align:left">
       <label>Password</label>
       <input type="password" id="login-password" placeholder="Enter admin password" onkeydown="if(event.key==='Enter')checkLogin()">
@@ -29,7 +28,7 @@
 
   <nav>
     <a href="index.html" class="nav-logo">
-      <span style="font-family:Playfair Display,serif;font-size:1.3rem;font-weight:700;color:var(--forest)">🌿 BM Nursery</span>
+      <span style="font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:var(--forest)">🌿 BM Nursery</span>
     </a>
     <ul class="nav-links">
       <li><a href="index.html">← Back to Website</a></li>
@@ -39,7 +38,6 @@
   <div class="admin-wrapper" style="padding-top:32px">
     <div class="admin-card fade-in">
       <div class="admin-header">
-        <span style="font-family:Playfair Display,serif;font-size:1.1rem;font-weight:700;color:white">🌿 BM Nursery</span>
         <h2>Add New Plant / Seed</h2>
         <p>Fill in the details below — it will appear on the website instantly</p>
       </div>
@@ -53,11 +51,18 @@
 
       <div class="form-group">
         <label>Category *</label>
-        <select id="plant-category">
+        <select id="plant-category" onchange="handleCategoryChange()">
           <option value="">-- Select Category --</option>
           <option value="indoor">🪴 Indoor Plant</option>
           <option value="outdoor">🌳 Outdoor Plant</option>
           <option value="seed">🌱 Seed</option>
+        </select>
+      </div>
+
+      <div class="form-group" id="subcategory-group" style="display:none">
+        <label>Subcategory *</label>
+        <select id="plant-subcategory">
+          <option value="">-- Select Subcategory --</option>
         </select>
       </div>
 
@@ -105,22 +110,50 @@
   const ADMIN_PASSWORD = 'BMNursery@812';
   let selectedFiles = [];
 
+  const subcategoryOptions = {
+    outdoor: [
+      { value: 'flowering', label: '🌸 Flowering' },
+      { value: 'fruit', label: '🍋 Fruit' },
+      { value: 'herbs-spice', label: '🌿 Herbs & Spice' },
+      { value: 'trees-shrubs', label: '🌴 Trees & Shrubs' }
+    ],
+    seed: [
+      { value: 'vegetable-seeds', label: '🥦 Vegetable Seeds' },
+      { value: 'flower-seeds', label: '🌸 Flower Seeds' },
+      { value: 'herb-seeds', label: '🌿 Herb Seeds' }
+    ]
+  };
+
+  function handleCategoryChange() {
+    const category = document.getElementById('plant-category').value;
+    const subGroup = document.getElementById('subcategory-group');
+    const subSelect = document.getElementById('plant-subcategory');
+
+    if (subcategoryOptions[category]) {
+      subGroup.style.display = 'block';
+      subSelect.innerHTML = '<option value="">-- Select Subcategory --</option>';
+      subcategoryOptions[category].forEach(opt => {
+        subSelect.innerHTML += `<option value="${opt.value}">${opt.label}</option>`;
+      });
+    } else {
+      subGroup.style.display = 'none';
+      subSelect.value = '';
+    }
+  }
+
   function checkLogin() {
     const pw = document.getElementById('login-password').value;
-    const err = document.getElementById('login-error');
     if (pw === ADMIN_PASSWORD) {
       document.getElementById('login-screen').style.display = 'none';
       document.getElementById('admin-panel').style.display = 'block';
     } else {
-      err.style.display = 'block';
+      document.getElementById('login-error').style.display = 'block';
     }
   }
 
   function handlePhotoSelect(input) {
     const files = Array.from(input.files);
-    const remaining = 5 - selectedFiles.length;
-    const newFiles = files.slice(0, remaining);
-    selectedFiles = [...selectedFiles, ...newFiles].slice(0, 5);
+    selectedFiles = [...selectedFiles, ...files].slice(0, 5);
     renderPreviews();
   }
 
@@ -150,12 +183,14 @@
   async function submitPlant() {
     const name = document.getElementById('plant-name').value.trim();
     const category = document.getElementById('plant-category').value;
+    const subcategory = document.getElementById('plant-subcategory').value;
     const description = document.getElementById('plant-desc').value.trim();
     const amazon_link = document.getElementById('amazon-link').value.trim();
     const flipkart_link = document.getElementById('flipkart-link').value.trim();
 
     if (!name) { showAlert('Please enter the plant name.', 'error'); return; }
     if (!category) { showAlert('Please select a category.', 'error'); return; }
+    if (subcategoryOptions[category] && !subcategory) { showAlert('Please select a subcategory.', 'error'); return; }
     if (!description) { showAlert('Please enter a description.', 'error'); return; }
     if (selectedFiles.length === 0) { showAlert('Please add at least one photo.', 'error'); return; }
 
@@ -169,16 +204,14 @@
     progress.style.display = 'block';
 
     try {
-      // Upload images
       const imageUrls = [];
       for (let i = 0; i < selectedFiles.length; i++) {
         const file = selectedFiles[i];
         const ext = file.name.split('.').pop();
-        const fileName = `${Date.now()}_${i}.${ext}`;
-        const filePath = `plants/${fileName}`;
+        const filePath = `plants/${Date.now()}_${i}.${ext}`;
 
         progressText.textContent = `Uploading photo ${i + 1} of ${selectedFiles.length}...`;
-        progressBar.style.width = `${((i) / selectedFiles.length) * 80}%`;
+        progressBar.style.width = `${(i / selectedFiles.length) * 80}%`;
 
         const { error: uploadError } = await db.storage
           .from('plant-images')
@@ -186,20 +219,17 @@
 
         if (uploadError) throw new Error(`Image upload failed: ${uploadError.message}`);
 
-        const { data: urlData } = db.storage
-          .from('plant-images')
-          .getPublicUrl(filePath);
-
+        const { data: urlData } = db.storage.from('plant-images').getPublicUrl(filePath);
         imageUrls.push(urlData.publicUrl);
       }
 
       progressBar.style.width = '90%';
       progressText.textContent = 'Saving plant details...';
 
-      // Save to DB
       const { error: dbError } = await db.from('plants').insert([{
         name,
         category,
+        subcategory: subcategory || null,
         description,
         amazon_link: amazon_link || null,
         flipkart_link: flipkart_link || null,
@@ -210,15 +240,16 @@
 
       progressBar.style.width = '100%';
       progressText.textContent = 'Done!';
+      showAlert(`✅ "${name}" added successfully!`, 'success');
 
-      showAlert(`✅ "${name}" has been added to the ${category} page successfully!`, 'success');
-
-      // Reset form
+      // Reset
       document.getElementById('plant-name').value = '';
       document.getElementById('plant-category').value = '';
+      document.getElementById('plant-subcategory').value = '';
       document.getElementById('plant-desc').value = '';
       document.getElementById('amazon-link').value = '';
       document.getElementById('flipkart-link').value = '';
+      document.getElementById('subcategory-group').style.display = 'none';
       selectedFiles = [];
       renderPreviews();
       setTimeout(() => { progress.style.display = 'none'; progressBar.style.width = '0%'; }, 2000);
