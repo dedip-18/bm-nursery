@@ -4,91 +4,84 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BM Nursery — Premium Plants & Seeds</title>
-  <meta name="description" content="Handpicked indoor plants, outdoor plants and seeds delivered to your door. Shop on Amazon & Flipkart.">
+  <meta name="description" content="Handpicked indoor plants, outdoor plants and seeds. Shop on Amazon & Flipkart.">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body class="home">
 
-<!-- Custom cursor (desktop only) -->
 <div class="cursor" id="cursor"></div>
 <div class="cursor-ring" id="cursor-ring"></div>
-
-<!-- Floating WhatsApp -->
-<a href="https://wa.me/918388903774" target="_blank" class="wa-float" title="Chat on WhatsApp">💬</a>
+<a href="https://wa.me/918388903774" target="_blank" class="wa-float" title="WhatsApp Us">💬</a>
 
 <!-- NAV -->
 <nav id="navbar">
-  <a href="index.html" class="nav-brand">
-    <span class="leaf">🌿</span> BM Nursery
-  </a>
+  <a href="index.html" class="nav-brand"><span class="leaf">🌿</span> BM Nursery</a>
   <ul class="nav-links" id="nav-links">
     <li><a href="indoor.html">Indoor</a></li>
     <li><a href="outdoor.html">Outdoor</a></li>
     <li><a href="seeds.html">Seeds</a></li>
-    <li><a href="https://wa.me/918388903774" target="_blank" class="nav-cta">Order Now</a></li>
+    <li><a href="https://wa.me/918388903774" target="_blank" class="home-nav-cta">Order Now</a></li>
   </ul>
   <div class="nav-toggle" id="nav-toggle"><span></span><span></span><span></span></div>
 </nav>
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-bg"></div>
-  <div class="particles" id="particles"></div>
-
-  <div class="hero-inner">
-    <div class="hero-content">
-      <div class="hero-tag">Premium Botanical Collection</div>
-      <h1>
-        <span>Where Every</span>
-        <em>Leaf Tells</em>
-        <span>A Story</span>
-      </h1>
-      <p class="hero-sub">Discover our handpicked collection of indoor plants, outdoor beauties, and premium seeds — delivered safely to your door.</p>
-      <div class="hero-actions">
-        <a href="indoor.html" class="btn-primary">Explore Collection →</a>
-        <a href="https://wa.me/918388903774" target="_blank" class="btn-outline">💬 WhatsApp Us</a>
-      </div>
+  <div class="hero-left">
+    <div class="hero-eyebrow">Premium Botanical Collection</div>
+    <h1>Where Every<br><em>Leaf Tells</em><br>A Story</h1>
+    <p class="hero-sub">Discover our handpicked collection of indoor plants, outdoor beauties, and premium seeds — delivered safely to your door.</p>
+    <div class="hero-btns">
+      <a href="indoor.html" class="h-btn-primary">Explore Collection →</a>
+      <a href="https://wa.me/918388903774" target="_blank" class="h-btn-wa">💬 WhatsApp Us</a>
     </div>
-
-    <div class="hero-plants" id="hero-plants">
-      <!-- Plant images loaded dynamically -->
-      <div class="hp-placeholder">
-        <div class="hp-card hp-c1"><span>🌿</span></div>
-        <div class="hp-card hp-c2"><span>🪴</span></div>
-        <div class="hp-card hp-c3"><span>🌸</span></div>
-        <div class="hp-card hp-c4"><span>🌱</span></div>
-      </div>
+    <div class="hero-trust">
+      <div class="hero-trust-item"><span class="ti">✓</span> Hand-selected plants</div>
+      <div class="hero-trust-item"><span class="ti">✓</span> Safe packaging</div>
+      <div class="hero-trust-item"><span class="ti">✓</span> Amazon & Flipkart</div>
     </div>
   </div>
 
-  <div class="scroll-hint">
-    <div class="scroll-line"></div>
-    Scroll
+  <div class="hero-right">
+    <div id="hero-collage">
+      <!-- placeholder -->
+      <div class="hero-collage">
+        <div class="hc-card main hc-placeholder">🌿</div>
+        <div class="hc-card hc-placeholder">🪴</div>
+        <div class="hc-card hc-placeholder">🌱</div>
+      </div>
+    </div>
+    <div class="hero-badge">
+      <span class="hb-num" id="hero-total">—</span>
+      <span class="hb-txt">Plants &<br>Seeds</span>
+    </div>
   </div>
 </section>
 
-<!-- STATS BAR -->
-<div class="stats-bar">
-  <div class="stat-item reveal">
-    <div class="stat-number" id="indoor-count">—</div>
-    <div class="stat-label">Indoor Plants</div>
-  </div>
-  <div class="stat-item reveal reveal-delay-1">
-    <div class="stat-number" id="outdoor-count">—</div>
-    <div class="stat-label">Outdoor Plants</div>
-  </div>
-  <div class="stat-item reveal reveal-delay-2">
-    <div class="stat-number" id="seed-count">—</div>
-    <div class="stat-label">Seed Varieties</div>
-  </div>
-  <div class="stat-item reveal reveal-delay-3">
-    <div class="stat-number">⭐ 4.8</div>
-    <div class="stat-label">Customer Rating</div>
+<!-- STATS -->
+<div class="stats-strip">
+  <div class="stats-strip-inner">
+    <div class="ss-item reveal">
+      <div class="ss-num" id="s-indoor">—</div>
+      <div class="ss-lbl">Indoor Plants</div>
+    </div>
+    <div class="ss-item reveal reveal-delay-1">
+      <div class="ss-num" id="s-outdoor">—</div>
+      <div class="ss-lbl">Outdoor Plants</div>
+    </div>
+    <div class="ss-item reveal reveal-delay-2">
+      <div class="ss-num" id="s-seed">—</div>
+      <div class="ss-lbl">Seed Varieties</div>
+    </div>
+    <div class="ss-item reveal reveal-delay-3">
+      <div class="ss-num">⭐ 4.8</div>
+      <div class="ss-lbl">Customer Rating</div>
+    </div>
   </div>
 </div>
 
 <!-- MARQUEE -->
-<div class="marquee-section">
+<div class="marquee-wrap">
   <div class="marquee-track">
     <div class="marquee-item"><span class="mdot">🌿</span> Indoor Plants</div>
     <div class="marquee-item"><span class="mdot">🌸</span> Flowering Plants</div>
@@ -112,70 +105,74 @@
 </div>
 
 <!-- CATEGORIES -->
-<section class="home-categories">
-  <div class="home-categories-header reveal">
-    <div class="section-eyebrow">Our Collection</div>
-    <h2 class="home-section-title">Find Your Perfect <em>Plant</em></h2>
-    <p class="home-section-sub">Three curated worlds of greenery — each with its own character, care needs, and beauty.</p>
-  </div>
-  <div class="categories-grid">
-    <a href="indoor.html" class="cat-card indoor featured reveal">
-      <div class="cat-bg"></div>
-      <div class="cat-deco">🪴</div>
-      <div class="cat-content">
-        <span class="cat-tag">🪴 Indoor</span>
-        <div class="cat-name">Indoor<br>Plants</div>
-        <p class="cat-desc">Lush, air-purifying companions that transform any living space into a serene green sanctuary.</p>
-        <span class="cat-link">Explore Collection →</span>
-      </div>
-    </a>
-    <a href="outdoor.html" class="cat-card outdoor reveal reveal-delay-1">
-      <div class="cat-bg"></div>
-      <div class="cat-deco">🌳</div>
-      <div class="cat-content">
-        <span class="cat-tag">🌳 Outdoor</span>
-        <div class="cat-name">Outdoor<br>Plants</div>
-        <p class="cat-desc">Flowering, fruit, herbs and trees for your garden, balcony, or patio.</p>
-        <span class="cat-link">Explore Collection →</span>
-      </div>
-    </a>
-    <a href="seeds.html" class="cat-card seeds reveal reveal-delay-2">
-      <div class="cat-bg"></div>
-      <div class="cat-deco">🌱</div>
-      <div class="cat-content">
-        <span class="cat-tag">🌱 Seeds</span>
-        <div class="cat-name">Premium<br>Seeds</div>
-        <p class="cat-desc">Start from scratch with our high-germination vegetable, flower and herb seeds.</p>
-        <span class="cat-link">Shop Seeds →</span>
-      </div>
-    </a>
+<section class="home-cats">
+  <div class="home-cats-inner">
+    <div class="hc-header reveal">
+      <div class="h-eyebrow">Our Collection</div>
+      <h2 class="h-title">Find Your Perfect <em>Plant</em></h2>
+      <p class="h-sub">Three curated worlds of greenery — each with its own character, care, and charm.</p>
+    </div>
+    <div class="cats-grid">
+      <a href="indoor.html" class="c-card indoor featured reveal">
+        <div class="c-bg"></div>
+        <div class="c-overlay"></div>
+        <div class="c-deco">🪴</div>
+        <div class="c-content">
+          <span class="c-pill">🪴 Indoor</span>
+          <div class="c-name">Indoor<br>Plants</div>
+          <p class="c-desc">Lush, air-purifying plants that bring calm and life to your home or office.</p>
+          <span class="c-arrow">Explore →</span>
+        </div>
+      </a>
+      <a href="outdoor.html" class="c-card outdoor reveal reveal-delay-1">
+        <div class="c-bg"></div>
+        <div class="c-overlay"></div>
+        <div class="c-deco">🌳</div>
+        <div class="c-content">
+          <span class="c-pill">🌳 Outdoor</span>
+          <div class="c-name">Outdoor<br>Plants</div>
+          <p class="c-desc">Flowering, fruit, herbs and trees for your garden or balcony.</p>
+          <span class="c-arrow">Explore →</span>
+        </div>
+      </a>
+      <a href="seeds.html" class="c-card seeds reveal reveal-delay-2">
+        <div class="c-bg"></div>
+        <div class="c-overlay"></div>
+        <div class="c-deco">🌱</div>
+        <div class="c-content">
+          <span class="c-pill">🌱 Seeds</span>
+          <div class="c-name">Premium<br>Seeds</div>
+          <p class="c-desc">High-germination vegetable, flower and herb seeds to grow from scratch.</p>
+          <span class="c-arrow">Shop →</span>
+        </div>
+      </a>
+    </div>
   </div>
 </section>
-
 
 <!-- FEATURED PLANTS -->
 <section class="featured-section">
   <div class="featured-inner">
     <div class="featured-header reveal">
-      <div class="section-eyebrow">From Our Collection</div>
-      <h2 class="home-section-title">Recently Added <em>Plants</em></h2>
-      <p class="home-section-sub">A glimpse into our latest arrivals — each one handpicked with care.</p>
+      <div class="h-eyebrow">From Our Collection</div>
+      <h2 class="h-title">Recently Added <em>Plants</em></h2>
+      <p class="h-sub">A glimpse into our latest arrivals — each one handpicked with care.</p>
     </div>
     <div class="featured-grid" id="featured-grid">
       <div class="featured-loading"><div class="fspinner"></div></div>
     </div>
     <div class="featured-footer reveal">
-      <a href="indoor.html" class="btn-outline">View All Plants &rarr;</a>
+      <a href="indoor.html" class="h-btn-primary" style="display:inline-flex">View All Plants →</a>
     </div>
   </div>
 </section>
 
-<!-- FEATURES -->
-<section class="features-section">
-  <div class="features-inner">
-    <div class="features-left">
-      <div class="section-eyebrow reveal">Why Choose Us</div>
-      <h2 class="home-section-title reveal">Rooted in <em>Quality</em><br>&amp; Care</h2>
+<!-- WHY US -->
+<section class="why-section">
+  <div class="why-inner">
+    <div class="why-left">
+      <div class="h-eyebrow reveal">Why Choose Us</div>
+      <h2 class="h-title reveal">Rooted in <em>Quality</em><br>&amp; Care</h2>
       <div class="feature-list">
         <div class="feature-item reveal">
           <div class="feature-icon">🌿</div>
@@ -188,52 +185,52 @@
           <div class="feature-icon">📦</div>
           <div>
             <h4>Safe Packaging &amp; Delivery</h4>
-            <p>Plants are packed with expert care to arrive fresh, healthy, and ready to grow.</p>
+            <p>Packed with care to arrive fresh, healthy, and ready to grow.</p>
           </div>
         </div>
         <div class="feature-item reveal reveal-delay-2">
           <div class="feature-icon">🛒</div>
           <div>
             <h4>Shop on Trusted Platforms</h4>
-            <p>Available on Amazon &amp; Flipkart — secure checkout, reliable delivery, buyer protection.</p>
+            <p>Available on Amazon &amp; Flipkart — secure checkout and buyer protection.</p>
           </div>
         </div>
         <div class="feature-item reveal reveal-delay-3">
           <div class="feature-icon">💬</div>
           <div>
             <h4>Personal Plant Advice</h4>
-            <p>WhatsApp us anytime — we're happy to help you pick the right plant for your space.</p>
+            <p>WhatsApp us anytime — happy to help you pick the right plant for your space.</p>
           </div>
         </div>
       </div>
     </div>
-    <div class="features-right reveal">
-      <div class="deco-card">
-        <div class="deco-grid">
-          <div class="deco-item">
-            <span class="num" id="total-count">—</span>
-            <span class="lbl">Total Products</span>
+    <div class="why-right reveal">
+      <div class="info-card">
+        <div class="info-grid">
+          <div class="info-item">
+            <span class="in" id="w-total">—</span>
+            <span class="il">Total Products</span>
           </div>
-          <div class="deco-item">
-            <span class="num">100%</span>
-            <span class="lbl">Natural Plants</span>
+          <div class="info-item">
+            <span class="in">100%</span>
+            <span class="il">Natural Plants</span>
           </div>
-          <div class="deco-item">
-            <span class="num">2</span>
-            <span class="lbl">Platforms</span>
+          <div class="info-item">
+            <span class="in">2</span>
+            <span class="il">Platforms</span>
           </div>
-          <div class="deco-item">
-            <span class="num">⚡</span>
-            <span class="lbl">Fast Dispatch</span>
+          <div class="info-item">
+            <span class="in">⚡</span>
+            <span class="il">Fast Dispatch</span>
           </div>
         </div>
-        <a href="https://wa.me/918388903774" target="_blank" class="whatsapp-inline">
-          <div class="wa-icon">💬</div>
-          <div class="wa-text">
+        <a href="https://wa.me/918388903774" target="_blank" class="wa-card">
+          <div class="wa-icon-wrap">💬</div>
+          <div class="wa-card-text">
             <strong>Chat on WhatsApp</strong>
-            <span>+91 83889 03774 · Usually replies fast</span>
+            <span>+91 83889 03774 · Replies fast</span>
           </div>
-          <span class="wa-arrow">→</span>
+          <span class="wa-card-arrow">→</span>
         </a>
       </div>
     </div>
@@ -241,136 +238,117 @@
 </section>
 
 <!-- CTA -->
-<section class="home-cta">
-  <div class="section-eyebrow reveal">Get Started</div>
-  <h2 class="home-section-title reveal">Ready to <em>Go Green?</em></h2>
-  <p class="home-section-sub reveal" style="margin:0 auto">Browse our collection and find the perfect plant for your home, garden, or gifting.</p>
-  <div class="cta-buttons reveal">
-    <a href="indoor.html" class="btn-primary">🪴 Indoor Plants</a>
-    <a href="outdoor.html" class="btn-primary" style="background:var(--moss)">🌳 Outdoor Plants</a>
-    <a href="seeds.html" class="btn-primary" style="background:#5a3a10">🌱 Seeds</a>
+<section class="cta-band">
+  <div class="cta-band-inner">
+    <div class="cta-eyebrow reveal">Get Started Today</div>
+    <h2 class="cta-title reveal">Ready to <em>Go Green?</em></h2>
+    <p class="cta-sub reveal">Browse our collection and find the perfect plant for your home, garden, or as a gift.</p>
+    <div class="cta-btns reveal">
+      <a href="indoor.html" class="cta-btn light">🪴 Indoor Plants</a>
+      <a href="outdoor.html" class="cta-btn ghost">🌳 Outdoor Plants</a>
+      <a href="seeds.html" class="cta-btn ghost">🌱 Seeds</a>
+    </div>
   </div>
 </section>
 
 <!-- FOOTER -->
 <footer class="home-footer">
-  <div class="footer-brand">🌿 BM Nursery</div>
-  <div class="footer-links">
+  <div class="hf-brand">🌿 BM Nursery</div>
+  <div class="hf-links">
     <a href="indoor.html">Indoor</a>
     <a href="outdoor.html">Outdoor</a>
     <a href="seeds.html">Seeds</a>
     <a href="https://wa.me/918388903774" target="_blank">WhatsApp</a>
   </div>
-  <div class="footer-copy">© 2025 BM Nursery. All rights reserved.</div>
+  <div class="hf-copy">© 2025 BM Nursery. All rights reserved.</div>
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="common.js"></script>
 <script>
-  // Custom cursor
-  const cursor = document.getElementById('cursor');
+  // Cursor
+  const cur = document.getElementById('cursor');
   const ring = document.getElementById('cursor-ring');
-  if (cursor && ring) {
-    let mx = 0, my = 0, rx = 0, ry = 0;
-    document.addEventListener('mousemove', e => {
-      mx = e.clientX; my = e.clientY;
-      cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
-    });
-    (function animRing() {
-      rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
-      ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
-      requestAnimationFrame(animRing);
-    })();
+  if (cur) {
+    let mx=0,my=0,rx=0,ry=0;
+    document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; cur.style.left=mx+'px'; cur.style.top=my+'px'; });
+    (function loop(){ rx+=(mx-rx)*0.12; ry+=(my-ry)*0.12; ring.style.left=rx+'px'; ring.style.top=ry+'px'; requestAnimationFrame(loop); })();
   }
 
-  // Nav scroll + mobile toggle
-  window.addEventListener('scroll', () => {
-    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
-  });
-  document.getElementById('nav-toggle').addEventListener('click', () => {
-    document.getElementById('nav-links').classList.toggle('open');
-  });
-
-  // Particles
-  const pc = document.getElementById('particles');
-  for (let i = 0; i < 20; i++) {
-    const p = document.createElement('div');
-    p.className = 'particle';
-    p.style.cssText = `left:${Math.random()*100}%;animation-duration:${8+Math.random()*12}s;animation-delay:${Math.random()*12}s;width:${1+Math.random()*2.5}px;height:${1+Math.random()*2.5}px`;
-    pc.appendChild(p);
-  }
+  // Nav
+  window.addEventListener('scroll', () => document.getElementById('navbar').classList.toggle('scrolled', scrollY > 40));
+  document.getElementById('nav-toggle').addEventListener('click', () => document.getElementById('nav-links').classList.toggle('open'));
 
   // Scroll reveal
   const obs = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); obs.unobserve(e.target); } });
   }, { threshold: 0.1 });
   document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 
-  // Live counts
+  // Load counts
   async function loadCounts() {
-    const cats = ['indoor', 'outdoor', 'seed'];
-    const ids = ['indoor-count', 'outdoor-count', 'seed-count'];
+    const cats = ['indoor','outdoor','seed'];
+    const sids = ['s-indoor','s-outdoor','s-seed'];
     let total = 0;
-    for (let i = 0; i < cats.length; i++) {
-      const { count } = await db.from('plants').select('*', { count: 'exact', head: true }).eq('category', cats[i]);
-      const n = count || 0; total += n;
-      document.getElementById(ids[i]).textContent = n;
+    for (let i=0; i<cats.length; i++) {
+      const { count } = await db.from('plants').select('*',{count:'exact',head:true}).eq('category',cats[i]);
+      const n = count||0; total += n;
+      document.getElementById(sids[i]).textContent = n;
     }
-    document.getElementById('total-count').textContent = total;
+    document.getElementById('hero-total').textContent = total;
+    document.getElementById('w-total').textContent = total;
   }
-  loadCounts();
 
-  // Hero plant images
-  async function loadHeroPlants() {
-    const { data } = await db.from('plants').select('id,name,images,category').order('created_at', { ascending: false }).limit(4);
+  // Hero collage
+  async function loadHero() {
+    const { data } = await db.from('plants').select('id,name,images,category').order('created_at',{ascending:false}).limit(3);
     if (!data || data.length === 0) return;
-    const container = document.getElementById('hero-plants');
-    const cards = ['hp-c1','hp-c2','hp-c3','hp-c4'];
-    const labels = ['hp-big','hp-tall','hp-sm1','hp-sm2'];
-    const html = data.map((plant, i) => {
-      let images = plant.images || [];
-      if (typeof images === 'string') { try { images = JSON.parse(images); } catch { images = [images]; } }
-      if (!Array.isArray(images)) images = [];
-      const img = images[0] || '';
-      const cls = i === 0 ? 'hp-c1' : i === 1 ? 'hp-c2' : i === 2 ? 'hp-c3' : 'hp-c4';
-      return `<a href="plant.html?id=${plant.id}" class="hp-card ${cls}">
-        ${img ? `<img src="${img}" alt="${plant.name}">` : `<span style="font-size:3rem;opacity:0.3">🌿</span>`}
-        <div class="hp-info"><span>${plant.name}</span></div>
+    const catMap = { indoor:'🪴 Indoor', outdoor:'🌳 Outdoor', seed:'🌱 Seed' };
+    const html = data.map((p, i) => {
+      let imgs = p.images||[];
+      if (typeof imgs==='string') { try{imgs=JSON.parse(imgs);}catch{imgs=[imgs];} }
+      if (!Array.isArray(imgs)) imgs=[];
+      const src = imgs[0]||'';
+      const cls = i===0 ? 'main' : '';
+      return `<a href="plant.html?id=${p.id}" class="hc-card ${cls}">
+        ${src ? `<img src="${src}" alt="${p.name}">` : `<div class="hc-placeholder">🌿</div>`}
+        <span class="hc-tag">${catMap[p.category]||p.category}</span>
+        <div class="hc-label"><span>${p.name}</span><small>Tap to view</small></div>
       </a>`;
     }).join('');
-    container.innerHTML = `<div class="hp-collage">${html}</div>`;
+    document.getElementById('hero-collage').innerHTML = `<div class="hero-collage">${html}</div>`;
   }
-  loadHeroPlants();
-
 
   // Featured plants
   async function loadFeatured() {
     const grid = document.getElementById('featured-grid');
-    const { data, error } = await db.from('plants').select('*').order('created_at', { ascending: false }).limit(4);
-    if (error || !data || data.length === 0) { grid.innerHTML = ''; return; }
-    grid.innerHTML = data.map(plant => {
-      let images = plant.images || [];
-      if (typeof images === 'string') { try { images = JSON.parse(images); } catch { images = [images]; } }
-      if (!Array.isArray(images)) images = [];
-      const img = images[0] || '';
-      const catEmoji = { indoor: '🪴', outdoor: '🌳', seed: '🌱' }[plant.category] || '🌿';
-      return `<a href="plant.html?id=${plant.id}" class="fp-card reveal">
+    const { data } = await db.from('plants').select('*').order('created_at',{ascending:false}).limit(4);
+    if (!data || data.length===0) { grid.innerHTML=''; return; }
+    const catEmoji = { indoor:'🪴', outdoor:'🌳', seed:'🌱' };
+    grid.innerHTML = data.map(p => {
+      let imgs = p.images||[];
+      if (typeof imgs==='string') { try{imgs=JSON.parse(imgs);}catch{imgs=[imgs];} }
+      if (!Array.isArray(imgs)) imgs=[];
+      const src = imgs[0]||'';
+      return `<a href="plant.html?id=${p.id}" class="fp-card reveal">
         <div class="fp-img-wrap">
-          ${img ? `<img src="${img}" alt="${plant.name}" loading="lazy">` : `<div class="fp-placeholder">${catEmoji}</div>`}
+          ${src?`<img src="${src}" alt="${p.name}">`:`<div class="fp-placeholder">${catEmoji[p.category]||'🌿'}</div>`}
           <div class="fp-overlay"></div>
-          <span class="fp-cat">${catEmoji} ${plant.category}</span>
+          <span class="fp-cat">${catEmoji[p.category]||'🌿'} ${p.category}</span>
         </div>
         <div class="fp-body">
-          <h3>${plant.name}</h3>
-          <p>${(plant.description || '').substring(0, 80)}...</p>
+          <h3>${p.name}</h3>
+          <p>${(p.description||'').substring(0,75)}...</p>
           <span class="fp-link">View Plant →</span>
         </div>
       </a>`;
     }).join('');
     grid.querySelectorAll('.reveal').forEach(el => obs.observe(el));
   }
-  loadFeatured();
 
+  loadCounts();
+  loadHero();
+  loadFeatured();
 </script>
 </body>
 </html>
