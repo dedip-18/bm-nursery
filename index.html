@@ -35,35 +35,29 @@
   <div class="hero-bg"></div>
   <div class="particles" id="particles"></div>
 
-  <svg class="botanical-float b1" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M100 10 C60 40 20 80 30 130 C40 180 80 190 100 190 C120 190 160 180 170 130 C180 80 140 40 100 10Z" fill="white"/>
-    <path d="M100 10 C100 10 50 70 40 120 C35 145 60 170 100 170" stroke="white" stroke-width="2" fill="none"/>
-    <path d="M100 10 C100 10 150 70 160 120 C165 145 140 170 100 170" stroke="white" stroke-width="2" fill="none"/>
-    <ellipse cx="70" cy="80" rx="30" ry="18" transform="rotate(-30 70 80)" fill="white"/>
-    <ellipse cx="130" cy="80" rx="30" ry="18" transform="rotate(30 130 80)" fill="white"/>
-    <ellipse cx="55" cy="120" rx="28" ry="16" transform="rotate(-20 55 120)" fill="white"/>
-    <ellipse cx="145" cy="120" rx="28" ry="16" transform="rotate(20 145 120)" fill="white"/>
-  </svg>
+  <div class="hero-inner">
+    <div class="hero-content">
+      <div class="hero-tag">Premium Botanical Collection</div>
+      <h1>
+        <span>Where Every</span>
+        <em>Leaf Tells</em>
+        <span>A Story</span>
+      </h1>
+      <p class="hero-sub">Discover our handpicked collection of indoor plants, outdoor beauties, and premium seeds — delivered safely to your door.</p>
+      <div class="hero-actions">
+        <a href="indoor.html" class="btn-primary">Explore Collection →</a>
+        <a href="https://wa.me/918388903774" target="_blank" class="btn-outline">💬 WhatsApp Us</a>
+      </div>
+    </div>
 
-  <svg class="botanical-float b2" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="60" cy="60" r="50" stroke="white" stroke-width="1.5" fill="none"/>
-    <path d="M60 10 L60 110" stroke="white" stroke-width="1.5"/>
-    <path d="M35 35 Q60 60 85 35" stroke="white" stroke-width="1.5" fill="none"/>
-    <path d="M25 60 L95 60" stroke="white" stroke-width="1.5"/>
-    <path d="M35 85 Q60 60 85 85" stroke="white" stroke-width="1.5" fill="none"/>
-  </svg>
-
-  <div class="hero-content">
-    <div class="hero-tag">Premium Botanical Collection</div>
-    <h1>
-      <span>Where Every</span>
-      <em>Leaf Tells</em>
-      <span>A Story</span>
-    </h1>
-    <p class="hero-sub">Discover our handpicked collection of indoor plants, outdoor beauties, and premium seeds — delivered safely to your door.</p>
-    <div class="hero-actions">
-      <a href="indoor.html" class="btn-primary">Explore Collection →</a>
-      <a href="https://wa.me/918388903774" target="_blank" class="btn-outline">💬 WhatsApp Us</a>
+    <div class="hero-plants" id="hero-plants">
+      <!-- Plant images loaded dynamically -->
+      <div class="hp-placeholder">
+        <div class="hp-card hp-c1"><span>🌿</span></div>
+        <div class="hp-card hp-c2"><span>🪴</span></div>
+        <div class="hp-card hp-c3"><span>🌸</span></div>
+        <div class="hp-card hp-c4"><span>🌱</span></div>
+      </div>
     </div>
   </div>
 
@@ -325,6 +319,29 @@
     document.getElementById('total-count').textContent = total;
   }
   loadCounts();
+
+  // Hero plant images
+  async function loadHeroPlants() {
+    const { data } = await db.from('plants').select('id,name,images,category').order('created_at', { ascending: false }).limit(4);
+    if (!data || data.length === 0) return;
+    const container = document.getElementById('hero-plants');
+    const cards = ['hp-c1','hp-c2','hp-c3','hp-c4'];
+    const labels = ['hp-big','hp-tall','hp-sm1','hp-sm2'];
+    const html = data.map((plant, i) => {
+      let images = plant.images || [];
+      if (typeof images === 'string') { try { images = JSON.parse(images); } catch { images = [images]; } }
+      if (!Array.isArray(images)) images = [];
+      const img = images[0] || '';
+      const cls = i === 0 ? 'hp-c1' : i === 1 ? 'hp-c2' : i === 2 ? 'hp-c3' : 'hp-c4';
+      return `<a href="plant.html?id=${plant.id}" class="hp-card ${cls}">
+        ${img ? `<img src="${img}" alt="${plant.name}">` : `<span style="font-size:3rem;opacity:0.3">🌿</span>`}
+        <div class="hp-info"><span>${plant.name}</span></div>
+      </a>`;
+    }).join('');
+    container.innerHTML = `<div class="hp-collage">${html}</div>`;
+  }
+  loadHeroPlants();
+
 
   // Featured plants
   async function loadFeatured() {
