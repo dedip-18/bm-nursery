@@ -298,6 +298,8 @@ body.home .nav-links a:hover { color:var(--green-deep); background:var(--green-m
   max-width: 1360px;
   margin: 0 auto;
   position: relative;
+  overflow: visible;
+  background: var(--white);
 }
 
 .hero-left {}
@@ -358,6 +360,7 @@ body.home .nav-links a:hover { color:var(--green-deep); background:var(--green-m
 .hero-right {
   position: relative;
   height: 580px;
+  overflow: visible;
 }
 
 .hero-collage {
