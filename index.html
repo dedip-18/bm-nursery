@@ -311,7 +311,7 @@
       const src = imgs[0]||'';
       const cls = i===0 ? 'main' : '';
       return `<a href="plant.html?id=${p.id}" class="hc-card ${cls}">
-        ${src ? `<img src="${src}" alt="${p.name}">` : `<div class="hc-placeholder">🌿</div>`}
+        ${src ? `<img src="${src}" alt="${p.name}" style="object-fit:contain;background:#f4f1ec;">` : `<div class="hc-placeholder">🌿</div>`}
         <span class="hc-tag">${catMap[p.category]||p.category}</span>
         <div class="hc-label"><span>${p.name}</span><small>Tap to view</small></div>
       </a>`;
