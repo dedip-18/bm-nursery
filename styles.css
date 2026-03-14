@@ -1,3 +1,4 @@
+Content is user-generated and unverified.
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Nunito:wght@300;400;600;700&display=swap');
 
 /* ============================================
@@ -727,9 +728,14 @@ body.home .nav-links a:hover { color:var(--green-deep); background:var(--green-m
   .hero-right { height: 480px; }
 }
 @media (max-width: 900px) {
-  .hero { padding: 90px 24px 40px; }
-  .hero h1 { font-size: 3rem; }
-  .hero-plants-row { grid-template-columns: repeat(3,1fr); gap: 14px; }
+  .hero {
+    grid-template-columns: 1fr;
+    padding: 90px 20px 40px;
+    gap: 32px;
+  }
+  .hero h1 { font-size: 2.6rem; }
+  .hero-text { max-width: 100%; }
+  .hero-plants-row { grid-template-columns: repeat(3,1fr); gap: 10px; }
   .cats-grid { grid-template-columns: 1fr 1fr; min-height: auto; }
   .c-card.featured { grid-column: span 2; grid-row: span 1; }
   .why-inner { grid-template-columns: 1fr; gap: 44px; }
@@ -743,9 +749,23 @@ body.home .nav-links a:hover { color:var(--green-deep); background:var(--green-m
   .stats-strip { padding: 20px 24px; }
 }
 @media (max-width: 640px) {
-  .hero { padding: 80px 16px 32px; }
-  .hero-plants-row { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .hero {
+    grid-template-columns: 1fr;
+    padding: 80px 16px 32px;
+    gap: 28px;
+  }
+  .hero h1 { font-size: 2.2rem; }
+  .hero-text { max-width: 100%; }
+  .hero-plants-row {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+  .hp-img { aspect-ratio: 1/1; }
+  .hp-body { padding: 10px 10px 12px; }
+  .hp-body h3 { font-size: 0.82rem; margin-bottom: 0; }
   .hp-body p { display: none; }
+  .hp-link { display: none; }
+  .hp-badge { font-size: 0.6rem; padding: 3px 7px; }
   .hero-collage { gap: 8px; border-radius: 12px; }
   .hc-card { border-radius: 10px; }
   .hero-badge { width:80px;height:80px;bottom:-12px;left:-10px; }
