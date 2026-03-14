@@ -294,12 +294,11 @@ body.home .nav-links a:hover { color:var(--green-deep); background:var(--green-m
   grid-template-columns: 1fr 1fr;
   align-items: center;
   padding: 120px 52px 72px;
-  gap: 52px;
+  gap: 40px;
   max-width: 1360px;
   margin: 0 auto;
   position: relative;
-  overflow: clip;
-  overflow-clip-margin: 0;
+  background: var(--white);
 }
 
 .hero-left {}
@@ -359,11 +358,12 @@ body.home .nav-links a:hover { color:var(--green-deep); background:var(--green-m
 /* HERO RIGHT — Plant Collage */
 .hero-right {
   position: relative;
-  height: 500px;
+  height: 420px;
   overflow: hidden;
   align-self: center;
   border-radius: 18px;
 }
+
 .hero-collage {
   display: grid;
   grid-template-columns: 1.1fr 0.9fr;
