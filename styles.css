@@ -298,9 +298,8 @@ body.home .nav-links a:hover { color:var(--green-deep); background:var(--green-m
   max-width: 1360px;
   margin: 0 auto;
   position: relative;
-  overflow: hidden;
-  background: var(--white);
-  padding: 110px 52px 80px;
+  overflow: clip;
+  overflow-clip-margin: 0;
 }
 
 .hero-left {}
@@ -360,8 +359,10 @@ body.home .nav-links a:hover { color:var(--green-deep); background:var(--green-m
 /* HERO RIGHT — Plant Collage */
 .hero-right {
   position: relative;
-  height: 480px;
+  height: 520px;
   overflow: hidden;
+  align-self: center;
+  border-radius: 18px;
 }
 
 .hero-collage {
@@ -370,6 +371,8 @@ body.home .nav-links a:hover { color:var(--green-deep); background:var(--green-m
   grid-template-rows: 1fr 1fr;
   gap: 14px;
   height: 100%;
+  border-radius: 18px;
+  overflow: hidden;
 }
 
 .hc-card {
@@ -442,8 +445,7 @@ body.home .nav-links a:hover { color:var(--green-deep); background:var(--green-m
 /* Decorative badge */
 .hero-badge {
   position: absolute;
-  bottom: 16px;
-  left: -10px;
+  bottom: -16px; left: -20px;
   width: 100px; height: 100px;
   background: var(--green-deep);
   border-radius: 50%;
