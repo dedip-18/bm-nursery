@@ -158,6 +158,24 @@
   </div>
 </section>
 
+
+<!-- FEATURED PLANTS -->
+<section class="featured-section">
+  <div class="featured-inner">
+    <div class="featured-header reveal">
+      <div class="section-eyebrow">From Our Collection</div>
+      <h2 class="home-section-title">Recently Added <em>Plants</em></h2>
+      <p class="home-section-sub">A glimpse into our latest arrivals — each one handpicked with care.</p>
+    </div>
+    <div class="featured-grid" id="featured-grid">
+      <div class="featured-loading"><div class="fspinner"></div></div>
+    </div>
+    <div class="featured-footer reveal">
+      <a href="indoor.html" class="btn-outline">View All Plants &rarr;</a>
+    </div>
+  </div>
+</section>
+
 <!-- FEATURES -->
 <section class="features-section">
   <div class="features-inner">
@@ -307,6 +325,35 @@
     document.getElementById('total-count').textContent = total;
   }
   loadCounts();
+
+  // Featured plants
+  async function loadFeatured() {
+    const grid = document.getElementById('featured-grid');
+    const { data, error } = await db.from('plants').select('*').order('created_at', { ascending: false }).limit(4);
+    if (error || !data || data.length === 0) { grid.innerHTML = ''; return; }
+    grid.innerHTML = data.map(plant => {
+      let images = plant.images || [];
+      if (typeof images === 'string') { try { images = JSON.parse(images); } catch { images = [images]; } }
+      if (!Array.isArray(images)) images = [];
+      const img = images[0] || '';
+      const catEmoji = { indoor: '🪴', outdoor: '🌳', seed: '🌱' }[plant.category] || '🌿';
+      return `<a href="plant.html?id=${plant.id}" class="fp-card reveal">
+        <div class="fp-img-wrap">
+          ${img ? `<img src="${img}" alt="${plant.name}" loading="lazy">` : `<div class="fp-placeholder">${catEmoji}</div>`}
+          <div class="fp-overlay"></div>
+          <span class="fp-cat">${catEmoji} ${plant.category}</span>
+        </div>
+        <div class="fp-body">
+          <h3>${plant.name}</h3>
+          <p>${(plant.description || '').substring(0, 80)}...</p>
+          <span class="fp-link">View Plant →</span>
+        </div>
+      </a>`;
+    }).join('');
+    grid.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+  }
+  loadFeatured();
+
 </script>
 </body>
 </html>
