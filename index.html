@@ -3,125 +3,310 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BM Nursery — Plants by Dedipyaman & Trishanjit</title>
-  <meta name="description" content="BM Nursery — Beautiful indoor plants, outdoor plants and seeds delivered to your door. Shop on Amazon & Flipkart.">
+  <title>BM Nursery — Premium Plants & Seeds</title>
+  <meta name="description" content="Handpicked indoor plants, outdoor plants and seeds delivered to your door. Shop on Amazon & Flipkart.">
   <link rel="stylesheet" href="styles.css">
-  
 </head>
-<body>
+<body class="home">
 
-<nav>
-  <a href="index.html" class="nav-logo">
-    <span style="font-family:Playfair Display,serif;font-size:1.3rem;font-weight:700;color:var(--forest)">🌿 BM Nursery</span>
+<!-- Custom cursor (desktop only) -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursor-ring"></div>
+
+<!-- Floating WhatsApp -->
+<a href="https://wa.me/918388903774" target="_blank" class="wa-float" title="Chat on WhatsApp">💬</a>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="index.html" class="nav-brand">
+    <span class="leaf">🌿</span> BM Nursery
   </a>
-  <ul class="nav-links">
-    <li><a href="index.html">Home</a></li>
+  <ul class="nav-links" id="nav-links">
     <li><a href="indoor.html">Indoor</a></li>
     <li><a href="outdoor.html">Outdoor</a></li>
     <li><a href="seeds.html">Seeds</a></li>
+    <li><a href="https://wa.me/918388903774" target="_blank" class="nav-cta">Order Now</a></li>
   </ul>
-  <div class="nav-toggle" aria-label="Menu">
-    <span></span><span></span><span></span>
-  </div>
+  <div class="nav-toggle" id="nav-toggle"><span></span><span></span><span></span></div>
 </nav>
 
-<!-- Hero -->
+<!-- HERO -->
 <section class="hero">
-  <div class="hero-content fade-in">
-    <h1>Bring Nature<br><em>Into Your World</em></h1>
-    <p>Handpicked indoor & outdoor plants and seeds — grown with love by Dedipyaman & Trishanjit.<br>Shop conveniently on Amazon & Flipkart.</p>
+  <div class="hero-bg"></div>
+  <div class="particles" id="particles"></div>
+
+  <svg class="botanical-float b1" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M100 10 C60 40 20 80 30 130 C40 180 80 190 100 190 C120 190 160 180 170 130 C180 80 140 40 100 10Z" fill="white"/>
+    <path d="M100 10 C100 10 50 70 40 120 C35 145 60 170 100 170" stroke="white" stroke-width="2" fill="none"/>
+    <path d="M100 10 C100 10 150 70 160 120 C165 145 140 170 100 170" stroke="white" stroke-width="2" fill="none"/>
+    <ellipse cx="70" cy="80" rx="30" ry="18" transform="rotate(-30 70 80)" fill="white"/>
+    <ellipse cx="130" cy="80" rx="30" ry="18" transform="rotate(30 130 80)" fill="white"/>
+    <ellipse cx="55" cy="120" rx="28" ry="16" transform="rotate(-20 55 120)" fill="white"/>
+    <ellipse cx="145" cy="120" rx="28" ry="16" transform="rotate(20 145 120)" fill="white"/>
+  </svg>
+
+  <svg class="botanical-float b2" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="60" cy="60" r="50" stroke="white" stroke-width="1.5" fill="none"/>
+    <path d="M60 10 L60 110" stroke="white" stroke-width="1.5"/>
+    <path d="M35 35 Q60 60 85 35" stroke="white" stroke-width="1.5" fill="none"/>
+    <path d="M25 60 L95 60" stroke="white" stroke-width="1.5"/>
+    <path d="M35 85 Q60 60 85 85" stroke="white" stroke-width="1.5" fill="none"/>
+  </svg>
+
+  <div class="hero-content">
+    <div class="hero-tag">Premium Botanical Collection</div>
+    <h1>
+      <span>Where Every</span>
+      <em>Leaf Tells</em>
+      <span>A Story</span>
+    </h1>
+    <p class="hero-sub">Discover our handpicked collection of indoor plants, outdoor beauties, and premium seeds — delivered safely to your door.</p>
+    <div class="hero-actions">
+      <a href="indoor.html" class="btn-primary">Explore Collection →</a>
+      <a href="https://wa.me/918388903774" target="_blank" class="btn-outline">💬 WhatsApp Us</a>
+    </div>
+  </div>
+
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    Scroll
   </div>
 </section>
 
-<!-- Decorative divider -->
-<div style="text-align:center; padding:20px 0; background:var(--cream-dark); font-size:1.6rem; letter-spacing:12px;">🌿 🌸 🌱 🍃 🌺</div>
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stat-item reveal">
+    <div class="stat-number" id="indoor-count">—</div>
+    <div class="stat-label">Indoor Plants</div>
+  </div>
+  <div class="stat-item reveal reveal-delay-1">
+    <div class="stat-number" id="outdoor-count">—</div>
+    <div class="stat-label">Outdoor Plants</div>
+  </div>
+  <div class="stat-item reveal reveal-delay-2">
+    <div class="stat-number" id="seed-count">—</div>
+    <div class="stat-label">Seed Varieties</div>
+  </div>
+  <div class="stat-item reveal reveal-delay-3">
+    <div class="stat-number">⭐ 4.8</div>
+    <div class="stat-label">Customer Rating</div>
+  </div>
+</div>
 
-<!-- Categories -->
-<section class="categories-section">
-  <h2 class="section-title">Explore Our Collection</h2>
-  <p class="section-subtitle">Find your perfect plant — for indoors, outdoors, or start from seed</p>
+<!-- MARQUEE -->
+<div class="marquee-section">
+  <div class="marquee-track">
+    <div class="marquee-item"><span class="mdot">🌿</span> Indoor Plants</div>
+    <div class="marquee-item"><span class="mdot">🌸</span> Flowering Plants</div>
+    <div class="marquee-item"><span class="mdot">🍋</span> Fruit Plants</div>
+    <div class="marquee-item"><span class="mdot">🌿</span> Herbs &amp; Spice</div>
+    <div class="marquee-item"><span class="mdot">🌴</span> Trees &amp; Shrubs</div>
+    <div class="marquee-item"><span class="mdot">🥦</span> Vegetable Seeds</div>
+    <div class="marquee-item"><span class="mdot">🌱</span> Flower Seeds</div>
+    <div class="marquee-item"><span class="mdot">📦</span> Safe Delivery</div>
+    <div class="marquee-item"><span class="mdot">🛒</span> Amazon &amp; Flipkart</div>
+    <div class="marquee-item"><span class="mdot">🌿</span> Indoor Plants</div>
+    <div class="marquee-item"><span class="mdot">🌸</span> Flowering Plants</div>
+    <div class="marquee-item"><span class="mdot">🍋</span> Fruit Plants</div>
+    <div class="marquee-item"><span class="mdot">🌿</span> Herbs &amp; Spice</div>
+    <div class="marquee-item"><span class="mdot">🌴</span> Trees &amp; Shrubs</div>
+    <div class="marquee-item"><span class="mdot">🥦</span> Vegetable Seeds</div>
+    <div class="marquee-item"><span class="mdot">🌱</span> Flower Seeds</div>
+    <div class="marquee-item"><span class="mdot">📦</span> Safe Delivery</div>
+    <div class="marquee-item"><span class="mdot">🛒</span> Amazon &amp; Flipkart</div>
+  </div>
+</div>
 
-  <div class="categories-grid stagger">
-
-    <a href="indoor.html" class="category-card">
-      <div class="category-card-bg" style="background: linear-gradient(135deg, #2d5a2d 0%, #4a8a4a 40%, #6ab56a 100%);">
-        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:8rem;opacity:0.18">🪴</div>
-      </div>
-      <div class="category-card-overlay"></div>
-      <div class="category-card-content">
-        <span class="category-icon">🪴</span>
-        <h3>Indoor Plants</h3>
-        <p>Lush greenery that thrives inside your home or office space</p>
-        <span class="category-cta">Explore Indoor →</span>
+<!-- CATEGORIES -->
+<section class="home-categories">
+  <div class="home-categories-header reveal">
+    <div class="section-eyebrow">Our Collection</div>
+    <h2 class="home-section-title">Find Your Perfect <em>Plant</em></h2>
+    <p class="home-section-sub">Three curated worlds of greenery — each with its own character, care needs, and beauty.</p>
+  </div>
+  <div class="categories-grid">
+    <a href="indoor.html" class="cat-card indoor featured reveal">
+      <div class="cat-bg"></div>
+      <div class="cat-deco">🪴</div>
+      <div class="cat-content">
+        <span class="cat-tag">🪴 Indoor</span>
+        <div class="cat-name">Indoor<br>Plants</div>
+        <p class="cat-desc">Lush, air-purifying companions that transform any living space into a serene green sanctuary.</p>
+        <span class="cat-link">Explore Collection →</span>
       </div>
     </a>
-
-    <a href="outdoor.html" class="category-card">
-      <div class="category-card-bg" style="background: linear-gradient(135deg, #1a4a1a 0%, #2d7a2d 40%, #5aaa5a 100%);">
-        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:8rem;opacity:0.18">🌳</div>
-      </div>
-      <div class="category-card-overlay"></div>
-      <div class="category-card-content">
-        <span class="category-icon">🌳</span>
-        <h3>Outdoor Plants</h3>
-        <p>Hardy plants that beautify your garden, balcony, or patio</p>
-        <span class="category-cta">Explore Outdoor →</span>
+    <a href="outdoor.html" class="cat-card outdoor reveal reveal-delay-1">
+      <div class="cat-bg"></div>
+      <div class="cat-deco">🌳</div>
+      <div class="cat-content">
+        <span class="cat-tag">🌳 Outdoor</span>
+        <div class="cat-name">Outdoor<br>Plants</div>
+        <p class="cat-desc">Flowering, fruit, herbs and trees for your garden, balcony, or patio.</p>
+        <span class="cat-link">Explore Collection →</span>
       </div>
     </a>
-
-    <a href="seeds.html" class="category-card">
-      <div class="category-card-bg" style="background: linear-gradient(135deg, #3a2a1a 0%, #6a4a2a 40%, #a07040 100%);">
-        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:8rem;opacity:0.18">🌱</div>
-      </div>
-      <div class="category-card-overlay"></div>
-      <div class="category-card-content">
-        <span class="category-icon">🌱</span>
-        <h3>Seeds</h3>
-        <p>Premium quality seeds — grow your own beautiful garden from scratch</p>
-        <span class="category-cta">Explore Seeds →</span>
+    <a href="seeds.html" class="cat-card seeds reveal reveal-delay-2">
+      <div class="cat-bg"></div>
+      <div class="cat-deco">🌱</div>
+      <div class="cat-content">
+        <span class="cat-tag">🌱 Seeds</span>
+        <div class="cat-name">Premium<br>Seeds</div>
+        <p class="cat-desc">Start from scratch with our high-germination vegetable, flower and herb seeds.</p>
+        <span class="cat-link">Shop Seeds →</span>
       </div>
     </a>
-
   </div>
 </section>
 
-<!-- Why BM Nursery -->
-<section style="background: var(--forest); color: white; padding: 72px 40px; text-align: center;">
-  <h2 style="font-family:'Playfair Display',serif; font-size:clamp(1.8rem,3vw,2.5rem); margin-bottom:12px;">Why Choose BM Nursery?</h2>
-  <p style="color:rgba(255,255,255,0.7); margin-bottom:52px; font-size:1rem;">We're not just a nursery — we're plant lovers passionate about helping you grow</p>
-  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:36px; max-width:900px; margin:0 auto;">
-    <div>
-      <div style="font-size:2.5rem; margin-bottom:12px;">🌿</div>
-      <h4 style="font-family:'Playfair Display',serif; font-size:1.1rem; margin-bottom:8px;">Carefully Curated</h4>
-      <p style="color:rgba(255,255,255,0.65); font-size:0.875rem; line-height:1.7;">Every plant is hand-selected for quality and health</p>
+<!-- FEATURES -->
+<section class="features-section">
+  <div class="features-inner">
+    <div class="features-left">
+      <div class="section-eyebrow reveal">Why Choose Us</div>
+      <h2 class="home-section-title reveal">Rooted in <em>Quality</em><br>&amp; Care</h2>
+      <div class="feature-list">
+        <div class="feature-item reveal">
+          <div class="feature-icon">🌿</div>
+          <div>
+            <h4>Carefully Curated</h4>
+            <p>Every plant is hand-selected for health, quality, and beauty before it reaches you.</p>
+          </div>
+        </div>
+        <div class="feature-item reveal reveal-delay-1">
+          <div class="feature-icon">📦</div>
+          <div>
+            <h4>Safe Packaging &amp; Delivery</h4>
+            <p>Plants are packed with expert care to arrive fresh, healthy, and ready to grow.</p>
+          </div>
+        </div>
+        <div class="feature-item reveal reveal-delay-2">
+          <div class="feature-icon">🛒</div>
+          <div>
+            <h4>Shop on Trusted Platforms</h4>
+            <p>Available on Amazon &amp; Flipkart — secure checkout, reliable delivery, buyer protection.</p>
+          </div>
+        </div>
+        <div class="feature-item reveal reveal-delay-3">
+          <div class="feature-icon">💬</div>
+          <div>
+            <h4>Personal Plant Advice</h4>
+            <p>WhatsApp us anytime — we're happy to help you pick the right plant for your space.</p>
+          </div>
+        </div>
+      </div>
     </div>
-    <div>
-      <div style="font-size:2.5rem; margin-bottom:12px;">📦</div>
-      <h4 style="font-family:'Playfair Display',serif; font-size:1.1rem; margin-bottom:8px;">Safe Delivery</h4>
-      <p style="color:rgba(255,255,255,0.65); font-size:0.875rem; line-height:1.7;">Packed with care to reach you fresh and healthy</p>
-    </div>
-    <div>
-      <div style="font-size:2.5rem; margin-bottom:12px;">💚</div>
-      <h4 style="font-family:'Playfair Display',serif; font-size:1.1rem; margin-bottom:8px;">Grown with Love</h4>
-      <p style="color:rgba(255,255,255,0.65); font-size:0.875rem; line-height:1.7;">By passionate plant parents, for plant parents</p>
-    </div>
-    <div>
-      <div style="font-size:2.5rem; margin-bottom:12px;">⭐</div>
-      <h4 style="font-family:'Playfair Display',serif; font-size:1.1rem; margin-bottom:8px;">Amazon & Flipkart</h4>
-      <p style="color:rgba(255,255,255,0.65); font-size:0.875rem; line-height:1.7;">Shop securely on trusted platforms you already use</p>
+    <div class="features-right reveal">
+      <div class="deco-card">
+        <div class="deco-grid">
+          <div class="deco-item">
+            <span class="num" id="total-count">—</span>
+            <span class="lbl">Total Products</span>
+          </div>
+          <div class="deco-item">
+            <span class="num">100%</span>
+            <span class="lbl">Natural Plants</span>
+          </div>
+          <div class="deco-item">
+            <span class="num">2</span>
+            <span class="lbl">Platforms</span>
+          </div>
+          <div class="deco-item">
+            <span class="num">⚡</span>
+            <span class="lbl">Fast Dispatch</span>
+          </div>
+        </div>
+        <a href="https://wa.me/918388903774" target="_blank" class="whatsapp-inline">
+          <div class="wa-icon">💬</div>
+          <div class="wa-text">
+            <strong>Chat on WhatsApp</strong>
+            <span>+91 83889 03774 · Usually replies fast</span>
+          </div>
+          <span class="wa-arrow">→</span>
+        </a>
+      </div>
     </div>
   </div>
 </section>
 
-<footer>
-  <span style="font-family:Playfair Display,serif;font-size:1.1rem;font-weight:700;color:white">🌿 BM Nursery</span>
-  <p>BM Nursery &copy; 2025 — by Dedipyaman &amp; Trishanjit<br>
-  <a href="indoor.html">Indoor Plants</a> &nbsp;·&nbsp;
-  <a href="outdoor.html">Outdoor Plants</a> &nbsp;·&nbsp;
-  <a href="seeds.html">Seeds</a></p>
+<!-- CTA -->
+<section class="home-cta">
+  <div class="section-eyebrow reveal">Get Started</div>
+  <h2 class="home-section-title reveal">Ready to <em>Go Green?</em></h2>
+  <p class="home-section-sub reveal" style="margin:0 auto">Browse our collection and find the perfect plant for your home, garden, or gifting.</p>
+  <div class="cta-buttons reveal">
+    <a href="indoor.html" class="btn-primary">🪴 Indoor Plants</a>
+    <a href="outdoor.html" class="btn-primary" style="background:var(--moss)">🌳 Outdoor Plants</a>
+    <a href="seeds.html" class="btn-primary" style="background:#5a3a10">🌱 Seeds</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="home-footer">
+  <div class="footer-brand">🌿 BM Nursery</div>
+  <div class="footer-links">
+    <a href="indoor.html">Indoor</a>
+    <a href="outdoor.html">Outdoor</a>
+    <a href="seeds.html">Seeds</a>
+    <a href="https://wa.me/918388903774" target="_blank">WhatsApp</a>
+  </div>
+  <div class="footer-copy">© 2025 BM Nursery. All rights reserved.</div>
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="common.js"></script>
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursor-ring');
+  if (cursor && ring) {
+    let mx = 0, my = 0, rx = 0, ry = 0;
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+    });
+    (function animRing() {
+      rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
+      ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+      requestAnimationFrame(animRing);
+    })();
+  }
+
+  // Nav scroll + mobile toggle
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
+  });
+  document.getElementById('nav-toggle').addEventListener('click', () => {
+    document.getElementById('nav-links').classList.toggle('open');
+  });
+
+  // Particles
+  const pc = document.getElementById('particles');
+  for (let i = 0; i < 20; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.cssText = `left:${Math.random()*100}%;animation-duration:${8+Math.random()*12}s;animation-delay:${Math.random()*12}s;width:${1+Math.random()*2.5}px;height:${1+Math.random()*2.5}px`;
+    pc.appendChild(p);
+  }
+
+  // Scroll reveal
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  // Live counts
+  async function loadCounts() {
+    const cats = ['indoor', 'outdoor', 'seed'];
+    const ids = ['indoor-count', 'outdoor-count', 'seed-count'];
+    let total = 0;
+    for (let i = 0; i < cats.length; i++) {
+      const { count } = await db.from('plants').select('*', { count: 'exact', head: true }).eq('category', cats[i]);
+      const n = count || 0; total += n;
+      document.getElementById(ids[i]).textContent = n;
+    }
+    document.getElementById('total-count').textContent = total;
+  }
+  loadCounts();
+</script>
 </body>
 </html>
