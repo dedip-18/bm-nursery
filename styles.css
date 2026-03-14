@@ -300,6 +300,7 @@ body.home .nav-links a:hover { color:var(--green-deep); background:var(--green-m
   position: relative;
   overflow: visible;
   background: var(--white);
+  padding: 110px 52px 80px;
 }
 
 .hero-left {}
@@ -359,7 +360,7 @@ body.home .nav-links a:hover { color:var(--green-deep); background:var(--green-m
 /* HERO RIGHT — Plant Collage */
 .hero-right {
   position: relative;
-  height: 580px;
+  height: 480px;
   overflow: visible;
 }
 
