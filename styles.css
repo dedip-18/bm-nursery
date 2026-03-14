@@ -260,9 +260,6 @@ body.home {
   color: var(--ink);
   cursor: none;
 }
-body.home .cursor { width:9px;height:9px;background:var(--green-fresh);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:multiply; }
-body.home .cursor-ring { width:32px;height:32px;border:1.5px solid rgba(61,122,34,0.45);border-radius:50%;position:fixed;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:all 0.14s ease; }
-
 /* HOME NAV */
 body.home nav {
   position: fixed; top:0; left:0; right:0;
@@ -290,16 +287,67 @@ body.home .nav-links a:hover { color:var(--green-deep); background:var(--green-m
    ============================================ */
 .hero {
   min-height: auto;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  align-items: center;
-  padding: 110px 52px 60px;
-  gap: 40px;
+  padding: 120px 52px 64px;
   max-width: 1360px;
   margin: 0 auto;
   position: relative;
   background: var(--white);
 }
+
+.hero-text {
+  max-width: 620px;
+  margin-bottom: 56px;
+}
+
+/* Hero 3 plant cards row */
+.hero-plants-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.hp-loading { grid-column:1/-1; display:flex; align-items:center; justify-content:center; padding:40px; }
+
+.hp-card {
+  text-decoration: none;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--stone-dark);
+  background: var(--white);
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: block;
+}
+.hp-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-md); }
+
+.hp-img {
+  position: relative;
+  aspect-ratio: 4/3;
+  overflow: hidden;
+  background: var(--stone);
+}
+.hp-img img {
+  width: 100%; height: 100%;
+  object-fit: contain;
+  background: var(--stone);
+  display: block;
+  transition: transform 0.4s ease;
+}
+.hp-card:hover .hp-img img { transform: scale(1.04); }
+.hp-ph { width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:3rem;opacity:0.25; }
+
+.hp-badge {
+  position: absolute; top: 10px; left: 10px;
+  background: rgba(255,255,255,0.93);
+  color: var(--green-deep);
+  padding: 4px 11px; border-radius: 24px;
+  font-size: 0.68rem; font-weight: 700;
+  letter-spacing: 0.06em; text-transform: uppercase;
+}
+.hp-body { padding: 14px 16px 18px; }
+.hp-body h3 { font-family:'Fraunces',serif; font-size:1.05rem; font-weight:500; color:var(--ink); margin-bottom:5px; }
+.hp-body p { font-size:0.78rem; color:var(--ink-light); line-height:1.5; margin-bottom:10px; }
+.hp-link { font-size:0.76rem; color:var(--green-fresh); font-weight:600; }
+.hp-card:hover .hp-link { text-decoration: underline; }
 
 .hero-left {}
 
@@ -355,24 +403,9 @@ body.home .nav-links a:hover { color:var(--green-deep); background:var(--green-m
 .hero-trust-item { display: flex; align-items: center; gap: 7px; font-size: 0.8rem; color: var(--ink-light); font-weight: 500; }
 .hero-trust-item .ti { font-size: 1rem; }
 
-/* HERO RIGHT — Plant Collage */
-.hero-right {
-  position: relative;
-  height: 380px;
-  overflow: hidden;
-  align-self: center;
-  border-radius: 18px;
-}
-
-.hero-collage {
-  display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
-  grid-template-rows: 1fr 1fr;
-  gap: 14px;
-  height: 100%;
-  border-radius: 18px;
-  overflow: hidden;
-}
+/* HERO RIGHT — unused, kept for compatibility */
+.hero-right { display: none; }
+.hero-collage { display: none; }
 
 .hc-card {
   border-radius: 18px;
@@ -691,9 +724,9 @@ body.home .nav-links a:hover { color:var(--green-deep); background:var(--green-m
   .hero-right { height: 480px; }
 }
 @media (max-width: 900px) {
-  .hero { grid-template-columns: 1fr; padding: 90px 24px 40px; gap: 40px; }
-  .hero-right { height: 380px; order: -1; }
+  .hero { padding: 90px 24px 40px; }
   .hero h1 { font-size: 3rem; }
+  .hero-plants-row { grid-template-columns: repeat(3,1fr); gap: 14px; }
   .cats-grid { grid-template-columns: 1fr 1fr; min-height: auto; }
   .c-card.featured { grid-column: span 2; grid-row: span 1; }
   .why-inner { grid-template-columns: 1fr; gap: 44px; }
@@ -708,7 +741,8 @@ body.home .nav-links a:hover { color:var(--green-deep); background:var(--green-m
 }
 @media (max-width: 640px) {
   .hero { padding: 80px 16px 32px; }
-  .hero-right { height: 280px; }
+  .hero-plants-row { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .hp-body p { display: none; }
   .hero-collage { gap: 8px; border-radius: 12px; }
   .hc-card { border-radius: 10px; }
   .hero-badge { width:80px;height:80px;bottom:-12px;left:-10px; }
