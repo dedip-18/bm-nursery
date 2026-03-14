@@ -293,7 +293,7 @@ body.home .nav-links a:hover { color:var(--green-deep); background:var(--green-m
   display: grid;
   grid-template-columns: 1fr 1fr;
   align-items: center;
-  padding: 120px 52px 72px;
+  padding: 110px 52px 60px;
   gap: 40px;
   max-width: 1360px;
   margin: 0 auto;
@@ -358,7 +358,7 @@ body.home .nav-links a:hover { color:var(--green-deep); background:var(--green-m
 /* HERO RIGHT — Plant Collage */
 .hero-right {
   position: relative;
-  height: 420px;
+  height: 380px;
   overflow: hidden;
   align-self: center;
   border-radius: 18px;
