@@ -289,11 +289,11 @@ body.home .nav-links a:hover { color:var(--green-deep); background:var(--green-m
    HERO
    ============================================ */
 .hero {
-  min-height: 100vh;
+  min-height: auto;
   display: grid;
   grid-template-columns: 1fr 1fr;
   align-items: center;
-  padding: 110px 52px 60px;
+  padding: 120px 52px 72px;
   gap: 52px;
   max-width: 1360px;
   margin: 0 auto;
@@ -359,12 +359,11 @@ body.home .nav-links a:hover { color:var(--green-deep); background:var(--green-m
 /* HERO RIGHT — Plant Collage */
 .hero-right {
   position: relative;
-  height: 520px;
+  height: 500px;
   overflow: hidden;
   align-self: center;
   border-radius: 18px;
 }
-
 .hero-collage {
   display: grid;
   grid-template-columns: 1.1fr 0.9fr;
