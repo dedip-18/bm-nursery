@@ -111,16 +111,23 @@
   let selectedFiles = [];
 
   const subcategoryOptions = {
+    indoor: [
+      { value: 'air-purifying',   label: '🌬️ Air Purifying' },
+      { value: 'low-maintenance', label: '🌿 Low Maintenance' },
+      { value: 'succulents',      label: '🌵 Succulents & Cactus' },
+      { value: 'flowering',       label: '🌸 Flowering' },
+      { value: 'combo',           label: '🎁 Combo Plants' }
+    ],
     outdoor: [
-      { value: 'flowering', label: '🌸 Flowering' },
-      { value: 'fruit', label: '🍋 Fruit' },
-      { value: 'herbs-spice', label: '🌿 Herbs & Spice' },
+      { value: 'flowering',    label: '🌸 Flowering' },
+      { value: 'fruit',        label: '🍋 Fruit' },
+      { value: 'herbs-spice',  label: '🌿 Herbs & Spice' },
       { value: 'trees-shrubs', label: '🌴 Trees & Shrubs' }
     ],
     seed: [
       { value: 'vegetable-seeds', label: '🥦 Vegetable Seeds' },
-      { value: 'flower-seeds', label: '🌸 Flower Seeds' },
-      { value: 'herb-seeds', label: '🌿 Herb Seeds' }
+      { value: 'flower-seeds',    label: '🌸 Flower Seeds' },
+      { value: 'herb-seeds',      label: '🌿 Herb Seeds' }
     ]
   };
 
