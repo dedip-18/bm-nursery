@@ -1,4 +1,3 @@
-Content is user-generated and unverified.
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Nunito:wght@300;400;600;700&display=swap');
 
 /* ============================================
@@ -693,6 +692,70 @@ body.home .nav-links a:hover { color:var(--green-deep); background:var(--green-m
 .marquee-item .mdot { color:var(--green-fresh);font-size:1rem; }
 @keyframes marquee { from{transform:translateX(0)}to{transform:translateX(-50%)} }
 
+
+/* ============================================
+   INDOOR FILTER BAR
+   ============================================ */
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  padding: 28px 40px 0;
+  max-width: 1300px;
+  margin: 0 auto;
+}
+.filter-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 20px;
+  border-radius: 32px;
+  border: 1.5px solid var(--stone-dark);
+  background: var(--white);
+  color: var(--ink-mid);
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.filter-btn:hover {
+  border-color: var(--green-fresh);
+  color: var(--green-deep);
+  background: var(--green-mist);
+}
+.filter-btn.active {
+  background: var(--green-deep);
+  border-color: var(--green-deep);
+  color: white;
+}
+.filter-count {
+  background: rgba(255,255,255,0.25);
+  padding: 1px 7px;
+  border-radius: 24px;
+  font-size: 0.75rem;
+}
+.filter-btn:not(.active) .filter-count {
+  background: var(--green-pale);
+  color: var(--green-deep);
+}
+
+/* Subcategory badge on plant card */
+.plant-subcat-badge {
+  display: inline-block;
+  background: var(--green-pale);
+  color: var(--green-deep);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 24px;
+  margin-bottom: 6px;
+}
 /* ============================================
    RESPONSIVE — INNER PAGES
    ============================================ */
@@ -701,6 +764,8 @@ body.home .nav-links a:hover { color:var(--green-deep); background:var(--green-m
 }
 @media (max-width: 768px) {
   nav { padding: 10px 16px; }
+  .filter-bar { padding: 20px 16px 0; gap: 7px; }
+  .filter-btn { padding: 7px 14px; font-size: 0.78rem; }
   .nav-links { display:none;flex-direction:column;position:absolute;top:64px;left:0;right:0;background:rgba(250,250,248,0.97);padding:14px;border-bottom:1px solid var(--stone-dark);box-shadow:var(--shadow-sm); }
   .nav-links.open { display:flex; }
   .nav-toggle { display:block; }
