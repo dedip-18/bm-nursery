@@ -4,100 +4,46 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Outdoor Plants — BM Nursery</title>
+  <meta name="description" content="Outdoor plants for your garden, balcony and patio. Available on Amazon & Flipkart.">
   <link rel="stylesheet" href="styles.css">
-  <style>
-    .search-bar-wrap {
-      max-width: 500px;
-      margin: 0 auto 40px;
-      position: relative;
-    }
-    .search-bar-wrap input {
-      width: 100%;
-      padding: 14px 48px 14px 20px;
-      border: 2px solid var(--sage-light);
-      border-radius: 32px;
-      font-family: 'Nunito', sans-serif;
-      font-size: 1rem;
-      background: var(--white);
-      outline: none;
-      transition: border-color 0.2s, box-shadow 0.2s;
-      color: var(--text-dark);
-    }
-    .search-bar-wrap input:focus {
-      border-color: var(--forest-light);
-      box-shadow: 0 0 0 3px rgba(74,138,46,0.12);
-    }
-    .search-bar-wrap .search-icon {
-      position: absolute;
-      right: 18px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 1.1rem;
-      pointer-events: none;
-    }
-    .subcategory-section { margin-bottom: 56px; }
-    .subcategory-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.6rem;
-      color: var(--forest);
-      margin-bottom: 6px;
-      padding-bottom: 10px;
-      border-bottom: 2px solid var(--sage-light);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .subcategory-count {
-      font-family: 'Nunito', sans-serif;
-      font-size: 0.85rem;
-      background: var(--sage-light);
-      color: var(--forest);
-      padding: 3px 12px;
-      border-radius: 24px;
-      font-weight: 700;
-    }
-    .no-results {
-      text-align: center;
-      padding: 40px;
-      color: var(--text-light);
-      font-size: 0.95rem;
-    }
-  </style>
 </head>
 <body>
 
 <nav>
   <a href="index.html" class="nav-logo">
-    <span style="font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:var(--forest)">🌿 BM Nursery</span>
+    <span style="font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:var(--green-deep)">🌿 BM Nursery</span>
   </a>
-  <ul class="nav-links">
+  <ul class="nav-links" id="nav-links">
     <li><a href="index.html">Home</a></li>
     <li><a href="indoor.html">Indoor</a></li>
-    <li><a href="outdoor.html">Outdoor</a></li>
+    <li><a href="outdoor.html" class="active">Outdoor</a></li>
     <li><a href="seeds.html">Seeds</a></li>
   </ul>
-  <div class="nav-toggle"><span></span><span></span><span></span></div>
+  <div class="nav-toggle" id="nav-toggle"><span></span><span></span><span></span></div>
 </nav>
 
 <div class="page-header">
-  <h1>🌳 Outdoor Plants</h1>
+  <h1>🌳 Outdoor Plants</h1> 
   <p>Beautify your garden, balcony, or patio with nature's finest</p>
 </div>
 
+<!-- FILTER BUTTONS -->
+<div class="filter-bar" id="filter-bar">
+  <a href="outdoor.html" class="filter-btn" data-cat="all">🌳 All Plants <span class="filter-count" id="count-all">—</span></a>
+  <a href="outdoor.html?cat=flowering" class="filter-btn" data-cat="flowering">🌸 Flowering <span class="filter-count" id="count-flowering">—</span></a>
+  <a href="outdoor.html?cat=fruit" class="filter-btn" data-cat="fruit">🍋 Fruit <span class="filter-count" id="count-fruit">—</span></a>
+  <a href="outdoor.html?cat=herbs-spice" class="filter-btn" data-cat="herbs-spice">🌿 Herbs & Spice <span class="filter-count" id="count-herbs-spice">—</span></a>
+  <a href="outdoor.html?cat=trees-shrubs" class="filter-btn" data-cat="trees-shrubs">🌴 Trees & Shrubs <span class="filter-count" id="count-trees-shrubs">—</span></a>
+</div>
+
 <section class="plants-section">
-
-  <div class="search-bar-wrap">
-    <input type="text" id="search-input" placeholder="Search outdoor plants..." oninput="filterPlants()">
-    <span class="search-icon">🔍</span>
-  </div>
-
-  <div id="main-content">
-    <div class="loading-state">
+  <p class="plants-count" id="count-text"></p>
+  <div class="plants-grid stagger" id="plants-grid">
+    <div class="loading-state" style="grid-column:1/-1">
       <div class="spinner"></div>
       <p>Loading plants...</p>
     </div>
   </div>
-
 </section>
 
 <footer class="inner-footer">
@@ -114,17 +60,67 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="common.js"></script>
 <script>
-  const sections = [
-    { key: 'flowering',    label: '🌸 Flowering',     plants: [] },
-    { key: 'fruit',        label: '🍋 Fruit',          plants: [] },
-    { key: 'herbs-spice',  label: '🌿 Herbs & Spice',  plants: [] },
-    { key: 'trees-shrubs', label: '🌴 Trees & Shrubs', plants: [] },
-    { key: null,           label: '🌳 Other Outdoor',  plants: [] }
-  ];
+  const subcatLabels = {
+    'flowering':    '🌸 Flowering',
+    'fruit':        '🍋 Fruit',
+    'herbs-spice':  '🌿 Herbs & Spice',
+    'trees-shrubs': '🌴 Trees & Shrubs'
+  };
 
-  let allPlants = [];
+  // Get active filter from URL
+  const params = new URLSearchParams(window.location.search);
+  const activeCat = params.get('cat') || 'all';
+
+  // Highlight active filter button
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.cat === activeCat);
+  });
+
+  // Mobile nav toggle
+  document.getElementById('nav-toggle').addEventListener('click', () => {
+    document.getElementById('nav-links').classList.toggle('open');
+  });
+
+  // Build card with subcategory badge
+  function buildCardWithBadge(plant) {
+    let images = plant.images || [];
+    if (typeof images === 'string') {
+      try { images = JSON.parse(images); } catch { images = [images]; }
+    }
+    if (!Array.isArray(images)) images = [];
+
+    const slidesHTML = images.length > 0
+      ? images.map(url => `<div class="carousel-slide"><img src="${url}" alt="${plant.name}" loading="lazy"></div>`).join('')
+      : `<div class="carousel-slide" style="display:flex;align-items:center;justify-content:center;background:var(--stone);height:100%"><span style="font-size:3rem">🌿</span></div>`;
+    const dotsHTML = images.length > 1
+      ? images.map(() => `<div class="dot"></div>`).join('') : '';
+
+    const badge = plant.subcategory && subcatLabels[plant.subcategory]
+      ? `<span class="plant-subcat-badge">${subcatLabels[plant.subcategory]}</span>` : '';
+
+    return `
+      <div class="plant-card fade-in" onclick="window.location.href='plant.html?id=${plant.id}'">
+        <div class="carousel">
+          <div class="carousel-track">${slidesHTML}</div>
+          ${images.length > 1 ? `<button class="carousel-btn prev">&#8249;</button><button class="carousel-btn next">&#8250;</button>` : ''}
+          ${dotsHTML ? `<div class="carousel-dots">${dotsHTML}</div>` : ''}
+        </div>
+        <div class="plant-card-body">
+          ${badge}
+          <h3>${plant.name}</h3>
+          <p class="plant-desc" onclick="event.stopPropagation(); window.location.href='plant.html?id=${plant.id}'">${plant.description || ''}</p>
+          <div class="plant-card-links">
+            ${plant.amazon_link ? `<a href="${plant.amazon_link}" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="btn-amazon">🛒 Amazon</a>` : ''}
+            ${plant.flipkart_link ? `<a href="${plant.flipkart_link}" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="btn-flipkart">🛍 Flipkart</a>` : ''}
+          </div>
+        </div>
+      </div>`;
+  }
 
   async function loadPlants() {
+    const grid = document.getElementById('plants-grid');
+    const countText = document.getElementById('count-text');
+
     const { data, error } = await db
       .from('plants')
       .select('*')
@@ -132,74 +128,31 @@
       .order('created_at', { ascending: false });
 
     if (error || !data) {
-      document.getElementById('main-content').innerHTML =
-        `<div class="empty-state"><div class="empty-icon">😕</div><h3>Couldn't load plants</h3><p>Please try again later.</p></div>`;
+      grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">😕</div><h3>Couldn't load plants</h3><p>Please try again later.</p></div>`;
       return;
     }
 
-    allPlants = data;
-
-    if (data.length === 0) {
-      document.getElementById('main-content').innerHTML =
-        `<div class="empty-state"><div class="empty-icon">🌳</div><h3>No outdoor plants yet</h3><p>Check back soon!</p></div>`;
-      return;
-    }
-
-    // Distribute plants into sections
-    data.forEach(plant => {
-      const section = sections.find(s => s.key === plant.subcategory) || sections[sections.length - 1];
-      section.plants.push(plant);
+    // Update all filter counts
+    document.getElementById('count-all').textContent = data.length;
+    ['flowering','fruit','herbs-spice','trees-shrubs'].forEach(c => {
+      const el = document.getElementById(`count-${c}`);
+      if (el) el.textContent = data.filter(p => p.subcategory === c).length;
     });
 
-    renderSections(sections);
-  }
+    // Filter by active category
+    const filtered = activeCat === 'all' ? data : data.filter(p => p.subcategory === activeCat);
 
-  function renderSections(secs) {
-    const content = document.getElementById('main-content');
-    const activeSecs = secs.filter(s => s.plants.length > 0);
-
-    if (activeSecs.length === 0) {
-      content.innerHTML = `<div class="no-results">No plants found matching your search.</div>`;
+    if (filtered.length === 0) {
+      const label = subcatLabels[activeCat] || activeCat;
+      grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">🌳</div><h3>No ${label} plants yet</h3><p>Check back soon — we're adding more!</p></div>`;
+      countText.innerHTML = `<span>0</span> plants in this category`;
       return;
     }
 
-    content.innerHTML = activeSecs.map(sec => `
-      <div class="subcategory-section">
-        <h2 class="subcategory-title">
-          ${sec.label}
-          <span class="subcategory-count">${sec.plants.length}</span>
-        </h2>
-        <div class="plants-grid stagger" id="grid-${sec.key || 'other'}">
-          ${sec.plants.map(buildPlantCard).join('')}
-        </div>
-      </div>
-    `).join('');
-
-    content.querySelectorAll('.carousel').forEach(initCarousel);
-  }
-
-  function filterPlants() {
-    const query = document.getElementById('search-input').value.toLowerCase().trim();
-
-    if (!query) {
-      // Reset all sections
-      sections.forEach(s => s.plants = []);
-      allPlants.forEach(plant => {
-        const section = sections.find(s => s.key === plant.subcategory) || sections[sections.length - 1];
-        section.plants.push(plant);
-      });
-      renderSections(sections);
-      return;
-    }
-
-    const filtered = allPlants.filter(p =>
-      p.name.toLowerCase().includes(query) ||
-      (p.description && p.description.toLowerCase().includes(query))
-    );
-
-    // Group filtered results into a single results section
-    const resultSection = [{ key: 'results', label: '🔍 Search Results', plants: filtered }];
-    renderSections(resultSection);
+    const catName = activeCat === 'all' ? 'outdoor plants available' : (subcatLabels[activeCat] || activeCat) + ' plants';
+    countText.innerHTML = `<span>${filtered.length}</span> ${catName}`;
+    grid.innerHTML = filtered.map(buildCardWithBadge).join('');
+    grid.querySelectorAll('.carousel').forEach(initCarousel);
   }
 
   loadPlants();
