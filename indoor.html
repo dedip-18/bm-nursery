@@ -6,26 +6,36 @@
   <title>Indoor Plants — BM Nursery</title>
   <meta name="description" content="Beautiful indoor plants handpicked by BM Nursery. Available on Amazon & Flipkart.">
   <link rel="stylesheet" href="styles.css">
-  
+
 </head>
 <body>
 
 <nav>
   <a href="index.html" class="nav-logo">
-    <span style="font-family:Playfair Display,serif;font-size:1.3rem;font-weight:700;color:var(--forest)">🌿 BM Nursery</span>
+    <span style="font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:var(--green-deep)">🌿 BM Nursery</span>
   </a>
-  <ul class="nav-links">
+  <ul class="nav-links" id="nav-links">
     <li><a href="index.html">Home</a></li>
-    <li><a href="indoor.html">Indoor</a></li>
+    <li><a href="indoor.html" class="active">Indoor</a></li>
     <li><a href="outdoor.html">Outdoor</a></li>
     <li><a href="seeds.html">Seeds</a></li>
   </ul>
-  <div class="nav-toggle"><span></span><span></span><span></span></div>
+  <div class="nav-toggle" id="nav-toggle"><span></span><span></span><span></span></div>
 </nav>
 
 <div class="page-header">
   <h1>🪴 Indoor Plants</h1>
   <p>Bring the beauty of nature inside your home</p>
+</div>
+
+<!-- FILTER BUTTONS -->
+<div class="filter-bar" id="filter-bar">
+  <a href="indoor.html" class="filter-btn active" data-cat="all">🌿 All Plants <span class="filter-count" id="count-all">—</span></a>
+  <a href="indoor.html?cat=air-purifying" class="filter-btn" data-cat="air-purifying">🌬️ Air Purifying <span class="filter-count" id="count-air-purifying">—</span></a>
+  <a href="indoor.html?cat=low-maintenance" class="filter-btn" data-cat="low-maintenance">🌿 Low Maintenance <span class="filter-count" id="count-low-maintenance">—</span></a>
+  <a href="indoor.html?cat=succulents" class="filter-btn" data-cat="succulents">🌵 Succulents & Cactus <span class="filter-count" id="count-succulents">—</span></a>
+  <a href="indoor.html?cat=flowering" class="filter-btn" data-cat="flowering">🌸 Flowering <span class="filter-count" id="count-flowering">—</span></a>
+  <a href="indoor.html?cat=combo" class="filter-btn" data-cat="combo">🎁 Combo Plants <span class="filter-count" id="count-combo">—</span></a>
 </div>
 
 <section class="plants-section">
@@ -38,19 +48,82 @@
   </div>
 </section>
 
-<footer>
-  <span style="font-family:Playfair Display,serif;font-size:1.1rem;font-weight:700;color:white">🌿 BM Nursery</span>
-  <p>BM Nursery &copy; 2025 — by Dedipyaman &amp; Trishanjit<br>
-  <a href="indoor.html">Indoor</a> &nbsp;·&nbsp; <a href="outdoor.html">Outdoor</a> &nbsp;·&nbsp; <a href="seeds.html">Seeds</a></p>
+<footer class="inner-footer">
+  <span class="brand">🌿 BM Nursery</span>
+  <p><a href="indoor.html">Indoor</a> &nbsp;·&nbsp; <a href="outdoor.html">Outdoor</a> &nbsp;·&nbsp; <a href="seeds.html">Seeds</a></p>
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="common.js"></script>
 <script>
+  const subcatLabels = {
+    'air-purifying':   '🌬️ Air Purifying',
+    'low-maintenance': '🌿 Low Maintenance',
+    'succulents':      '🌵 Succulent',
+    'flowering':       '🌸 Flowering',
+    'combo':           '🎁 Combo'
+  };
+
+  // Get active filter from URL
+  const params = new URLSearchParams(window.location.search);
+  const activeCat = params.get('cat') || 'all';
+
+  // Highlight active filter button
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    if (btn.dataset.cat === activeCat) {
+      btn.classList.add('active');
+    } else {
+      btn.classList.remove('active');
+    }
+  });
+
+  // Mobile nav toggle
+  document.getElementById('nav-toggle').addEventListener('click', () => {
+    document.getElementById('nav-links').classList.toggle('open');
+  });
+
+  // Build card with subcategory badge
+  function buildCardWithBadge(plant) {
+    let images = plant.images || [];
+    if (typeof images === 'string') {
+      try { images = JSON.parse(images); } catch { images = [images]; }
+    }
+    if (!Array.isArray(images)) images = [];
+
+    const slidesHTML = images.length > 0
+      ? images.map(url => `<div class="carousel-slide"><img src="${url}" alt="${plant.name}" loading="lazy"></div>`).join('')
+      : `<div class="carousel-slide" style="display:flex;align-items:center;justify-content:center;background:var(--stone);height:100%"><span style="font-size:3rem">🌿</span></div>`;
+    const dotsHTML = images.length > 1
+      ? images.map(() => `<div class="dot"></div>`).join('') : '';
+
+    const badge = plant.subcategory && subcatLabels[plant.subcategory]
+      ? `<span class="plant-subcat-badge">${subcatLabels[plant.subcategory]}</span>`
+      : '';
+
+    return `
+      <div class="plant-card fade-in" onclick="window.location.href='plant.html?id=${plant.id}'">
+        <div class="carousel">
+          <div class="carousel-track">${slidesHTML}</div>
+          ${images.length > 1 ? `<button class="carousel-btn prev">&#8249;</button><button class="carousel-btn next">&#8250;</button>` : ''}
+          ${dotsHTML ? `<div class="carousel-dots">${dotsHTML}</div>` : ''}
+        </div>
+        <div class="plant-card-body">
+          ${badge}
+          <h3>${plant.name}</h3>
+          <p class="plant-desc" onclick="event.stopPropagation(); window.location.href='plant.html?id=${plant.id}'">${plant.description || ''}</p>
+          <div class="plant-card-links">
+            ${plant.amazon_link ? `<a href="${plant.amazon_link}" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="btn-amazon">🛒 Amazon</a>` : ''}
+            ${plant.flipkart_link ? `<a href="${plant.flipkart_link}" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="btn-flipkart">🛍 Flipkart</a>` : ''}
+          </div>
+        </div>
+      </div>`;
+  }
+
   async function loadPlants() {
     const grid = document.getElementById('plants-grid');
     const countText = document.getElementById('count-text');
 
+    // Fetch all indoor plants
     const { data, error } = await db
       .from('plants')
       .select('*')
@@ -62,15 +135,28 @@
       return;
     }
 
-    if (data.length === 0) {
-      grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">🪴</div><h3>No indoor plants yet</h3><p>Check back soon — we're adding new plants!</p></div>`;
+    // Update all filter counts
+    document.getElementById('count-all').textContent = data.length;
+    const cats = ['air-purifying','low-maintenance','succulents','flowering','combo'];
+    cats.forEach(c => {
+      const n = data.filter(p => p.subcategory === c).length;
+      const el = document.getElementById(`count-${c}`);
+      if (el) el.textContent = n;
+    });
+
+    // Filter by active category
+    const filtered = activeCat === 'all' ? data : data.filter(p => p.subcategory === activeCat);
+
+    if (filtered.length === 0) {
+      const label = subcatLabels[activeCat] || activeCat;
+      grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">🪴</div><h3>No ${label} plants yet</h3><p>Check back soon — we're adding more!</p></div>`;
+      countText.innerHTML = `<span>0</span> plants in this category`;
       return;
     }
 
-    countText.innerHTML = `<span>${data.length}</span> indoor plants available`;
-    grid.innerHTML = data.map(buildPlantCard).join('');
-
-    // Init carousels
+    const catName = activeCat === 'all' ? 'indoor' : (subcatLabels[activeCat] || activeCat);
+    countText.innerHTML = `<span>${filtered.length}</span> ${activeCat === 'all' ? 'indoor plants available' : catName + ' plants'}`;
+    grid.innerHTML = filtered.map(buildCardWithBadge).join('');
     grid.querySelectorAll('.carousel').forEach(initCarousel);
   }
 
