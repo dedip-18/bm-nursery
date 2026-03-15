@@ -281,6 +281,8 @@ body.home .nav-links a { color:var(--ink-mid); font-size:0.82rem; font-weight:50
 body.home .nav-links a:hover { color:var(--green-deep); background:var(--green-mist); }
 .home-nav-cta { background:var(--green-deep)!important; color:white!important; padding:8px 20px!important; border-radius:6px!important; font-weight:600!important; }
 .home-nav-cta:hover { background:var(--green-fresh)!important; }
+body.home .nav-toggle { display:none; cursor:pointer; }
+body.home .nav-toggle span { display:block; width:22px; height:2px; background:var(--green-deep); margin:5px 0; transition:all 0.3s; }
 
 /* ============================================
    HERO
@@ -807,8 +809,9 @@ body.home .nav-links a:hover { color:var(--green-deep); background:var(--green-m
   .featured-grid { grid-template-columns: repeat(2,1fr); }
   body.home nav { padding: 14px 20px; }
   body.home nav.scrolled { padding: 10px 20px; }
-  body.home .nav-links { display:none;flex-direction:column;position:absolute;top:60px;left:0;right:0;background:rgba(255,255,255,0.97);padding:16px;border-bottom:1px solid var(--stone-dark);box-shadow:var(--shadow-sm); }
-  body.home .nav-links.open { display:flex; }
+  body.home .nav-links { display:none !important; flex-direction:column; position:absolute; top:56px; left:0; right:0; background:rgba(255,255,255,0.97); padding:16px; border-bottom:1px solid var(--stone-dark); box-shadow:var(--shadow-sm); z-index:200; }
+  body.home .nav-links.open { display:flex !important; }
+  body.home .nav-toggle { display:block !important; }
   body.home .nav-toggle span { background:var(--green-deep); }
   .home-cats, .featured-section, .why-section, .cta-band { padding: 64px 24px; }
   .stats-strip { padding: 20px 24px; }
