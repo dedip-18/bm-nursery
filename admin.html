@@ -83,10 +83,10 @@
 
       <div class="form-group">
         <label>Photos (up to 5) *</label>
-        <div class="image-upload-area" onclick="document.getElementById('photo-input').click()">
+        <div class="image-upload-area" id="upload-area" onclick="document.getElementById('photo-input').click()">
           <input type="file" id="photo-input" accept="image/*" multiple onchange="handlePhotoSelect(this)">
-          <div class="upload-icon">📷</div>
-          <p>Click to select photos</p>
+          <div class="upload-icon" id="upload-icon">📷</div>
+          <p id="upload-text">Click or drag & drop photos here</p>
           <small>JPG, PNG, WEBP — Max 5 photos, 5MB each</small>
         </div>
         <div class="image-previews" id="image-previews"></div>
@@ -179,6 +179,37 @@
     selectedFiles.splice(index, 1);
     renderPreviews();
   }
+
+  // Drag and drop
+  const uploadArea = document.getElementById('upload-area');
+
+  uploadArea.addEventListener('dragover', e => {
+    e.preventDefault();
+    uploadArea.style.borderColor = 'var(--green-fresh)';
+    uploadArea.style.background = 'var(--green-mist)';
+    document.getElementById('upload-icon').textContent = '📂';
+    document.getElementById('upload-text').textContent = 'Drop photos here!';
+  });
+
+  uploadArea.addEventListener('dragleave', e => {
+    e.preventDefault();
+    uploadArea.style.borderColor = '';
+    uploadArea.style.background = '';
+    document.getElementById('upload-icon').textContent = '📷';
+    document.getElementById('upload-text').textContent = 'Click or drag & drop photos here';
+  });
+
+  uploadArea.addEventListener('drop', e => {
+    e.preventDefault();
+    uploadArea.style.borderColor = '';
+    uploadArea.style.background = '';
+    document.getElementById('upload-icon').textContent = '📷';
+    document.getElementById('upload-text').textContent = 'Click or drag & drop photos here';
+    const files = Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/'));
+    if (files.length === 0) { showAlert('Please drop image files only.', 'error'); return; }
+    selectedFiles = [...selectedFiles, ...files].slice(0, 5);
+    renderPreviews();
+  });
 
   function showAlert(message, type) {
     const box = document.getElementById('alert-box');
