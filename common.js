@@ -67,15 +67,8 @@ function buildPlantCard(plant) {
     </div>`;
 }
 
-// ---- Mobile nav toggle ----
+// ---- Active nav link ----
 document.addEventListener('DOMContentLoaded', () => {
-  const toggle = document.querySelector('.nav-toggle');
-  const navLinks = document.querySelector('.nav-links');
-  if (toggle && navLinks) {
-    toggle.addEventListener('click', () => navLinks.classList.toggle('open'));
-  }
-
-  // Mark active nav link
   const currentPage = window.location.pathname.split('/').pop() || 'index.html';
   document.querySelectorAll('.nav-links a').forEach(link => {
     if (link.getAttribute('href') === currentPage) link.classList.add('active');
