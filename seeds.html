@@ -76,8 +76,23 @@
     <li><a href="outdoor.html">Outdoor</a></li>
     <li><a href="seeds.html">Seeds</a></li>
   </ul>
+  <button class="search-toggle" id="search-toggle" title="Search plants (Ctrl+K)">🔍</button>
   <div class="nav-toggle"><span></span><span></span><span></span></div>
 </nav>
+
+<!-- GLOBAL SEARCH OVERLAY -->
+<div class="search-overlay" id="search-overlay">
+  <div class="search-modal">
+    <div class="search-input-wrap">
+      <span>🔍</span>
+      <input type="text" id="global-search-input" placeholder="Search plants, seeds...">
+      <button class="search-close-btn" id="search-close">ESC</button>
+    </div>
+    <div class="search-results" id="search-results">
+      <div class="sr-empty">Start typing to search plants...</div>
+    </div>
+  </div>
+</div>
 
 <div class="page-header">
   <h1>🌱 Seeds</h1>
@@ -102,7 +117,7 @@
 
 <footer class="inner-footer">
   <span class="brand">🌿 BM Nursery</span>
-  <p>BM Nursery &copy; 2026 </p>
+  <p>BM Nursery &copy; 2025 — by Dedipyaman &amp; Trishanjit</p>
   <div class="footer-nav-links">
     <a href="indoor.html">🪴 Indoor</a>
     <a href="outdoor.html">🌳 Outdoor</a>
