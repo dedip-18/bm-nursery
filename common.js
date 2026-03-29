@@ -74,3 +74,86 @@ document.addEventListener('DOMContentLoaded', () => {
     if (link.getAttribute('href') === currentPage) link.classList.add('active');
   });
 });
+
+// ---- Global Search ----
+function initGlobalSearch() {
+  const toggle = document.getElementById('search-toggle');
+  const overlay = document.getElementById('search-overlay');
+  const input = document.getElementById('global-search-input');
+  const results = document.getElementById('search-results');
+  const closeBtn = document.getElementById('search-close');
+  if (!toggle || !overlay || !input) return;
+
+  let allPlants = [];
+  let loaded = false;
+
+  async function fetchAllPlants() {
+    if (loaded) return;
+    results.innerHTML = '<div class="sr-loading">Searching...</div>';
+    const { data } = await db.from('plants').select('id,name,category,subcategory,images,description').order('name');
+    allPlants = data || [];
+    loaded = true;
+    doSearch();
+  }
+
+  function doSearch() {
+    const q = input.value.trim().toLowerCase();
+    if (!q) { results.innerHTML = '<div class="sr-empty">Start typing to search plants...</div>'; return; }
+    const matches = allPlants.filter(p =>
+      p.name.toLowerCase().includes(q) ||
+      (p.description && p.description.toLowerCase().includes(q)) ||
+      (p.category && p.category.toLowerCase().includes(q))
+    );
+    if (matches.length === 0) {
+      results.innerHTML = `<div class="sr-empty">No plants found for "<strong>${q}</strong>"</div>`;
+      return;
+    }
+    const catEmoji = { indoor:'🪴', outdoor:'🌳', seed:'🌱' };
+    results.innerHTML = matches.map(p => {
+      let imgs = p.images || [];
+      if (typeof imgs === 'string') { try { imgs = JSON.parse(imgs); } catch { imgs = [imgs]; } }
+      if (!Array.isArray(imgs)) imgs = [];
+      const img = imgs[0] || '';
+      return `<a href="plant.html?id=${p.id}" class="sr-item" onclick="closeSearch()">
+        <div class="sr-img">${img ? `<img src="${img}" alt="${p.name}" loading="lazy">` : `<span>${catEmoji[p.category]||'🌿'}</span>`}</div>
+        <div class="sr-info">
+          <strong>${p.name}</strong>
+          <span>${catEmoji[p.category]||'🌿'} ${p.category}</span>
+        </div>
+        <span class="sr-arrow">→</span>
+      </a>`;
+    }).join('');
+  }
+
+  toggle.addEventListener('click', () => {
+    overlay.classList.add('open');
+    input.focus();
+    fetchAllPlants();
+  });
+
+  closeBtn.addEventListener('click', closeSearch);
+  overlay.addEventListener('click', e => { if (e.target === overlay) closeSearch(); });
+
+  input.addEventListener('input', () => {
+    if (!loaded) fetchAllPlants();
+    else doSearch();
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeSearch();
+    if ((e.ctrlKey || e.metaKey) && e.key === 'k') { e.preventDefault(); toggle.click(); }
+  });
+}
+
+function closeSearch() {
+  const overlay = document.getElementById('search-overlay');
+  const input = document.getElementById('global-search-input');
+  if (overlay) overlay.classList.remove('open');
+  if (input) input.value = '';
+  const results = document.getElementById('search-results');
+  if (results) results.innerHTML = '<div class="sr-empty">Start typing to search plants...</div>';
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  initGlobalSearch();
+});
