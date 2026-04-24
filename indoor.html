@@ -51,6 +51,7 @@
   <a href="indoor.html?cat=succulents" class="filter-btn" data-cat="succulents">🌵 Succulents & Cactus <span class="filter-count" id="count-succulents">—</span></a>
   <a href="indoor.html?cat=flowering" class="filter-btn" data-cat="flowering">🌸 Flowering <span class="filter-count" id="count-flowering">—</span></a>
   <a href="indoor.html?cat=combo" class="filter-btn" data-cat="combo">🎁 Combo Plants <span class="filter-count" id="count-combo">—</span></a>
+  <a href="indoor.html?cat=self-watering-pot" class="filter-btn" data-cat="self-watering-pot">🪣 Self Watering Pot <span class="filter-count" id="count-self-watering-pot">—</span></a>
 </div>
 
 <section class="plants-section">
@@ -82,7 +83,8 @@
     'low-maintenance': '🌿 Low Maintenance',
     'succulents':      '🌵 Succulent',
     'flowering':       '🌸 Flowering',
-    'combo':           '🎁 Combo'
+    'combo':           '🎁 Combo',
+    'self-watering-pot': '🪣 Self Watering Pot'
   };
 
   // Get active filter from URL
@@ -158,7 +160,7 @@
 
     // Update all filter counts
     document.getElementById('count-all').textContent = data.length;
-    const cats = ['air-purifying','low-maintenance','succulents','flowering','combo'];
+    const cats = ['air-purifying','low-maintenance','succulents','flowering','combo','self-watering-pot'];
     cats.forEach(c => {
       const n = data.filter(p => p.subcategory === c).length;
       const el = document.getElementById(`count-${c}`);
