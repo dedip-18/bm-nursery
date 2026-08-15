@@ -279,6 +279,47 @@
     if (type === 'success') setTimeout(() => box.innerHTML = '', 5000);
   }
 
+  // ---- Image Compression ----
+  function compressImage(file, maxWidth = 800, quality = 0.78) {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          let width = img.width;
+          let height = img.height;
+
+          // Resize if wider than maxWidth
+          if (width > maxWidth) {
+            height = Math.round((height * maxWidth) / width);
+            width = maxWidth;
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+
+          canvas.toBlob(
+            (blob) => {
+              // Only use compressed if smaller than original
+              if (blob.size < file.size) {
+                resolve(new File([blob], file.name.replace(/\.[^.]+$/, '.jpg'), { type: 'image/jpeg' }));
+              } else {
+                resolve(file);
+              }
+            },
+            'image/jpeg',
+            quality
+          );
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
   async function submitPlant() {
     const name = document.getElementById('plant-name').value.trim();
     const category = document.getElementById('plant-category').value;
@@ -305,9 +346,11 @@
     try {
       const imageUrls = [];
       for (let i = 0; i < selectedFiles.length; i++) {
-        const file = selectedFiles[i];
-        const ext = file.name.split('.').pop();
-        const filePath = `plants/${Date.now()}_${i}.${ext}`;
+        progressText.textContent = `Compressing photo ${i + 1} of ${selectedFiles.length}...`;
+        progressBar.style.width = `${(i / selectedFiles.length) * 60}%`;
+
+        const file = await compressImage(selectedFiles[i]);
+        const filePath = `plants/${Date.now()}_${i}.jpg`;
 
         progressText.textContent = `Uploading photo ${i + 1} of ${selectedFiles.length}...`;
         progressBar.style.width = `${(i / selectedFiles.length) * 80}%`;
