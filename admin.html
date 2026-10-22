@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin — Bonayon</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="admin.css">
 <style>
   .bulk-drop{border:2px dashed var(--green-mid,#5a8f5a);border-radius:14px;padding:28px 16px;text-align:center;cursor:pointer;background:var(--green-pale,#eef6ee);transition:.15s}
   .bulk-drop.over{background:var(--green-mist,#dcefdc);border-color:var(--green-fresh,#3b9b3b)}
@@ -100,6 +100,11 @@
       <div class="form-group">
         <label>Description *</label>
         <textarea id="plant-desc" placeholder="Describe the plant — care tips, sunlight needs, watering, benefits, etc."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Price in ₹ (shown on the website, optional)</label>
+        <input type="number" id="plant-price" min="0" step="1" placeholder="e.g. 249">
       </div>
 
       <div class="form-group">
@@ -199,6 +204,10 @@
     <div class="form-group">
       <label>Description *</label>
       <textarea id="edit-desc" style="min-height:100px"></textarea>
+    </div>
+    <div class="form-group">
+      <label>Price in ₹ (leave empty to hide)</label>
+      <input type="number" id="edit-price" min="0" step="1">
     </div>
     <div class="form-group">
       <label>Amazon Link</label>
@@ -429,7 +438,8 @@
         description,
         amazon_link: amazon_link || null,
         flipkart_link: flipkart_link || null,
-        images: imageUrls
+        images: imageUrls,
+        ...(document.getElementById('plant-price').value !== '' ? { price: Number(document.getElementById('plant-price').value) } : {})
       }]);
 
       if (dbError) throw new Error(`Database error: ${dbError.message}`);
@@ -529,6 +539,7 @@
     document.getElementById('edit-category').value = plant.category || 'indoor';
     document.getElementById('edit-desc').value = plant.description || '';
     document.getElementById('edit-amazon').value = plant.amazon_link || '';
+    document.getElementById('edit-price').value = plant.price != null ? plant.price : '';
     document.getElementById('edit-flipkart').value = plant.flipkart_link || '';
     handleEditCategoryChange(plant.subcategory);
     editImages = parseImages(plant.images);
@@ -593,6 +604,7 @@
       description,
       amazon_link: amazon_link || null,
       flipkart_link: flipkart_link || null,
+      price: document.getElementById('edit-price').value !== '' ? Number(document.getElementById('edit-price').value) : null,
       images
     }).eq('id', editingPlantId);
 
@@ -712,9 +724,9 @@
       if (/\.csv$/i.test(f.name)) {
         const rows = parseCSV(await f.text());
         const head = rows[0].map(h => h.trim().toLowerCase());
-        const iA = head.indexOf('asin'), iT = head.findIndex(h => h.includes('title')), iS = head.indexOf('status');
+        const iA = head.indexOf('asin'), iT = head.findIndex(h => h.includes('title')), iS = head.indexOf('status'), iP = head.findIndex(h => h === 'current price' || h === 'price');
         if (iA < 0 || iT < 0) { bulkAlert('That CSV needs "ASIN" and "Product Title" columns.', 'error'); continue; }
-        bulk.csv = rows.slice(1).filter(r => r[iA]).map(r => ({ asin: r[iA].trim(), title: r[iT].trim(), status: iS >= 0 ? r[iS].trim() : '' }));
+        bulk.csv = rows.slice(1).filter(r => r[iA]).map(r => ({ asin: r[iA].trim(), title: r[iT].trim(), status: iS >= 0 ? r[iS].trim() : '', price: iP >= 0 ? (parseFloat(String(r[iP]).replace(/[^0-9.]/g, '')) || '') : '' }));
       } else if (f.type.startsWith('image/') || /\.(jpe?g|png|webp)$/i.test(f.name)) {
         const { key, ord } = photoKey(f.name);
         const k = key.toLowerCase();
@@ -732,7 +744,7 @@
     if (bulk.csv) {
       for (const c of bulk.csv) {
         const k = c.asin.toLowerCase();
-        if (!rows[k]) { const nm = niceName(c.title); rows[k] = { key: k, asin: c.asin, name: nm, catsub: guessCat(nm), desc: '', amazon: `https://www.amazon.in/dp/${c.asin}`, flip: '', include: true }; }
+        if (!rows[k]) { const nm = niceName(c.title); rows[k] = { key: k, asin: c.asin, name: nm, catsub: guessCat(nm), desc: '', price: c.price || '', amazon: `https://www.amazon.in/dp/${c.asin}`, flip: '', include: true }; }
       }
       ignored = Object.keys(bulk.groups).filter(k => !rows[k]).length;
     } else {
@@ -766,6 +778,10 @@
           <input type="text" value="${esc(r.name)}" placeholder="Plant name" oninput="bulkSet('${esc(r.key)}','name',this.value)">
           <select onchange="bulkSet('${esc(r.key)}','catsub',this.value)">${catOptionsHTML(r.catsub)}</select>
           <textarea placeholder="Description (optional — a simple one is added if empty; edit later in Manage Plants)" oninput="bulkSet('${esc(r.key)}','desc',this.value)">${esc(r.desc)}</textarea>
+          <div class="bulk-two">
+            <input type="number" value="${esc(r.price)}" placeholder="Price in ₹" oninput="bulkSet('${esc(r.key)}','price',this.value)">
+            <span></span>
+          </div>
           <div class="bulk-two">
             <input type="url" value="${esc(r.amazon)}" placeholder="Amazon link" oninput="bulkSet('${esc(r.key)}','amazon',this.value)">
             <input type="url" value="${esc(r.flip)}" placeholder="Flipkart link (optional)" oninput="bulkSet('${esc(r.key)}','flip',this.value)">
@@ -813,7 +829,7 @@
         }
         const [category, subcategory] = r.catsub.split('|');
         const description = r.desc.trim() || `${r.name.split('(')[0].trim()} — healthy live plant from Bonayon. Tap Buy on Amazon to order.`;
-        const { error } = await db.from('plants').insert([{ name: r.name.trim(), category, subcategory, description, amazon_link: r.amazon.trim() || null, flipkart_link: r.flip.trim() || null, images: urls, created_at: new Date().toISOString() }]);
+        const { error } = await db.from('plants').insert([{ name: r.name.trim(), category, subcategory, description, amazon_link: r.amazon.trim() || null, flipkart_link: r.flip.trim() || null, images: urls, ...(r.price !== '' && r.price != null ? { price: Number(r.price) } : {}), created_at: new Date().toISOString() }]);
         if (error) throw new Error(error.message);
         r.status = 'done'; r.include = false; done++;
         if (st) { st.className = 'bulk-status ok'; st.textContent = '✅ Published'; }

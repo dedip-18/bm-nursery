@@ -3,162 +3,89 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Plant Detail — Bonayon</title>
+  <title>Plant | Bonayon</title>
   <link rel="stylesheet" href="styles.css">
-  
 </head>
 <body>
 
-<nav>
-  <a href="index.html" class="nav-logo">
-    <span style="font-family:Playfair Display,serif;font-size:1.3rem;font-weight:700;color:var(--forest)">🌿 Bonayon <span style="font-family:'Poppins',sans-serif;font-size:0.62rem;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--green-mid);background:var(--green-pale);padding:3px 9px;border-radius:20px;vertical-align:middle">Your Own Nursery</span></span>
-  </a>
-  <ul class="nav-links">
-    <li><a href="index.html">Home</a></li>
-    <li><a href="indoor.html">Indoor</a></li>
-    <li><a href="outdoor.html">Outdoor</a></li>
-    <li><a href="seeds.html">Seeds</a></li>
-  </ul>
-  <button class="search-toggle" id="search-toggle" title="Search plants (Ctrl+K)">🔍</button>
-  <div class="nav-toggle"><span></span><span></span><span></span></div>
-</nav>
+<div id="site-header"></div>
 
-<!-- GLOBAL SEARCH OVERLAY -->
-<div class="search-overlay" id="search-overlay">
-  <div class="search-modal">
-    <div class="search-input-wrap">
-      <span>🔍</span>
-      <input type="text" id="global-search-input" placeholder="Search plants, seeds...">
-      <button class="search-close-btn" id="search-close">ESC</button>
-    </div>
-    <div class="search-results" id="search-results">
-      <div class="sr-empty">Start typing to search plants...</div>
-    </div>
-  </div>
-</div>
+<main class="wrap" id="content">
+  <p class="loading" style="padding:100px 0">Loading plant details...</p>
+</main>
 
-<div id="content">
-  <div class="loading-state" style="padding:100px 20px">
-    <div class="spinner"></div>
-    <p>Loading plant details...</p>
-  </div>
-</div>
-
-<footer class="inner-footer">
-  <span class="brand">🌿 Bonayon</span>
-  <p>Bonayon &copy; 2026</p>
-  <div class="footer-nav-links">
-    <a href="indoor.html">🪴 Indoor</a>
-    <a href="outdoor.html">🌳 Outdoor</a>
-    <a href="seeds.html">🌱 Seeds</a>
-    <a href="https://wa.me/917362980328" target="_blank">💬 WhatsApp</a>
-  </div>
-</footer>
+<div id="site-footer"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="common.js"></script>
 <script>
-  const categoryMap = {
-    indoor: { label: 'Indoor Plant', back: 'indoor.html', emoji: '🪴' },
-    outdoor: { label: 'Outdoor Plant', back: 'outdoor.html', emoji: '🌳' },
-    seed: { label: 'Seed', back: 'seeds.html', emoji: '🌱' }
+  const CATS = {
+    indoor:  { label: 'Indoor plants',  href: 'indoor.html' },
+    outdoor: { label: 'Outdoor plants', href: 'outdoor.html' },
+    seed:    { label: 'Seeds',          href: 'seeds.html' }
   };
 
+  function notFound(msg) {
+    document.getElementById('content').innerHTML = `<div class="notfound"><h1>${msg}</h1><p><a href="index.html">Back to all plants</a></p></div>`;
+  }
+
   async function loadPlant() {
-    const params = new URLSearchParams(window.location.search);
-    const id = params.get('id');
-    const content = document.getElementById('content');
+    const id = new URLSearchParams(location.search).get('id');
+    if (!id) return notFound('Plant not found');
+    const { data: p, error } = await db.from('plants').select('*').eq('id', id).single();
+    if (error || !p) return notFound('Plant not found');
 
-    if (!id) {
-      content.innerHTML = `<div class="empty-state"><div class="empty-icon">❓</div><h3>Plant not found</h3><p><a href="index.html">Go back home</a></p></div>`;
-      return;
-    }
+    const cat = CATS[p.category] || { label: 'All plants', href: 'index.html' };
+    const imgs = imgsOf(p);
+    const { title, sci } = nameParts(p.name);
+    const price = money(p);
+    document.title = `${title} | Bonayon`;
 
-    const { data, error } = await db.from('plants').select('*').eq('id', id).single();
-
-    if (error || !data) {
-      content.innerHTML = `<div class="empty-state"><div class="empty-icon">❓</div><h3>Plant not found</h3><p><a href="index.html">Go back home</a></p></div>`;
-      return;
-    }
-
-    const cat = categoryMap[data.category] || { label: data.category, back: 'index.html', emoji: '🌿' };
-    let images = data.images || [];
-    if (typeof images === 'string') {
-      try { images = JSON.parse(images); } catch { images = [images]; }
-    }
-    if (!Array.isArray(images)) images = [];
-
-    // Update page title
-    document.title = `${data.name} — Bonayon`;
-
-    const slidesHTML = images.length > 0
-      ? images.map(url => `<div class="carousel-slide"><img src="${url}" alt="${data.name}"></div>`).join('')
-      : `<div class="carousel-slide" style="display:flex;align-items:center;justify-content:center;background:var(--sage-light);height:100%"><span style="font-size:6rem">${cat.emoji}</span></div>`;
-
-    const thumbsHTML = images.length > 1
-      ? images.map((url, i) => `<div class="thumb ${i === 0 ? 'active' : ''}" data-index="${i}"><img src="${url}" alt="Photo ${i+1}"></div>`).join('')
-      : '';
-
-    content.innerHTML = `
-      <div class="plant-detail fade-in">
-        <a href="${cat.back}" class="back-btn">← Back to ${cat.label}s</a>
-        <div class="plant-detail-grid">
-          <div>
-            <div class="plant-detail-carousel">
-              <div class="carousel" id="main-carousel">
-                <div class="carousel-track">${slidesHTML}</div>
-                ${images.length > 1 ? `<button class="carousel-btn prev">&#8249;</button><button class="carousel-btn next">&#8250;</button>` : ''}
-                ${images.length > 1 ? `<div class="carousel-dots">${images.map(() => '<div class="dot"></div>').join('')}</div>` : ''}
-              </div>
-            </div>
-            ${thumbsHTML ? `<div class="plant-detail-thumbs">${thumbsHTML}</div>` : ''}
+    document.getElementById('content').innerHTML = `
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a><span>/</span><a href="${cat.href}">${cat.label}</a><span>/</span>${esc(title)}</nav>
+      <div class="detail">
+        <div>
+          <div class="gallery-main" id="gmain">
+            ${imgs.length ? `<img id="gimg" src="${esc(imgs[0])}" alt="${esc(title)}">` : ''}
+            ${imgs.length > 1 ? `<button class="gallery-nav prev" type="button" aria-label="Previous photo">&#8249;</button><button class="gallery-nav next" type="button" aria-label="Next photo">&#8250;</button>` : ''}
           </div>
-          <div class="plant-detail-info">
-            <span class="plant-category-badge">${cat.emoji} ${cat.label}</span>
-            <h1>${data.name}</h1>
-            <p class="plant-detail-desc">${data.description || 'No description available.'}</p>
-            ${(data.amazon_link || data.flipkart_link) ? `
-            <div class="buy-section">
-              <h4>Buy Now</h4>
-              <div class="buy-buttons">
-                ${data.amazon_link ? `<a href="${data.amazon_link}" target="_blank" rel="noopener" class="btn-amazon">🛒 Buy on Amazon</a>` : ''}
-                ${data.flipkart_link ? `<a href="${data.flipkart_link}" target="_blank" rel="noopener" class="btn-flipkart">🛍 Buy on Flipkart</a>` : ''}
-              </div>
-            </div>` : ''}
+          ${imgs.length > 1 ? `<div class="thumbs">${imgs.map((u, i) => `<button class="thumb ${i ? '' : 'active'}" type="button" data-i="${i}" aria-label="Photo ${i + 1}"><img src="${esc(u)}" alt=""></button>`).join('')}</div>` : ''}
+        </div>
+        <div class="info">
+          ${SUB_LABELS[p.subcategory] ? `<p class="tagline">${esc(SUB_LABELS[p.subcategory])}</p>` : ''}
+          <h1>${esc(title)}</h1>
+          ${sci ? `<p class="sci">${esc(sci)}</p>` : ''}
+          ${price ? `<p class="price">${price}<small>Price on Amazon.in may change</small></p>` : ''}
+          <div class="buy-row">
+            ${p.amazon_link ? `<a class="btn btn-primary" href="${esc(p.amazon_link)}" target="_blank" rel="noopener">Buy on Amazon</a>` : ''}
+            ${p.flipkart_link ? `<a class="btn btn-flip" href="${esc(p.flipkart_link)}" target="_blank" rel="noopener">Buy on Flipkart</a>` : ''}
+            <a class="btn btn-ghost" href="${WA_LINK}?text=${encodeURIComponent('Hi, I have a question about ' + title)}" target="_blank" rel="noopener">Ask on WhatsApp</a>
           </div>
+          <p class="desc">${esc(p.description || '')}</p>
+          <ul class="promises">
+            <li>Packed and dispatched from our nursery in Kolkata</li>
+            <li>Wrapped to travel safely across India</li>
+            <li>Care questions? We reply on WhatsApp</li>
+          </ul>
         </div>
       </div>`;
 
-    // Init main carousel
-    const carouselEl = document.getElementById('main-carousel');
-    const { goTo } = initCarousel(carouselEl);
-
-    // Thumbnail click
-    document.querySelectorAll('.thumb').forEach(thumb => {
-      thumb.addEventListener('click', () => {
-        const idx = parseInt(thumb.dataset.index);
-        goTo(idx);
-        document.querySelectorAll('.thumb').forEach(t => t.classList.toggle('active', t === thumb));
-      });
-    });
-
-    // Sync dots → thumbs
-    const observer = new MutationObserver(() => {
-      const activeDot = carouselEl.querySelector('.dot.active');
-      if (activeDot) {
-        const idx = [...carouselEl.querySelectorAll('.dot')].indexOf(activeDot);
-        document.querySelectorAll('.thumb').forEach((t, i) => t.classList.toggle('active', i === idx));
-      }
-    });
-    carouselEl.querySelectorAll('.dot').forEach(d => observer.observe(d, { attributes: true }));
+    if (imgs.length > 1) {
+      let i = 0;
+      const img = document.getElementById('gimg');
+      const go = n => {
+        i = (n + imgs.length) % imgs.length; img.src = imgs[i];
+        document.querySelectorAll('.thumb').forEach((t, k) => t.classList.toggle('active', k === i));
+      };
+      document.querySelector('.gallery-nav.prev').addEventListener('click', () => go(i - 1));
+      document.querySelector('.gallery-nav.next').addEventListener('click', () => go(i + 1));
+      document.querySelectorAll('.thumb').forEach(t => t.addEventListener('click', () => go(Number(t.dataset.i))));
+      let x0 = 0; const gm = document.getElementById('gmain');
+      gm.addEventListener('touchstart', e => { x0 = e.touches[0].clientX; }, { passive: true });
+      gm.addEventListener('touchend', e => { const d = x0 - e.changedTouches[0].clientX; if (Math.abs(d) > 40) go(i + (d > 0 ? 1 : -1)); });
+    }
   }
-
   loadPlant();
-
-  // Nav toggle
-  document.querySelector('.nav-toggle').addEventListener('click', () => {
-    document.querySelector('.nav-links').classList.toggle('open');
-  });
 </script>
 </body>
 </html>

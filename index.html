@@ -3,348 +3,183 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bonayon — Premium Plants & Seeds</title>
-  <meta name="description" content="Handpicked indoor plants, outdoor plants and seeds. Shop on Amazon.">
+  <title>Bonayon | Live plants from Kolkata, shipped across India</title>
+  <meta name="description" content="Indoor plants, flowering shrubs, fruit trees, herbs and seeds from our nursery in Kolkata. Order on Amazon.in.">
   <link rel="stylesheet" href="styles.css">
 </head>
-<body class="home">
+<body>
 
-<a href="https://wa.me/917362980328" target="_blank" class="wa-float" title="WhatsApp Us">💬</a>
+<div id="site-header"></div>
 
-<!-- NAV -->
-<nav id="navbar">
-  <a href="index.html" class="nav-brand"><span class="leaf">🌿</span> Bonayon <span class="nav-tagline">Your Own Nursery</span></a>
-  <ul class="nav-links" id="nav-links">
-    <li><a href="indoor.html">Indoor</a></li>
-    <li><a href="outdoor.html">Outdoor</a></li>
-    <li><a href="seeds.html">Seeds</a></li>
-    <li><a href="https://wa.me/917362980328" target="_blank" class="home-nav-cta">Order Now</a></li>
-  </ul>
-  <button class="search-toggle" id="search-toggle" title="Search plants (Ctrl+K)">🔍</button>
-  <div class="nav-toggle" id="nav-toggle"><span></span><span></span><span></span></div>
-</nav>
-
-<!-- GLOBAL SEARCH OVERLAY -->
-<div class="search-overlay" id="search-overlay">
-  <div class="search-modal">
-    <div class="search-input-wrap">
-      <span>🔍</span>
-      <input type="text" id="global-search-input" placeholder="Search plants, seeds...">
-      <button class="search-close-btn" id="search-close">ESC</button>
-    </div>
-    <div class="search-results" id="search-results">
-      <div class="sr-empty">Start typing to search plants...</div>
-    </div>
-  </div>
-</div>
-
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-text">
-    <div class="hero-eyebrow">Premium Botanical Collection</div>
-    <h1>Where Every<br><em>Leaf Tells</em><br>A Story</h1>
-    <p class="hero-sub">Discover our handpicked collection of indoor plants, outdoor beauties, and premium seeds — delivered safely to your door.</p>
-    <div class="hero-btns">
-      <a href="#shop" class="h-btn-primary">Shop All Plants →</a>
-      <a href="https://wa.me/917362980328" target="_blank" class="h-btn-wa">💬 WhatsApp Us</a>
-    </div>
-    <div class="hero-trust">
-      <div class="hero-trust-item"><span class="ti">✓</span> Hand-selected plants</div>
-      <div class="hero-trust-item"><span class="ti">✓</span> Safe packaging</div>
-      <div class="hero-trust-item"><span class="ti">✓</span> Sold on Amazon</div>
-    </div>
-  </div>
-  <div class="hero-plants-row" id="hero-plants-row">
-    <!-- 3 plant cards loaded here -->
-    <div class="hp-loading"><div class="fspinner"></div></div>
-  </div>
-</section>
-
-<!-- STATS -->
-<div class="stats-strip">
-  <div class="stats-strip-inner" id="stats-inner">
-    <div class="ss-item reveal"><div class="ss-num" id="s-total">—</div><div class="ss-lbl">Plants &amp; Seeds</div></div>
-    <div class="ss-item reveal reveal-delay-1"><div class="ss-num" id="s-indoor">—</div><div class="ss-lbl">Indoor Plants</div></div>
-    <div class="ss-item reveal reveal-delay-2"><div class="ss-num" id="s-outdoor">—</div><div class="ss-lbl">Outdoor Plants</div></div>
-    <div class="ss-item reveal reveal-delay-3" id="ss-seed" style="display:none"><div class="ss-num" id="s-seed">0</div><div class="ss-lbl">Seed Varieties</div></div>
-    <div class="ss-item reveal reveal-delay-3"><div class="ss-num">🛒</div><div class="ss-lbl">Buy on Amazon</div></div>
-  </div>
-</div>
-
-<!-- MARQUEE -->
-<div class="marquee-wrap">
-  <div class="marquee-track">
-    <div class="marquee-item"><span class="mdot">🌿</span> Indoor Plants</div>
-    <div class="marquee-item"><span class="mdot">🌸</span> Flowering Plants</div>
-    <div class="marquee-item"><span class="mdot">🍋</span> Fruit Plants</div>
-    <div class="marquee-item"><span class="mdot">🌿</span> Herbs &amp; Spice</div>
-    <div class="marquee-item"><span class="mdot">🌴</span> Trees &amp; Shrubs</div>
-    <div class="marquee-item"><span class="mdot">🥦</span> Vegetable Seeds</div>
-    <div class="marquee-item"><span class="mdot">🌱</span> Flower Seeds</div>
-    <div class="marquee-item"><span class="mdot">📦</span> Safe Delivery</div>
-    <div class="marquee-item"><span class="mdot">🛒</span> Sold on Amazon</div>
-    <div class="marquee-item"><span class="mdot">🌿</span> Indoor Plants</div>
-    <div class="marquee-item"><span class="mdot">🌸</span> Flowering Plants</div>
-    <div class="marquee-item"><span class="mdot">🍋</span> Fruit Plants</div>
-    <div class="marquee-item"><span class="mdot">🌿</span> Herbs &amp; Spice</div>
-    <div class="marquee-item"><span class="mdot">🌴</span> Trees &amp; Shrubs</div>
-    <div class="marquee-item"><span class="mdot">🥦</span> Vegetable Seeds</div>
-    <div class="marquee-item"><span class="mdot">🌱</span> Flower Seeds</div>
-    <div class="marquee-item"><span class="mdot">📦</span> Safe Delivery</div>
-    <div class="marquee-item"><span class="mdot">🛒</span> Sold on Amazon</div>
-  </div>
-</div>
-
-<!-- SHOP -->
-<section class="featured-section" id="shop">
-  <div class="featured-inner">
-    <div class="featured-header reveal">
-      <div class="h-eyebrow">Our Collection</div>
-      <h2 class="h-title">Shop <em>All Plants</em></h2>
-      <p class="h-sub">Pick a category, tap a plant for details, or buy directly on Amazon.</p>
-    </div>
-    <div class="shop-chips" id="shop-chips"></div>
-    <div class="shop-grid" id="shop-grid">
-      <div class="featured-loading"><div class="fspinner"></div></div>
-    </div>
-    <div class="featured-footer">
-      <button class="h-btn-primary" id="shop-more" style="display:none;border:none;cursor:pointer">Show more plants ↓</button>
-    </div>
-  </div>
-</section>
-
-<!-- CATEGORIES -->
-<section class="home-cats">
-  <div class="home-cats-inner">
-    <div class="hc-header reveal">
-      <div class="h-eyebrow">Our Collection</div>
-      <h2 class="h-title">Find Your Perfect <em>Plant</em></h2>
-      <p class="h-sub">Three curated worlds of greenery — each with its own character, care, and charm.</p>
-    </div>
-    <div class="cats-grid">
-      <a href="indoor.html" class="c-card indoor featured reveal">
-        <div class="c-bg"></div>
-        <div class="c-overlay"></div>
-        <div class="c-deco">🪴</div>
-        <div class="c-content">
-          <span class="c-pill">🪴 Indoor</span>
-          <div class="c-name">Indoor<br>Plants</div>
-          <p class="c-desc">Lush, air-purifying plants that bring calm and life to your home or office.</p>
-          <span class="c-arrow">Explore →</span>
+<main>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <h1>Live plants from Kolkata, shipped across India</h1>
+        <p class="lede">Indoor foliage, flowering shrubs, fruit trees and herbs. Packed at our nursery and delivered through Amazon.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#shop">Shop plants</a>
+          <a class="btn btn-ghost" href="https://wa.me/917362980328" target="_blank" rel="noopener">Ask us on WhatsApp</a>
         </div>
-      </a>
-      <a href="outdoor.html" class="c-card outdoor reveal reveal-delay-1">
-        <div class="c-bg"></div>
-        <div class="c-overlay"></div>
-        <div class="c-deco">🌳</div>
-        <div class="c-content">
-          <span class="c-pill">🌳 Outdoor</span>
-          <div class="c-name">Outdoor<br>Plants</div>
-          <p class="c-desc">Flowering, fruit, herbs and trees for your garden or balcony.</p>
-          <span class="c-arrow">Explore →</span>
-        </div>
-      </a>
-      <a href="seeds.html" class="c-card seeds reveal reveal-delay-2">
-        <div class="c-bg"></div>
-        <div class="c-overlay"></div>
-        <div class="c-deco">🌱</div>
-        <div class="c-content">
-          <span class="c-pill">🌱 Seeds</span>
-          <div class="c-name">Premium<br>Seeds</div>
-          <p class="c-desc">High-germination vegetable, flower and herb seeds to grow from scratch.</p>
-          <span class="c-arrow">Shop →</span>
-        </div>
-      </a>
+        <p class="hero-note" id="hero-note"></p>
+      </div>
+      <div class="hero-shelf" id="hero-shelf" aria-label="Featured plants"></div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- WHY US -->
-<section class="why-section">
-  <div class="why-inner">
-    <div class="why-left">
-      <div class="h-eyebrow reveal">Why Choose Us</div>
-      <h2 class="h-title reveal">Rooted in <em>Quality</em><br>&amp; Care</h2>
-      <div class="feature-list">
-        <div class="feature-item reveal">
-          <div class="feature-icon">🌿</div>
-          <div>
-            <h4>Carefully Curated</h4>
-            <p>Every plant is hand-selected for health, quality, and beauty before it reaches you.</p>
-          </div>
-        </div>
-        <div class="feature-item reveal reveal-delay-1">
-          <div class="feature-icon">📦</div>
-          <div>
-            <h4>Safe Packaging &amp; Delivery</h4>
-            <p>Packed with care to arrive fresh, healthy, and ready to grow.</p>
-          </div>
-        </div>
-        <div class="feature-item reveal reveal-delay-2">
-          <div class="feature-icon">🛒</div>
-          <div>
-            <h4>Shop on Amazon</h4>
-            <p>Sold on Amazon — secure checkout, easy returns and buyer protection.</p>
-          </div>
-        </div>
-        <div class="feature-item reveal reveal-delay-3">
-          <div class="feature-icon">💬</div>
-          <div>
-            <h4>Personal Plant Advice</h4>
-            <p>WhatsApp us anytime — happy to help you pick the right plant for your space.</p>
-          </div>
+  <!-- BROWSE BY TYPE -->
+  <section class="section" style="padding-top:0">
+    <div class="wrap">
+      <div class="section-head"><h2>Browse by type</h2></div>
+      <div class="types" id="types"></div>
+    </div>
+  </section>
+
+  <!-- SHOP -->
+  <section class="section" id="shop" style="padding-top:0">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>All plants</h2>
+        <p>Tap a plant for photos and details, or buy it straight on Amazon.</p>
+      </div>
+      <div class="chips" id="shop-chips" role="group" aria-label="Filter plants"></div>
+      <div class="grid" id="shop-grid"><p class="loading">Loading plants...</p></div>
+      <div class="grid-more"><button class="btn btn-dark" id="shop-more" type="button" hidden>Show more plants</button></div>
+    </div>
+  </section>
+
+  <!-- WHY BONAYON -->
+  <section class="section why">
+    <div class="wrap why-grid">
+      <div>
+        <h2>Why order from Bonayon</h2>
+        <div class="facts">
+          <div class="fact"><h3>Nursery in Kolkata</h3><p>Every plant is packed and dispatched from our own nursery in Kolkata.</p></div>
+          <div class="fact"><h3>Packed to travel</h3><p>Plants are wrapped and boxed so they reach you fresh, not crushed.</p></div>
+          <div class="fact"><h3>Checkout on Amazon</h3><p>Payment, tracking and delivery support all run through Amazon India.</p></div>
+          <div class="fact"><h3>Advice on WhatsApp</h3><p>Tell us your light and space, and we will tell you what will grow there.</p></div>
         </div>
       </div>
-    </div>
-    <div class="why-right reveal">
-      <div class="info-card">
-        <div class="info-grid">
-          <div class="info-item">
-            <span class="in" id="w-total">—</span>
-            <span class="il">Plants &amp; Seeds</span>
-          </div>
-          <div class="info-item">
-            <span class="in">100%</span>
-            <span class="il">Natural Plants</span>
-          </div>
-          <div class="info-item">
-            <span class="in">🛒</span>
-            <span class="il">Sold on Amazon</span>
-          </div>
-          <div class="info-item">
-            <span class="in">⚡</span>
-            <span class="il">Fast Dispatch</span>
-          </div>
-        </div>
-        <a href="https://wa.me/917362980328" target="_blank" class="wa-card">
-          <div class="wa-icon-wrap">💬</div>
-          <div class="wa-card-text">
-            <strong>Chat on WhatsApp</strong>
-            <span>+91 73629 80328 · Replies fast</span>
-          </div>
-          <span class="wa-card-arrow">→</span>
-        </a>
+      <div class="wa-panel">
+        <h3>Not sure which plant suits your space?</h3>
+        <p>Send us a photo of the spot and we will suggest something that will do well.</p>
+        <a class="btn" href="https://wa.me/917362980328" target="_blank" rel="noopener">Message us on WhatsApp</a>
+        <span class="wa-num">+91 73629 80328</span>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- CTA -->
-<section class="cta-band">
-  <div class="cta-band-inner">
-    <div class="cta-eyebrow reveal">Get Started Today</div>
-    <h2 class="cta-title reveal">Ready to <em>Go Green?</em></h2>
-    <p class="cta-sub reveal">Browse our collection and find the perfect plant for your home, garden, or as a gift.</p>
-    <div class="cta-btns reveal">
-      <a href="indoor.html" class="cta-btn light">🪴 Indoor Plants</a>
-      <a href="outdoor.html" class="cta-btn ghost">🌳 Outdoor Plants</a>
-      <a href="seeds.html" class="cta-btn ghost">🌱 Seeds</a>
+  <!-- REVIEWS: appears only when real reviews are added below -->
+  <section class="section" id="reviews" hidden>
+    <div class="wrap">
+      <div class="section-head"><h2>What customers say</h2></div>
+      <div class="reviews-grid" id="reviews-grid"></div>
     </div>
-  </div>
-</section>
+  </section>
+</main>
 
-<!-- FOOTER -->
-<footer class="home-footer">
-  <div class="hf-brand">🌿 Bonayon</div>
-  <div class="hf-links">
-    <a href="indoor.html">Indoor</a>
-    <a href="outdoor.html">Outdoor</a>
-    <a href="seeds.html">Seeds</a>
-    <a href="https://wa.me/917362980328" target="_blank">WhatsApp</a>
-  </div>
-  <div class="hf-copy">© 2026 Bonayon. All rights reserved.</div>
-</footer>
+<div id="site-footer"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="common.js"></script>
 <script>
-  // Nav
-  window.addEventListener('scroll', () => document.getElementById('navbar').classList.toggle('scrolled', scrollY > 40));
-  document.getElementById('nav-toggle').addEventListener('click', () => document.getElementById('nav-links').classList.toggle('open'));
+  // ---- Real customer reviews go here. Leave the list empty and the section stays hidden. ----
+  // Example:  { text: 'The monstera arrived fresh and well packed.', name: 'Riya', place: 'Pune' }
+  const REVIEWS = [];
 
-  // Scroll reveal
-  const obs = new IntersectionObserver(entries => {
-    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); obs.unobserve(e.target); } });
-  }, { threshold: 0.1 });
-  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+  // Plants shown in the hero (by Amazon ASIN); if one is missing, the newest plants fill in.
+  const HERO_PICKS = ['B0HMRBYVSK', 'B0HMQXFVFG', 'B0HMR4SRZ1'];
 
-  const catEmoji = { indoor:'🪴', outdoor:'🌳', seed:'🌱' };
-  const subLabels = { 'air-purifying':'🌬️ Air Purifying','low-maintenance':'🌿 Low Maintenance','succulents':'🌵 Succulents','flowering':'🌸 Flowering','combo':'🎁 Combos','self-watering-pot':'🪣 Self Watering','fruit':'🍋 Fruit','herbs-spice':'🌿 Herbs & Spice','trees-shrubs':'🌴 Trees & Shrubs','vegetable-seeds':'🥦 Vegetable Seeds','flower-seeds':'🌸 Flower Seeds','herb-seeds':'🌿 Herb Seeds' };
-  const esc = t => String(t ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-  function imgsOf(p) {
-    let a = p.images || [];
-    if (typeof a === 'string') { try { a = JSON.parse(a); } catch { a = a ? [a] : []; } }
-    return Array.isArray(a) ? a : [];
-  }
+  const FILTER_SUBS = ['flowering', 'fruit', 'herbs-spice', 'trees-shrubs', 'air-purifying', 'low-maintenance', 'succulents'];
+  const TYPE_INFO = {
+    indoor:  { title: 'Indoor plants',  href: 'indoor.html',  subs: ['air-purifying', 'low-maintenance', 'succulents', 'flowering'] },
+    outdoor: { title: 'Outdoor plants', href: 'outdoor.html', subs: ['flowering', 'fruit', 'herbs-spice', 'trees-shrubs'] },
+    seed:    { title: 'Seeds',          href: 'seeds.html',   subs: [] }
+  };
   const PAGE = 8;
   let ALL = [], shown = PAGE, filter = 'all';
 
-  function setCounts() {
-    const n = c => ALL.filter(p => p.category === c).length;
-    document.getElementById('s-total').textContent = ALL.length;
-    document.getElementById('s-indoor').textContent = n('indoor');
-    document.getElementById('s-outdoor').textContent = n('outdoor');
-    if (n('seed') > 0) { document.getElementById('s-seed').textContent = n('seed'); document.getElementById('ss-seed').style.display = ''; }
-    document.getElementById('w-total').textContent = ALL.length;
+  const withPhoto = list => list.filter(p => imgsOf(p).length);
+
+  function renderHero() {
+    const picks = HERO_PICKS.map(a => ALL.find(p => (p.amazon_link || '').includes(a))).filter(p => p && imgsOf(p).length);
+    const rest = withPhoto(ALL).filter(p => !picks.includes(p));
+    const three = picks.concat(rest).slice(0, 3);
+    document.getElementById('hero-shelf').innerHTML = three.map(p => {
+      const { title } = nameParts(p.name);
+      return `<a class="tile" href="plant.html?id=${encodeURIComponent(p.id)}">
+        <img src="${esc(imgsOf(p)[0])}" alt="${esc(title)}">
+        <span class="tile-cap"><b>${esc(title)}</b>${money(p) ? `<i>${money(p)}</i>` : ''}</span>
+      </a>`;
+    }).join('');
+    const prices = ALL.map(p => Number(p.price)).filter(n => n > 0);
+    document.getElementById('hero-note').innerHTML = prices.length
+      ? `${ALL.length} plants and counting, <strong>from ₹${Math.min(...prices).toLocaleString('en-IN')}</strong>`
+      : `${ALL.length} plants and counting`;
   }
 
-  function loadHero() {
-    const row = document.getElementById('hero-plants-row');
-    const withPhoto = ALL.filter(p => imgsOf(p).length);
-    const data = withPhoto.slice(0, 3);
-    if (!data.length) { row.innerHTML = ''; return; }
-    row.innerHTML = data.map(p => `<a href="plant.html?id=${p.id}" class="hp-card">
-        <div class="hp-img"><img src="${esc(imgsOf(p)[0])}" alt="${esc(p.name)}"><span class="hp-badge">${catEmoji[p.category]||'🌿'} ${esc(p.category)}</span></div>
-        <div class="hp-body"><h3>${esc(p.name.split('(')[0].replace(/ Live Plant/i,'').trim())}</h3><span class="hp-link">View Plant →</span></div>
-      </a>`).join('');
+  function renderTypes() {
+    const keys = ['indoor', 'outdoor'].concat(ALL.some(p => p.category === 'seed') ? ['seed'] : []);
+    const box = document.getElementById('types');
+    box.classList.toggle('three', keys.length === 3);
+    box.innerHTML = keys.map(k => {
+      const list = ALL.filter(p => p.category === k);
+      const info = TYPE_INFO[k];
+      const hero = withPhoto(list)[0];
+      const subs = info.subs.filter(s => list.some(p => p.subcategory === s));
+      return `<div class="type ${k === 'seed' ? 'seeds' : k}">
+        <div class="type-text">
+          <h3><a href="${info.href}">${info.title}</a></h3>
+          <p class="type-count">${list.length} ${list.length === 1 ? 'plant' : 'plants'}</p>
+          <div class="type-subs">${subs.map(s => `<a href="${info.href}?cat=${s}">${esc(SUB_LABELS[s])}</a>`).join('')}</div>
+        </div>
+        <div class="type-photo">${hero ? `<img src="${esc(imgsOf(hero)[0])}" alt="" loading="lazy">` : ''}</div>
+      </div>`;
+    }).join('');
   }
 
   function filtered() {
     if (filter === 'all') return ALL;
-    if (['indoor','outdoor','seed'].includes(filter)) return ALL.filter(p => p.category === filter);
+    if (['indoor', 'outdoor', 'seed'].includes(filter)) return ALL.filter(p => p.category === filter);
     return ALL.filter(p => p.subcategory === filter);
   }
 
   function renderChips() {
-    const chips = [['all','All', ALL.length], ['indoor','🪴 Indoor', ALL.filter(p=>p.category==='indoor').length], ['outdoor','🌳 Outdoor', ALL.filter(p=>p.category==='outdoor').length]];
-    ['flowering','fruit','herbs-spice','trees-shrubs','air-purifying','low-maintenance','succulents'].forEach(k => {
-      const c = ALL.filter(p => p.subcategory === k).length;
-      if (c) chips.push([k, subLabels[k], c]);
-    });
-    if (ALL.some(p => p.category === 'seed')) chips.push(['seed','🌱 Seeds', ALL.filter(p=>p.category==='seed').length]);
-    document.getElementById('shop-chips').innerHTML = chips.map(([k,l,c]) => `<button class="shop-chip ${k===filter?'active':''}" onclick="setFilter('${k}')">${l} <span>${c}</span></button>`).join('');
+    const n = c => ALL.filter(p => p.category === c).length;
+    const chips = [['all', 'All', ALL.length], ['indoor', 'Indoor', n('indoor')], ['outdoor', 'Outdoor', n('outdoor')]];
+    if (n('seed')) chips.push(['seed', 'Seeds', n('seed')]);
+    FILTER_SUBS.forEach(k => { const c = ALL.filter(p => p.subcategory === k).length; if (c) chips.push([k, SUB_LABELS[k], c]); });
+    document.getElementById('shop-chips').innerHTML = chips.map(([k, l, c]) =>
+      `<button type="button" class="chip ${k === filter ? 'active' : ''}" data-f="${k}" aria-pressed="${k === filter}">${esc(l)} <span>${c}</span></button>`).join('');
   }
-
-  function setFilter(k) { filter = k; shown = PAGE; renderChips(); renderShop(); }
+  document.getElementById('shop-chips').addEventListener('click', e => {
+    const b = e.target.closest('.chip'); if (!b) return;
+    filter = b.dataset.f; shown = PAGE; renderChips(); renderShop();
+  });
 
   function renderShop() {
     const list = filtered();
-    const grid = document.getElementById('shop-grid');
-    grid.innerHTML = list.slice(0, shown).map(p => {
-      const src = imgsOf(p)[0];
-      const sub = subLabels[p.subcategory] || '';
-      return `<div class="sp-card">
-        <a href="plant.html?id=${p.id}" class="sp-img">${src ? `<img src="${esc(src)}" alt="${esc(p.name)}" loading="lazy">` : `<div class="fp-placeholder">${catEmoji[p.category]||'🌿'}</div>`}</a>
-        <div class="sp-body">
-          ${sub ? `<span class="sp-sub">${sub}</span>` : ''}
-          <a href="plant.html?id=${p.id}" class="sp-name">${esc(p.name)}</a>
-          <div class="sp-actions">
-            ${p.amazon_link ? `<a href="${esc(p.amazon_link)}" target="_blank" rel="noopener" class="sp-buy">🛒 Buy on Amazon</a>` : `<a href="plant.html?id=${p.id}" class="sp-buy alt">View details</a>`}
-            <a href="plant.html?id=${p.id}" class="sp-more">Details</a>
-          </div>
-        </div>
-      </div>`;
-    }).join('') || '<p style="grid-column:1/-1;text-align:center;color:var(--ink-light)">No plants here yet.</p>';
+    document.getElementById('shop-grid').innerHTML = list.slice(0, shown).map(plantCard).join('')
+      || '<div class="grid-empty"><h3>No plants here yet</h3><p>Try another type, or message us on WhatsApp.</p></div>';
     const more = document.getElementById('shop-more');
-    more.style.display = list.length > shown ? 'inline-flex' : 'none';
-    more.textContent = `Show more plants (${list.length - shown} left) ↓`;
+    more.hidden = list.length <= shown;
+    more.textContent = `Show more plants (${Math.max(list.length - shown, 0)} left)`;
   }
   document.getElementById('shop-more').addEventListener('click', () => { shown += PAGE; renderShop(); });
 
+  function renderReviews() {
+    if (!REVIEWS.length) return;
+    document.getElementById('reviews').hidden = false;
+    document.getElementById('reviews-grid').innerHTML = REVIEWS.map(r =>
+      `<figure class="review"><p>${esc(r.text)}</p><cite>${esc(r.name)}${r.place ? ` <span>${esc(r.place)}</span>` : ''}</cite></figure>`).join('');
+  }
+
   async function init() {
-    const { data } = await db.from('plants').select('id,name,category,subcategory,images,amazon_link,created_at').order('created_at', { ascending: false });
+    const { data, error } = await db.from('plants').select('*').order('created_at', { ascending: false });
+    if (error) { document.getElementById('shop-grid').innerHTML = '<div class="grid-empty"><h3>Could not load plants</h3><p>Please refresh the page in a moment.</p></div>'; return; }
     ALL = data || [];
-    setCounts(); loadHero(); renderChips(); renderShop();
+    renderHero(); renderTypes(); renderChips(); renderShop(); renderReviews();
   }
   init();
 </script>
