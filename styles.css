@@ -328,7 +328,7 @@ body.home .nav-toggle span { display:block; width:22px; height:2px; background:v
 
 .hp-img {
   position: relative;
-  aspect-ratio: 4/3;
+  aspect-ratio: 4/5;
   overflow: hidden;
   background: var(--stone);
 }
@@ -1030,3 +1030,36 @@ body.home .search-toggle:hover { background: var(--green-mist); border-color: va
   .mpr-actions { width: 100%; }
   .mpr-edit, .mpr-delete { flex: 1; text-align: center; }
 }
+
+
+/* ---- Shop section (home) ---- */
+.shop-chips { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:28px; }
+.shop-chip { border:1px solid var(--stone-dark); background:var(--white); color:var(--ink-mid); padding:8px 16px; border-radius:30px; font:inherit; font-size:0.84rem; font-weight:600; cursor:pointer; transition:all .2s; }
+.shop-chip span { opacity:.6; font-weight:500; margin-left:4px; }
+.shop-chip:hover { border-color:var(--green-deep); }
+.shop-chip.active { background:var(--green-deep); color:#fff; border-color:var(--green-deep); }
+.shop-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:20px; margin-bottom:40px; min-height:80px; }
+.sp-card { background:var(--white); border:1px solid var(--stone-dark); border-radius:14px; overflow:hidden; display:flex; flex-direction:column; transition:transform .3s, box-shadow .3s; }
+.sp-card:hover { transform:translateY(-5px); box-shadow:var(--shadow-md); }
+.sp-img { display:block; aspect-ratio:4/5; background:var(--stone); }
+.sp-img img { width:100%; height:100%; object-fit:contain; display:block; }
+.sp-body { padding:14px 16px 16px; display:flex; flex-direction:column; gap:8px; flex:1; }
+.sp-sub { font-size:.68rem; letter-spacing:.06em; text-transform:uppercase; color:var(--green-fresh); font-weight:700; }
+.sp-name { font-family:'Fraunces',serif; font-size:1rem; line-height:1.3; color:var(--ink); text-decoration:none; flex:1; }
+.sp-name:hover { color:var(--green-deep); }
+.sp-actions { display:flex; gap:8px; align-items:center; }
+.sp-buy { flex:1; text-align:center; background:var(--green-deep); color:#fff; text-decoration:none; padding:10px 8px; border-radius:10px; font-size:.82rem; font-weight:700; }
+.sp-buy:hover { background:var(--green-fresh); }
+.sp-buy.alt { background:var(--stone); color:var(--green-deep); }
+.sp-more { font-size:.8rem; color:var(--ink-light); text-decoration:underline; }
+@media (max-width:1000px){ .shop-grid{ grid-template-columns:repeat(3,1fr);} }
+@media (max-width:700px){
+  .shop-grid{ grid-template-columns:repeat(2,1fr); gap:10px; }
+  .sp-body{ padding:10px 10px 12px; } .sp-name{ font-size:.88rem; }
+  .sp-more{ display:none; } .sp-buy{ font-size:.74rem; padding:9px 4px; }
+  .shop-chips{ flex-wrap:nowrap; overflow-x:auto; padding-bottom:6px; margin-right:-24px; }
+  .shop-chip{ white-space:nowrap; }
+}
+
+/* Category pages: taller photo area so portrait plant photos fill the card */
+.plants-grid .carousel { aspect-ratio: 4/5; }

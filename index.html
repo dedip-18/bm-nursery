@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bonayon — Premium Plants & Seeds</title>
-  <meta name="description" content="Handpicked indoor plants, outdoor plants and seeds. Shop on Amazon & Flipkart.">
+  <meta name="description" content="Handpicked indoor plants, outdoor plants and seeds. Shop on Amazon.">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body class="home">
@@ -45,13 +45,13 @@
     <h1>Where Every<br><em>Leaf Tells</em><br>A Story</h1>
     <p class="hero-sub">Discover our handpicked collection of indoor plants, outdoor beauties, and premium seeds — delivered safely to your door.</p>
     <div class="hero-btns">
-      <a href="indoor.html" class="h-btn-primary">Explore Collection →</a>
+      <a href="#shop" class="h-btn-primary">Shop All Plants →</a>
       <a href="https://wa.me/917362980328" target="_blank" class="h-btn-wa">💬 WhatsApp Us</a>
     </div>
     <div class="hero-trust">
       <div class="hero-trust-item"><span class="ti">✓</span> Hand-selected plants</div>
       <div class="hero-trust-item"><span class="ti">✓</span> Safe packaging</div>
-      <div class="hero-trust-item"><span class="ti">✓</span> Amazon & Flipkart</div>
+      <div class="hero-trust-item"><span class="ti">✓</span> Sold on Amazon</div>
     </div>
   </div>
   <div class="hero-plants-row" id="hero-plants-row">
@@ -62,23 +62,12 @@
 
 <!-- STATS -->
 <div class="stats-strip">
-  <div class="stats-strip-inner">
-    <div class="ss-item reveal">
-      <div class="ss-num" id="s-indoor">—</div>
-      <div class="ss-lbl">Indoor Plants</div>
-    </div>
-    <div class="ss-item reveal reveal-delay-1">
-      <div class="ss-num" id="s-outdoor">—</div>
-      <div class="ss-lbl">Outdoor Plants</div>
-    </div>
-    <div class="ss-item reveal reveal-delay-2">
-      <div class="ss-num" id="s-seed">—</div>
-      <div class="ss-lbl">Seed Varieties</div>
-    </div>
-    <div class="ss-item reveal reveal-delay-3">
-      <div class="ss-num">⭐ 4.8</div>
-      <div class="ss-lbl">Customer Rating</div>
-    </div>
+  <div class="stats-strip-inner" id="stats-inner">
+    <div class="ss-item reveal"><div class="ss-num" id="s-total">—</div><div class="ss-lbl">Plants &amp; Seeds</div></div>
+    <div class="ss-item reveal reveal-delay-1"><div class="ss-num" id="s-indoor">—</div><div class="ss-lbl">Indoor Plants</div></div>
+    <div class="ss-item reveal reveal-delay-2"><div class="ss-num" id="s-outdoor">—</div><div class="ss-lbl">Outdoor Plants</div></div>
+    <div class="ss-item reveal reveal-delay-3" id="ss-seed" style="display:none"><div class="ss-num" id="s-seed">0</div><div class="ss-lbl">Seed Varieties</div></div>
+    <div class="ss-item reveal reveal-delay-3"><div class="ss-num">🛒</div><div class="ss-lbl">Buy on Amazon</div></div>
   </div>
 </div>
 
@@ -93,7 +82,7 @@
     <div class="marquee-item"><span class="mdot">🥦</span> Vegetable Seeds</div>
     <div class="marquee-item"><span class="mdot">🌱</span> Flower Seeds</div>
     <div class="marquee-item"><span class="mdot">📦</span> Safe Delivery</div>
-    <div class="marquee-item"><span class="mdot">🛒</span> Amazon &amp; Flipkart</div>
+    <div class="marquee-item"><span class="mdot">🛒</span> Sold on Amazon</div>
     <div class="marquee-item"><span class="mdot">🌿</span> Indoor Plants</div>
     <div class="marquee-item"><span class="mdot">🌸</span> Flowering Plants</div>
     <div class="marquee-item"><span class="mdot">🍋</span> Fruit Plants</div>
@@ -102,9 +91,27 @@
     <div class="marquee-item"><span class="mdot">🥦</span> Vegetable Seeds</div>
     <div class="marquee-item"><span class="mdot">🌱</span> Flower Seeds</div>
     <div class="marquee-item"><span class="mdot">📦</span> Safe Delivery</div>
-    <div class="marquee-item"><span class="mdot">🛒</span> Amazon &amp; Flipkart</div>
+    <div class="marquee-item"><span class="mdot">🛒</span> Sold on Amazon</div>
   </div>
 </div>
+
+<!-- SHOP -->
+<section class="featured-section" id="shop">
+  <div class="featured-inner">
+    <div class="featured-header reveal">
+      <div class="h-eyebrow">Our Collection</div>
+      <h2 class="h-title">Shop <em>All Plants</em></h2>
+      <p class="h-sub">Pick a category, tap a plant for details, or buy directly on Amazon.</p>
+    </div>
+    <div class="shop-chips" id="shop-chips"></div>
+    <div class="shop-grid" id="shop-grid">
+      <div class="featured-loading"><div class="fspinner"></div></div>
+    </div>
+    <div class="featured-footer">
+      <button class="h-btn-primary" id="shop-more" style="display:none;border:none;cursor:pointer">Show more plants ↓</button>
+    </div>
+  </div>
+</section>
 
 <!-- CATEGORIES -->
 <section class="home-cats">
@@ -152,23 +159,6 @@
   </div>
 </section>
 
-<!-- FEATURED PLANTS -->
-<section class="featured-section">
-  <div class="featured-inner">
-    <div class="featured-header reveal">
-      <div class="h-eyebrow">From Our Collection</div>
-      <h2 class="h-title">Recently Added <em>Plants</em></h2>
-      <p class="h-sub">A glimpse into our latest arrivals — each one handpicked with care.</p>
-    </div>
-    <div class="featured-grid" id="featured-grid">
-      <div class="featured-loading"><div class="fspinner"></div></div>
-    </div>
-    <div class="featured-footer reveal">
-      <a href="indoor.html" class="h-btn-primary" style="display:inline-flex">View All Plants →</a>
-    </div>
-  </div>
-</section>
-
 <!-- WHY US -->
 <section class="why-section">
   <div class="why-inner">
@@ -193,8 +183,8 @@
         <div class="feature-item reveal reveal-delay-2">
           <div class="feature-icon">🛒</div>
           <div>
-            <h4>Shop on Trusted Platforms</h4>
-            <p>Available on Amazon &amp; Flipkart — secure checkout and buyer protection.</p>
+            <h4>Shop on Amazon</h4>
+            <p>Sold on Amazon — secure checkout, easy returns and buyer protection.</p>
           </div>
         </div>
         <div class="feature-item reveal reveal-delay-3">
@@ -211,15 +201,15 @@
         <div class="info-grid">
           <div class="info-item">
             <span class="in" id="w-total">—</span>
-            <span class="il">Total Products</span>
+            <span class="il">Plants &amp; Seeds</span>
           </div>
           <div class="info-item">
             <span class="in">100%</span>
             <span class="il">Natural Plants</span>
           </div>
           <div class="info-item">
-            <span class="in">2</span>
-            <span class="il">Platforms</span>
+            <span class="in">🛒</span>
+            <span class="il">Sold on Amazon</span>
           </div>
           <div class="info-item">
             <span class="in">⚡</span>
@@ -278,74 +268,85 @@
   }, { threshold: 0.1 });
   document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 
-  // Load counts
-  async function loadCounts() {
-    const cats = ['indoor','outdoor','seed'];
-    const sids = ['s-indoor','s-outdoor','s-seed'];
-    let total = 0;
-    for (let i=0; i<cats.length; i++) {
-      const { count } = await db.from('plants').select('*',{count:'exact',head:true}).eq('category',cats[i]);
-      const n = count||0; total += n;
-      document.getElementById(sids[i]).textContent = n;
-    }
-    document.getElementById('w-total').textContent = total;
+  const catEmoji = { indoor:'🪴', outdoor:'🌳', seed:'🌱' };
+  const subLabels = { 'air-purifying':'🌬️ Air Purifying','low-maintenance':'🌿 Low Maintenance','succulents':'🌵 Succulents','flowering':'🌸 Flowering','combo':'🎁 Combos','self-watering-pot':'🪣 Self Watering','fruit':'🍋 Fruit','herbs-spice':'🌿 Herbs & Spice','trees-shrubs':'🌴 Trees & Shrubs','vegetable-seeds':'🥦 Vegetable Seeds','flower-seeds':'🌸 Flower Seeds','herb-seeds':'🌿 Herb Seeds' };
+  const esc = t => String(t ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  function imgsOf(p) {
+    let a = p.images || [];
+    if (typeof a === 'string') { try { a = JSON.parse(a); } catch { a = a ? [a] : []; } }
+    return Array.isArray(a) ? a : [];
+  }
+  const PAGE = 8;
+  let ALL = [], shown = PAGE, filter = 'all';
+
+  function setCounts() {
+    const n = c => ALL.filter(p => p.category === c).length;
+    document.getElementById('s-total').textContent = ALL.length;
+    document.getElementById('s-indoor').textContent = n('indoor');
+    document.getElementById('s-outdoor').textContent = n('outdoor');
+    if (n('seed') > 0) { document.getElementById('s-seed').textContent = n('seed'); document.getElementById('ss-seed').style.display = ''; }
+    document.getElementById('w-total').textContent = ALL.length;
   }
 
-  // Hero plant cards row
-  async function loadHero() {
+  function loadHero() {
     const row = document.getElementById('hero-plants-row');
-    const { data } = await db.from('plants').select('id,name,images,category,description').order('created_at',{ascending:false}).limit(3);
-    if (!data || data.length === 0) { row.innerHTML = ''; return; }
-    const catEmoji = { indoor:'🪴', outdoor:'🌳', seed:'🌱' };
-    row.innerHTML = data.map(p => {
-      let imgs = p.images||[];
-      if (typeof imgs==='string') { try{imgs=JSON.parse(imgs);}catch{imgs=[imgs];} }
-      if (!Array.isArray(imgs)) imgs=[];
-      const src = imgs[0]||'';
-      return `<a href="plant.html?id=${p.id}" class="hp-card">
-        <div class="hp-img">
-          ${src ? `<img src="${src}" alt="${p.name}">` : `<div class="hp-ph">${catEmoji[p.category]||'🌿'}</div>`}
-          <span class="hp-badge">${catEmoji[p.category]||'🌿'} ${p.category}</span>
-        </div>
-        <div class="hp-body">
-          <h3>${p.name}</h3>
-          <p>${(p.description||'').substring(0,60)}...</p>
-          <span class="hp-link">View Plant →</span>
-        </div>
-      </a>`;
-    }).join('');
+    const withPhoto = ALL.filter(p => imgsOf(p).length);
+    const data = withPhoto.slice(0, 3);
+    if (!data.length) { row.innerHTML = ''; return; }
+    row.innerHTML = data.map(p => `<a href="plant.html?id=${p.id}" class="hp-card">
+        <div class="hp-img"><img src="${esc(imgsOf(p)[0])}" alt="${esc(p.name)}"><span class="hp-badge">${catEmoji[p.category]||'🌿'} ${esc(p.category)}</span></div>
+        <div class="hp-body"><h3>${esc(p.name.split('(')[0].replace(/ Live Plant/i,'').trim())}</h3><span class="hp-link">View Plant →</span></div>
+      </a>`).join('');
   }
 
-  // Featured plants
-  async function loadFeatured() {
-    const grid = document.getElementById('featured-grid');
-    const { data } = await db.from('plants').select('*').order('created_at',{ascending:false}).limit(4);
-    if (!data || data.length===0) { grid.innerHTML=''; return; }
-    const catEmoji = { indoor:'🪴', outdoor:'🌳', seed:'🌱' };
-    grid.innerHTML = data.map(p => {
-      let imgs = p.images||[];
-      if (typeof imgs==='string') { try{imgs=JSON.parse(imgs);}catch{imgs=[imgs];} }
-      if (!Array.isArray(imgs)) imgs=[];
-      const src = imgs[0]||'';
-      return `<a href="plant.html?id=${p.id}" class="fp-card reveal">
-        <div class="fp-img-wrap">
-          ${src?`<img src="${src}" alt="${p.name}">`:`<div class="fp-placeholder">${catEmoji[p.category]||'🌿'}</div>`}
-          <div class="fp-overlay"></div>
-          <span class="fp-cat">${catEmoji[p.category]||'🌿'} ${p.category}</span>
-        </div>
-        <div class="fp-body">
-          <h3>${p.name}</h3>
-          <p>${(p.description||'').substring(0,75)}...</p>
-          <span class="fp-link">View Plant →</span>
-        </div>
-      </a>`;
-    }).join('');
-    grid.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+  function filtered() {
+    if (filter === 'all') return ALL;
+    if (['indoor','outdoor','seed'].includes(filter)) return ALL.filter(p => p.category === filter);
+    return ALL.filter(p => p.subcategory === filter);
   }
 
-  loadCounts();
-  loadHero();
-  loadFeatured();
+  function renderChips() {
+    const chips = [['all','All', ALL.length], ['indoor','🪴 Indoor', ALL.filter(p=>p.category==='indoor').length], ['outdoor','🌳 Outdoor', ALL.filter(p=>p.category==='outdoor').length]];
+    ['flowering','fruit','herbs-spice','trees-shrubs','air-purifying','low-maintenance','succulents'].forEach(k => {
+      const c = ALL.filter(p => p.subcategory === k).length;
+      if (c) chips.push([k, subLabels[k], c]);
+    });
+    if (ALL.some(p => p.category === 'seed')) chips.push(['seed','🌱 Seeds', ALL.filter(p=>p.category==='seed').length]);
+    document.getElementById('shop-chips').innerHTML = chips.map(([k,l,c]) => `<button class="shop-chip ${k===filter?'active':''}" onclick="setFilter('${k}')">${l} <span>${c}</span></button>`).join('');
+  }
+
+  function setFilter(k) { filter = k; shown = PAGE; renderChips(); renderShop(); }
+
+  function renderShop() {
+    const list = filtered();
+    const grid = document.getElementById('shop-grid');
+    grid.innerHTML = list.slice(0, shown).map(p => {
+      const src = imgsOf(p)[0];
+      const sub = subLabels[p.subcategory] || '';
+      return `<div class="sp-card">
+        <a href="plant.html?id=${p.id}" class="sp-img">${src ? `<img src="${esc(src)}" alt="${esc(p.name)}" loading="lazy">` : `<div class="fp-placeholder">${catEmoji[p.category]||'🌿'}</div>`}</a>
+        <div class="sp-body">
+          ${sub ? `<span class="sp-sub">${sub}</span>` : ''}
+          <a href="plant.html?id=${p.id}" class="sp-name">${esc(p.name)}</a>
+          <div class="sp-actions">
+            ${p.amazon_link ? `<a href="${esc(p.amazon_link)}" target="_blank" rel="noopener" class="sp-buy">🛒 Buy on Amazon</a>` : `<a href="plant.html?id=${p.id}" class="sp-buy alt">View details</a>`}
+            <a href="plant.html?id=${p.id}" class="sp-more">Details</a>
+          </div>
+        </div>
+      </div>`;
+    }).join('') || '<p style="grid-column:1/-1;text-align:center;color:var(--ink-light)">No plants here yet.</p>';
+    const more = document.getElementById('shop-more');
+    more.style.display = list.length > shown ? 'inline-flex' : 'none';
+    more.textContent = `Show more plants (${list.length - shown} left) ↓`;
+  }
+  document.getElementById('shop-more').addEventListener('click', () => { shown += PAGE; renderShop(); });
+
+  async function init() {
+    const { data } = await db.from('plants').select('id,name,category,subcategory,images,amazon_link,created_at').order('created_at', { ascending: false });
+    ALL = data || [];
+    setCounts(); loadHero(); renderChips(); renderShop();
+  }
+  init();
 </script>
 </body>
 </html>
