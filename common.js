@@ -219,3 +219,12 @@ function closeSearch() {
 }
 
 initGlobalSearch();
+
+// Photos that are not the standard portrait shape (about 0.855 wide:tall) are shown whole, not cropped
+document.addEventListener('load', e => {
+  const im = e.target;
+  if (!(im instanceof HTMLImageElement) || !im.naturalHeight) return;
+  const box = im.closest('.pc-img, .gallery-main, .thumb, .tile, .type-photo, .sr-img');
+  if (!box) return;
+  if (Math.abs(im.naturalWidth / im.naturalHeight - 0.855) > 0.08) box.classList.add('fit-whole');
+}, true);
