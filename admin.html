@@ -5,6 +5,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin — Bonayon</title>
   <link rel="stylesheet" href="styles.css">
+<style>
+  .bulk-drop{border:2px dashed var(--green-mid,#5a8f5a);border-radius:14px;padding:28px 16px;text-align:center;cursor:pointer;background:var(--green-pale,#eef6ee);transition:.15s}
+  .bulk-drop.over{background:var(--green-mist,#dcefdc);border-color:var(--green-fresh,#3b9b3b)}
+  .bulk-drop p{margin:6px 0;font-weight:600}.bulk-drop small{color:var(--text-light,#666)}
+  .bulk-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:12px}
+  .bulk-btns button{border:1px solid var(--green-mid,#5a8f5a);background:#fff;border-radius:8px;padding:7px 14px;cursor:pointer;font-weight:600}
+  .bulk-summary{margin:14px 0;font-size:.9rem;color:var(--text-light,#555)}
+  .bulk-row{display:grid;grid-template-columns:auto 150px 1fr;gap:12px;border:1px solid #e2e2dc;border-radius:12px;padding:12px;margin-bottom:12px;background:#fff}
+  .bulk-row.off{opacity:.55}
+  .bulk-thumbs{display:flex;flex-wrap:wrap;gap:4px;align-content:flex-start}
+  .bulk-thumbs img{width:44px;height:52px;object-fit:cover;border-radius:6px;background:#eee}
+  .bulk-fields{display:grid;gap:8px}
+  .bulk-fields input,.bulk-fields select,.bulk-fields textarea{width:100%;padding:8px 10px;border:1px solid #d6d6cf;border-radius:8px;font:inherit;font-size:.88rem;box-sizing:border-box}
+  .bulk-fields textarea{min-height:54px}
+  .bulk-two{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .bulk-status{font-size:.8rem;font-weight:700}
+  .bulk-status.ok{color:#2e7d32}.bulk-status.err{color:#c62828}.bulk-status.warn{color:#b26a00}
+  .edit-photos{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px}
+  .edit-photos .ep{position:relative}.edit-photos img{width:70px;height:84px;object-fit:cover;border-radius:8px}
+  .edit-photos button{position:absolute;top:-6px;right:-6px;border:none;background:#c62828;color:#fff;border-radius:50%;width:20px;height:20px;cursor:pointer;line-height:20px;padding:0}
+  @media(max-width:700px){.bulk-row{grid-template-columns:1fr}.bulk-two{grid-template-columns:1fr}}
+</style>
 </head>
 <body>
 
@@ -45,6 +67,7 @@
       <!-- TABS -->
       <div class="admin-tabs">
         <button class="admin-tab active" onclick="switchTab('add')">➕ Add Plant</button>
+        <button class="admin-tab" onclick="switchTab('bulk')">⚡ Bulk Import</button>
         <button class="admin-tab" onclick="switchTab('manage')">📋 Manage Plants</button>
       </div>
 
@@ -110,6 +133,31 @@
       <button class="btn-submit" id="submit-btn" onclick="submitPlant()">🌿 Add to Website</button>
       </div><!-- end tab-add -->
 
+      <!-- BULK IMPORT TAB -->
+      <div id="tab-bulk" style="display:none">
+        <div id="bulk-alert"></div>
+        <div class="bulk-drop" id="bulk-drop">
+          <div style="font-size:2rem">⚡</div>
+          <p>Drop your Seller Central CSV and your photos (or a whole folder) here</p>
+          <small>Photos named like <b>B0HMR36D8C.MAIN.jpg</b>, <b>B0HMR36D8C.PT01.jpg</b> are matched to the CSV by ASIN. Without a CSV, plants are made from the photo names.</small>
+          <div class="bulk-btns">
+            <button type="button" onclick="event.stopPropagation();document.getElementById('bulk-csv').click()">📄 Choose CSV</button>
+            <button type="button" onclick="event.stopPropagation();document.getElementById('bulk-files').click()">🖼️ Choose photos</button>
+            <button type="button" onclick="event.stopPropagation();document.getElementById('bulk-folder').click()">📁 Choose folder</button>
+          </div>
+          <input type="file" id="bulk-csv" accept=".csv" style="display:none" onchange="bulkAddFiles(this.files);this.value=''">
+          <input type="file" id="bulk-files" accept="image/*" multiple style="display:none" onchange="bulkAddFiles(this.files);this.value=''">
+          <input type="file" id="bulk-folder" webkitdirectory multiple style="display:none" onchange="bulkAddFiles(this.files);this.value=''">
+        </div>
+        <div class="bulk-summary" id="bulk-summary"></div>
+        <div id="bulk-rows"></div>
+        <div id="bulk-progress" style="display:none;margin:12px 0">
+          <div style="background:var(--sage-light);border-radius:8px;overflow:hidden;height:8px"><div id="bulk-bar" style="background:var(--forest);height:100%;width:0%;transition:width .3s"></div></div>
+          <p style="font-size:.85rem;margin-top:6px" id="bulk-ptext"></p>
+        </div>
+        <button class="btn-submit" id="bulk-publish" style="display:none" onclick="bulkPublish()">🚀 Publish selected plants</button>
+      </div>
+
       <!-- MANAGE PLANTS TAB -->
       <div id="tab-manage" style="display:none">
         <div id="manage-alert-box"></div>
@@ -159,6 +207,12 @@
     <div class="form-group">
       <label>Flipkart Link</label>
       <input type="url" id="edit-flipkart">
+    </div>
+    <div class="form-group">
+      <label>Photos</label>
+      <div class="edit-photos" id="edit-photos"></div>
+      <input type="file" id="edit-photo-input" accept="image/*" multiple onchange="editAddPhotos(this)">
+      <small style="color:#777">Remove with ✕ or add more (up to 5 total). Photos are compressed automatically.</small>
     </div>
     <button class="btn-submit" id="edit-save-btn" onclick="saveEdit()">💾 Save Changes</button>
   </div>
@@ -409,8 +463,10 @@
   // ---- TAB SWITCHING ----
   function switchTab(tab) {
     document.getElementById('tab-add').style.display = tab === 'add' ? 'block' : 'none';
+    document.getElementById('tab-bulk').style.display = tab === 'bulk' ? 'block' : 'none';
     document.getElementById('tab-manage').style.display = tab === 'manage' ? 'block' : 'none';
-    document.querySelectorAll('.admin-tab').forEach((t,i) => t.classList.toggle('active', (i===0 && tab==='add') || (i===1 && tab==='manage')));
+    const order = ['add','bulk','manage'];
+    document.querySelectorAll('.admin-tab').forEach((t,i) => t.classList.toggle('active', order[i] === tab));
     if (tab === 'manage') searchManagePlants();
   }
 
@@ -475,6 +531,9 @@
     document.getElementById('edit-amazon').value = plant.amazon_link || '';
     document.getElementById('edit-flipkart').value = plant.flipkart_link || '';
     handleEditCategoryChange(plant.subcategory);
+    editImages = parseImages(plant.images);
+    editNewFiles = [];
+    renderEditPhotos();
     document.getElementById('edit-modal').style.display = 'block';
   }
 
@@ -515,12 +574,26 @@
     document.getElementById('edit-save-btn').disabled = true;
     document.getElementById('edit-save-btn').textContent = 'Saving...';
 
+    let images = [...editImages];
+    try {
+      for (let i = 0; i < editNewFiles.length; i++) {
+        document.getElementById('edit-save-btn').textContent = `Uploading photo ${i+1}/${editNewFiles.length}...`;
+        images.push(await uploadPhoto(editNewFiles[i], 'edit', i));
+      }
+    } catch (e) {
+      alertBox.innerHTML = `<div class="alert error">${e.message}</div>`;
+      document.getElementById('edit-save-btn').disabled = false;
+      document.getElementById('edit-save-btn').textContent = '💾 Save Changes';
+      return;
+    }
+
     const { error } = await db.from('plants').update({
       name, category,
       subcategory: subcategory || null,
       description,
       amazon_link: amazon_link || null,
-      flipkart_link: flipkart_link || null
+      flipkart_link: flipkart_link || null,
+      images
     }).eq('id', editingPlantId);
 
     if (error) {
@@ -528,7 +601,7 @@
     } else {
       // Update local cache
       const idx = allManagePlants.findIndex(p => p.id === editingPlantId);
-      if (idx !== -1) allManagePlants[idx] = { ...allManagePlants[idx], name, category, subcategory, description, amazon_link, flipkart_link };
+      if (idx !== -1) allManagePlants[idx] = { ...allManagePlants[idx], name, category, subcategory, description, amazon_link, flipkart_link, images };
       alertBox.innerHTML = '<div class="alert success">✅ Plant updated successfully!</div>';
       setTimeout(() => { closeEditModal(); searchManagePlants(); }, 1200);
     }
@@ -536,6 +609,242 @@
     document.getElementById('edit-save-btn').disabled = false;
     document.getElementById('edit-save-btn').textContent = '💾 Save Changes';
   }
+
+  // ---- shared helpers ----
+  function parseImages(v) {
+    let a = v || [];
+    if (typeof a === 'string') { try { a = JSON.parse(a); } catch { a = a ? [a] : []; } }
+    return Array.isArray(a) ? a : [];
+  }
+  function esc(t) { return String(t ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+  async function uploadPhoto(file, tag, i) {
+    const f = await compressImage(file, 900, 0.8);
+    const slug = String(tag).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,40) || 'plant';
+    const path = `plants/${slug}_${Date.now()}_${i}.jpg`;
+    const { error } = await db.storage.from('plant-images').upload(path, f, { cacheControl: '31536000', upsert: false });
+    if (error) throw new Error('Image upload failed: ' + error.message);
+    return db.storage.from('plant-images').getPublicUrl(path).data.publicUrl;
+  }
+
+  // ---- edit modal photos ----
+  let editImages = [], editNewFiles = [];
+  function renderEditPhotos() {
+    const box = document.getElementById('edit-photos');
+    box.innerHTML = editImages.map((u,i) => `<div class="ep"><img src="${esc(u)}"><button type="button" onclick="editRemove(${i},false)">✕</button></div>`).join('') +
+      editNewFiles.map((f,i) => `<div class="ep"><img src="${URL.createObjectURL(f)}"><button type="button" onclick="editRemove(${i},true)">✕</button></div>`).join('');
+  }
+  function editRemove(i, isNew) { (isNew ? editNewFiles : editImages).splice(i,1); renderEditPhotos(); }
+  function editAddPhotos(input) {
+    const room = 5 - editImages.length - editNewFiles.length;
+    editNewFiles.push(...Array.from(input.files).slice(0, Math.max(room,0)));
+    input.value = '';
+    renderEditPhotos();
+  }
+
+  // ---- BULK IMPORT ----
+  const bulk = { csv: null, groups: {}, rows: {}, existing: null };
+
+  function catOptionsHTML(sel) {
+    let h = '<option value="">-- Category › Subcategory --</option>';
+    for (const cat of Object.keys(subcategoryOptions)) {
+      h += `<optgroup label="${{indoor:'🪴 Indoor',outdoor:'🌳 Outdoor',seed:'🌱 Seeds'}[cat]}">`;
+      subcategoryOptions[cat].forEach(o => h += `<option value="${cat}|${o.value}" ${sel===cat+'|'+o.value?'selected':''}>${o.label}</option>`);
+      h += '</optgroup>';
+    }
+    return h;
+  }
+
+  function parseCSV(text) {
+    const rows = []; let row = [], f = '', q = false;
+    text = text.replace(/^﻿/, '');
+    for (let i = 0; i < text.length; i++) {
+      const c = text[i];
+      if (q) { if (c === '"') { if (text[i+1] === '"') { f += '"'; i++; } else q = false; } else f += c; }
+      else if (c === '"') q = true;
+      else if (c === ',') { row.push(f); f = ''; }
+      else if (c === '\n' || c === '\r') { if (c === '\r' && text[i+1] === '\n') i++; row.push(f); f = ''; if (row.some(x => x.trim())) rows.push(row); row = []; }
+      else f += c;
+    }
+    if (f || row.length) { row.push(f); if (row.some(x => x.trim())) rows.push(row); }
+    return rows;
+  }
+
+  function niceName(title) {
+    const parts = title.split('|').map(p => p.trim()).filter(p => p && !/^(bonayon|bm nursery)$/i.test(p));
+    const first = (parts[0] || title).replace(/\s*live plants?\s*/i, ' ').replace(/\s+/g,' ').trim();
+    const rest = parts.slice(1);
+    return rest.length ? `${first} (${rest.join(' / ')})` : first;
+  }
+
+  function guessCat(name) {
+    const n = name.toLowerCase();
+    if (/seed/.test(n)) return 'seed|';
+    if (/combo/.test(n)) return 'indoor|combo';
+    if (/succulent|cactus|echeveria|haworthia|jade|aloe|sedum|sempervivum/.test(n)) return 'indoor|succulents';
+    if (/banana|mango|guava|lemon|berry|apple|fig\b|orange|litchi|papaya|pomegranate|jamun|amla|custard|macadamia|olive|starfruit|mosambi|avocado|longan|karonda|jolpai/.test(n)) return 'outdoor|fruit';
+    if (/clove|cinnamon|mint|tulsi|basil|turmeric|ginger|curry|rosemary|marjoram|stevia|ajwain|allspice|brahmi|giloy|ashwagandha/.test(n)) return 'outdoor|herbs-spice';
+    if (/pothos|philodendron|monstera|calathea|aglaonema|snake|dracaena|ficus|peperomia|syngonium|fittonia|palm\b|fern|anthurium|alocasia|dieffenbachia|schefflera/.test(n)) return 'indoor|low-maintenance';
+    return '';
+  }
+
+  function photoKey(fileName) {
+    const base = fileName.replace(/\.[^.]+$/, '');
+    const m = base.match(/^(.*?)[._\- ]*(MAIN|PT\d+|\d+)$/i);
+    const key = (m ? m[1] : base).trim();
+    let ord = 0;
+    if (m) { const t = m[2].toUpperCase(); ord = t === 'MAIN' ? 0 : parseInt(t.replace('PT',''), 10) || 0; }
+    return { key, ord };
+  }
+
+  async function readEntry(entry, out) {
+    if (entry.isFile) { await new Promise(res => entry.file(f => { out.push(f); res(); }, res)); }
+    else if (entry.isDirectory) {
+      const rd = entry.createReader();
+      let batch;
+      do { batch = await new Promise(res => rd.readEntries(res, () => res([]))); for (const e of batch) await readEntry(e, out); } while (batch.length);
+    }
+  }
+
+  async function bulkAddFiles(fileList) {
+    const files = Array.from(fileList);
+    let photos = 0;
+    for (const f of files) {
+      if (/\.csv$/i.test(f.name)) {
+        const rows = parseCSV(await f.text());
+        const head = rows[0].map(h => h.trim().toLowerCase());
+        const iA = head.indexOf('asin'), iT = head.findIndex(h => h.includes('title')), iS = head.indexOf('status');
+        if (iA < 0 || iT < 0) { bulkAlert('That CSV needs "ASIN" and "Product Title" columns.', 'error'); continue; }
+        bulk.csv = rows.slice(1).filter(r => r[iA]).map(r => ({ asin: r[iA].trim(), title: r[iT].trim(), status: iS >= 0 ? r[iS].trim() : '' }));
+      } else if (f.type.startsWith('image/') || /\.(jpe?g|png|webp)$/i.test(f.name)) {
+        const { key, ord } = photoKey(f.name);
+        const k = key.toLowerCase();
+        (bulk.groups[k] = bulk.groups[k] || { key, files: [] }).files.push({ f, ord });
+        photos++;
+      }
+    }
+    for (const g of Object.values(bulk.groups)) g.files.sort((a,b) => a.ord - b.ord || a.f.name.localeCompare(b.f.name));
+    await bulkRebuild();
+  }
+
+  async function bulkRebuild() {
+    const rows = bulk.rows;
+    let ignored = 0;
+    if (bulk.csv) {
+      for (const c of bulk.csv) {
+        const k = c.asin.toLowerCase();
+        if (!rows[k]) { const nm = niceName(c.title); rows[k] = { key: k, asin: c.asin, name: nm, catsub: guessCat(nm), desc: '', amazon: `https://www.amazon.in/dp/${c.asin}`, flip: '', include: true }; }
+      }
+      ignored = Object.keys(bulk.groups).filter(k => !rows[k]).length;
+    } else {
+      for (const [k, g] of Object.entries(bulk.groups)) {
+        if (!rows[k]) { const nm = g.key.replace(/[_-]+/g, ' ').trim(); rows[k] = { key: k, asin: /^B0[A-Z0-9]{8}$/i.test(g.key) ? g.key : '', name: nm, catsub: guessCat(nm), desc: '', amazon: /^B0[A-Z0-9]{8}$/i.test(g.key) ? `https://www.amazon.in/dp/${g.key}` : '', flip: '', include: true }; }
+      }
+    }
+    for (const r of Object.values(rows)) r.files = (bulk.groups[r.key]?.files || []).slice(0,5).map(x => x.f);
+    // duplicates already on the site
+    if (!bulk.existing) { const { data } = await db.from('plants').select('name,amazon_link'); bulk.existing = data || []; }
+    for (const r of Object.values(rows)) {
+      if (r.dupChecked) continue;
+      r.dupChecked = true;
+      r.dup = bulk.existing.some(p => (r.asin && p.amazon_link && p.amazon_link.toLowerCase().includes(r.asin.toLowerCase())) || (p.name && p.name.trim().toLowerCase() === r.name.trim().toLowerCase()));
+      if (r.dup) r.include = false;
+    }
+    bulk.ignored = ignored;
+    bulkRender();
+  }
+
+  function bulkAlert(msg, type) { document.getElementById('bulk-alert').innerHTML = `<div class="alert ${type}">${msg}</div>`; }
+
+  function bulkRender() {
+    const list = Object.values(bulk.rows);
+    const box = document.getElementById('bulk-rows');
+    box.innerHTML = list.map(r => `
+      <div class="bulk-row ${r.include ? '' : 'off'}" id="br-${esc(r.key)}">
+        <input type="checkbox" ${r.include ? 'checked' : ''} onchange="bulkSet('${esc(r.key)}','include',this.checked,true)" title="Include">
+        <div class="bulk-thumbs">${r.files.length ? r.files.map(f => `<img src="${URL.createObjectURL(f)}">`).join('') : '<small style="color:#b26a00">No photos found</small>'}</div>
+        <div class="bulk-fields">
+          <input type="text" value="${esc(r.name)}" placeholder="Plant name" oninput="bulkSet('${esc(r.key)}','name',this.value)">
+          <select onchange="bulkSet('${esc(r.key)}','catsub',this.value)">${catOptionsHTML(r.catsub)}</select>
+          <textarea placeholder="Description (optional — a simple one is added if empty; edit later in Manage Plants)" oninput="bulkSet('${esc(r.key)}','desc',this.value)">${esc(r.desc)}</textarea>
+          <div class="bulk-two">
+            <input type="url" value="${esc(r.amazon)}" placeholder="Amazon link" oninput="bulkSet('${esc(r.key)}','amazon',this.value)">
+            <input type="url" value="${esc(r.flip)}" placeholder="Flipkart link (optional)" oninput="bulkSet('${esc(r.key)}','flip',this.value)">
+          </div>
+          <div class="bulk-status ${r.dup ? 'warn' : ''}" id="bs-${esc(r.key)}">${r.dup ? '⚠️ Already on the site (unticked)' : (r.files.length ? '' : '⚠️ Needs at least 1 photo')}</div>
+        </div>
+      </div>`).join('');
+    bulkSummary();
+  }
+
+  function bulkSet(key, field, val, rerender) {
+    bulk.rows[key][field] = val;
+    if (rerender) bulkRender(); else bulkSummary();
+  }
+
+  function bulkSummary() {
+    const list = Object.values(bulk.rows);
+    const n = list.filter(r => r.include).length;
+    const ready = list.filter(r => r.include && r.files.length && r.name.trim() && r.catsub.split('|')[1]).length;
+    document.getElementById('bulk-summary').innerHTML = list.length
+      ? `<b>${list.length}</b> plants found · <b>${n}</b> selected · <b>${ready}</b> ready to publish${bulk.ignored ? ` · ${bulk.ignored} photo groups didn't match the CSV and were ignored` : ''}. Pick a category for any plant that has none.`
+      : '';
+    const btn = document.getElementById('bulk-publish');
+    btn.style.display = list.length ? 'block' : 'none';
+    btn.textContent = `🚀 Publish ${n} selected plant${n === 1 ? '' : 's'}`;
+  }
+
+  async function bulkPublish() {
+    const list = Object.values(bulk.rows).filter(r => r.include && r.status !== 'done');
+    const bad = list.filter(r => !r.name.trim() || !r.files.length || !r.catsub.split('|')[1]);
+    if (bad.length) { bulkAlert(`❌ ${bad.length} selected plant(s) still need a name, a category/subcategory, or a photo: ${bad.slice(0,5).map(r => esc(r.name || r.key)).join(', ')}${bad.length > 5 ? '…' : ''}`, 'error'); return; }
+    if (!list.length) { bulkAlert('Nothing selected to publish.', 'error'); return; }
+    const btn = document.getElementById('bulk-publish'); btn.disabled = true;
+    document.getElementById('bulk-progress').style.display = 'block';
+    const bar = document.getElementById('bulk-bar'), txt = document.getElementById('bulk-ptext');
+    let done = 0, failed = 0;
+    for (const r of list) {
+      const st = document.getElementById('bs-' + r.key);
+      try {
+        txt.textContent = `(${done + failed + 1}/${list.length}) ${r.name}`;
+        const urls = [];
+        for (let i = 0; i < r.files.length; i++) {
+          if (st) st.textContent = `Uploading photo ${i+1}/${r.files.length}...`;
+          urls.push(await uploadPhoto(r.files[i], r.asin || r.name, i));
+        }
+        const [category, subcategory] = r.catsub.split('|');
+        const description = r.desc.trim() || `${r.name.split('(')[0].trim()} — healthy live plant from Bonayon. Tap Buy on Amazon to order.`;
+        const { error } = await db.from('plants').insert([{ name: r.name.trim(), category, subcategory, description, amazon_link: r.amazon.trim() || null, flipkart_link: r.flip.trim() || null, images: urls, created_at: new Date().toISOString() }]);
+        if (error) throw new Error(error.message);
+        r.status = 'done'; r.include = false; done++;
+        if (st) { st.className = 'bulk-status ok'; st.textContent = '✅ Published'; }
+      } catch (e) {
+        failed++;
+        if (st) { st.className = 'bulk-status err'; st.textContent = '❌ ' + e.message; }
+      }
+      bar.style.width = `${((done + failed) / list.length) * 100}%`;
+    }
+    txt.textContent = `Finished: ${done} published${failed ? `, ${failed} failed (fix and press Publish again)` : ''}.`;
+    managePlantsLoaded = false; bulk.existing = null;
+    btn.disabled = false;
+    bulkSummary();
+  }
+
+  // drag & drop for the bulk zone (supports whole folders)
+  (function () {
+    const z = document.getElementById('bulk-drop');
+    z.addEventListener('click', () => document.getElementById('bulk-files').click());
+    z.addEventListener('dragover', e => { e.preventDefault(); z.classList.add('over'); });
+    z.addEventListener('dragleave', () => z.classList.remove('over'));
+    z.addEventListener('drop', async e => {
+      e.preventDefault(); z.classList.remove('over');
+      const out = [];
+      const items = Array.from(e.dataTransfer.items || []);
+      const entries = items.map(i => i.webkitGetAsEntry && i.webkitGetAsEntry()).filter(Boolean);
+      if (entries.length) { for (const en of entries) await readEntry(en, out); }
+      else out.push(...Array.from(e.dataTransfer.files));
+      bulkAddFiles(out);
+    });
+  })();
 
 </script>
 </body>
