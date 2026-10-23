@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Seeds | Bonayon</title>
   <meta name="description" content="Vegetable, flower and herb seeds from Bonayon. Order on Amazon.in.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700&display=swap">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -41,7 +44,7 @@
     if (!list.length) { box.innerHTML = '<div class="grid-empty"><h3>No seeds match your search</h3></div>'; return; }
     box.innerHTML = GROUPS.map(g => {
       const items = list.filter(p => g.key ? p.subcategory === g.key : !GROUPS.some(x => x.key && x.key === p.subcategory));
-      return items.length ? `<section class="sub-block"><h2>${g.label} <span>${items.length}</span></h2><div class="grid">${items.map(plantCard).join('')}</div></section>` : '';
+      return items.length ? `<section class="sub-block"><h2>${g.label} <span>${items.length}</span></h2><div class="grid">${items.map((p, i) => plantCard(p, i < 4)).join('')}</div></section>` : '';
     }).join('');
   }
 

@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Outdoor plants | Bonayon</title>
   <meta name="description" content="Flowering shrubs, fruit trees, herbs and trees for gardens, terraces and balconies. Order on Amazon.in.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700&display=swap">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -45,7 +48,7 @@
     const list = active === 'all' ? data : data.filter(p => p.subcategory === active);
     const label = active === 'all' ? 'outdoor plants' : (SUB_LABELS[active] || active).toLowerCase();
     document.getElementById('count-text').innerHTML = `<strong>${list.length}</strong> ${label}`;
-    grid.innerHTML = list.length ? list.map(plantCard).join('')
+    grid.innerHTML = list.length ? list.map((p, i) => plantCard(p, i < 4)).join('')
       : `<div class="grid-empty"><h3>Nothing here yet</h3><p>We add new plants often. Check back soon, or message us on WhatsApp.</p></div>`;
   }
   load();

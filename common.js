@@ -69,8 +69,22 @@ function nameParts(name) {
   return { title: title || n, sci: m ? m[2].trim() : '' };
 }
 
+// Smaller copy of a photo for cards and lists (the full photo is used on the plant page)
+function thumb(url, w) {
+  w = w || 560;
+  if (!url) return url;
+  const m = url.match(/^\/assets\/plants\/([^\/]+\.jpg)$/i);
+  if (m) return '/assets/plants/t/' + m[1];
+  if (url.includes('/storage/v1/object/public/')) return url.replace('/storage/v1/object/public/', '/storage/v1/render/image/public/') + (url.includes('?') ? '&' : '?') + 'width=' + w + '&quality=75';
+  return url;
+}
+// if a small copy cannot load, fall back to the full photo
+function imgTag(url, cls, eager) {
+  return `<img ${cls ? `class="${cls}" ` : ''}src="${esc(thumb(url))}" data-full="${esc(url)}" onerror="if(this.dataset.full&&this.src.indexOf(this.dataset.full)<0){this.src=this.dataset.full}" alt="" decoding="async" ${eager ? 'fetchpriority="high"' : 'loading="lazy"'}>`;
+}
+
 // One plant card, used on the home page and the category pages
-function plantCard(p) {
+function plantCard(p, eager) {
   const imgs = imgsOf(p);
   const { title, sci } = nameParts(p.name);
   const url = 'plant.html?id=' + encodeURIComponent(p.id);
@@ -81,8 +95,8 @@ function plantCard(p) {
     : `<a class="btn btn-buy alt" href="${url}">View details</a>`;
   return `<article class="pc">
     <a class="pc-img" href="${url}" tabindex="-1" aria-hidden="true">
-      ${imgs[0] ? `<img src="${esc(imgs[0])}" alt="" loading="lazy">` : ''}
-      ${imgs[1] ? `<img class="alt" src="${esc(imgs[1])}" alt="" loading="lazy">` : ''}
+      ${imgs[0] ? imgTag(imgs[0], '', eager) : ''}
+      ${imgs[1] ? imgTag(imgs[1], 'alt') : ''}
     </a>
     <div class="pc-body">
       ${sub ? `<p class="pc-sub">${esc(sub)}</p>` : ''}
@@ -191,7 +205,7 @@ function initGlobalSearch() {
       const img = imgsOf(p)[0];
       const { title } = nameParts(p.name);
       return `<a href="plant.html?id=${encodeURIComponent(p.id)}" class="sr-item">
-        <span class="sr-img">${img ? `<img src="${esc(img)}" alt="" loading="lazy">` : ''}</span>
+        <span class="sr-img">${img ? imgTag(img) : ''}</span>
         <span class="sr-info"><strong>${esc(title)}</strong><span>${esc(SUB_LABELS[p.subcategory] || p.category || '')}</span></span>
         <span class="sr-price">${money(p)}</span>
       </a>`;

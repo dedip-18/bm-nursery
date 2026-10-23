@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bonayon | Live plants from Kolkata, shipped across India</title>
   <meta name="description" content="Indoor plants, flowering shrubs, fruit trees, herbs and seeds from our nursery in Kolkata. Order on Amazon.in.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700&display=swap">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -109,7 +112,7 @@
     document.getElementById('hero-shelf').innerHTML = three.map(p => {
       const { title } = nameParts(p.name);
       return `<a class="tile" href="plant.html?id=${encodeURIComponent(p.id)}">
-        <img src="${esc(imgsOf(p)[0])}" alt="${esc(title)}">
+        <img src="${esc(thumb(imgsOf(p)[0]))}" data-full="${esc(imgsOf(p)[0])}" onerror="if(this.src.indexOf(this.dataset.full)<0)this.src=this.dataset.full" alt="${esc(title)}" fetchpriority="high">
         <span class="tile-cap"><b>${esc(title)}</b>${money(p) ? `<i>${money(p)}</i>` : ''}</span>
       </a>`;
     }).join('');
@@ -134,7 +137,7 @@
           <p class="type-count">${list.length} ${list.length === 1 ? 'plant' : 'plants'}</p>
           <div class="type-subs">${subs.map(s => `<a href="${info.href}?cat=${s}">${esc(SUB_LABELS[s])}</a>`).join('')}</div>
         </div>
-        <div class="type-photo">${hero ? `<img src="${esc(imgsOf(hero)[0])}" alt="" loading="lazy">` : ''}</div>
+        <div class="type-photo">${hero ? imgTag(imgsOf(hero)[0]) : ''}</div>
       </div>`;
     }).join('');
   }
@@ -160,7 +163,7 @@
 
   function renderShop() {
     const list = filtered();
-    document.getElementById('shop-grid').innerHTML = list.slice(0, shown).map(plantCard).join('')
+    document.getElementById('shop-grid').innerHTML = list.slice(0, shown).map((p, i) => plantCard(p, i < 4)).join('')
       || '<div class="grid-empty"><h3>No plants here yet</h3><p>Try another type, or message us on WhatsApp.</p></div>';
     const more = document.getElementById('shop-more');
     more.hidden = list.length <= shown;
